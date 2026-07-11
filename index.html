@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Tim 1</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-mark">T1</span>
+        <span class="brand-name">Tim 1</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#dashboard" class="nav-item active" data-page="dashboard">
+          <span class="nav-icon">▦</span> Dashboard
+        </a>
+        <a href="#proyek" class="nav-item" data-page="proyek">
+          <span class="nav-icon">◧</span> Proyek
+        </a>
+        <a href="#tugas" class="nav-item" data-page="tugas">
+          <span class="nav-icon">✓</span> Tugas
+        </a>
+        <a href="#anggota" class="nav-item" data-page="anggota">
+          <span class="nav-icon">◐</span> Anggota Tim
+        </a>
+        <a href="#laporan" class="nav-item" data-page="laporan">
+          <span class="nav-icon">▤</span> Laporan
+        </a>
+        <a href="#pengaturan" class="nav-item" data-page="pengaturan">
+          <span class="nav-icon">⚙</span> Pengaturan
+        </a>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+
+      <header class="topbar">
+        <button class="menu-toggle" id="menuToggle" aria-label="Buka menu">☰</button>
+        <h1 class="page-title" id="pageTitle">Dashboard</h1>
+        <div class="topbar-user">
+          <span class="user-name">Melati</span>
+          <span class="user-avatar">M</span>
+        </div>
+      </header>
+
+      <main class="content">
+
+        <!-- HALAMAN: DASHBOARD -->
+        <section class="page active" id="page-dashboard">
+          <div class="stat-grid">
+            <div class="stat-card">
+              <p class="stat-label">Proyek Aktif</p>
+              <p class="stat-value">3</p>
+            </div>
+            <div class="stat-card">
+              <p class="stat-label">Tugas Selesai</p>
+              <p class="stat-value">12</p>
+            </div>
+            <div class="stat-card">
+              <p class="stat-label">Tugas Berjalan</p>
+              <p class="stat-value">5</p>
+            </div>
+            <div class="stat-card">
+              <p class="stat-label">Anggota Tim</p>
+              <p class="stat-value">4</p>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Aktivitas Terbaru</h2>
+            <ul class="activity-list">
+              <li><span class="dot"></span> Melati menambahkan halaman Dashboard</li>
+              <li><span class="dot"></span> Repo Dashboard-tim1 dibuat</li>
+              <li><span class="dot"></span> Anggota tim baru bergabung</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- HALAMAN: PROYEK -->
+        <section class="page" id="page-proyek">
+          <div class="panel">
+            <h2>Daftar Proyek</h2>
+            <p class="placeholder-text">Belum ada proyek. Klik tombol di bawah untuk menambahkan proyek baru.</p>
+            <button class="btn-primary">+ Tambah Proyek</button>
+          </div>
+        </section>
+
+        <!-- HALAMAN: TUGAS -->
+        <section class="page" id="page-tugas">
+          <div class="panel">
+            <h2>Daftar Tugas</h2>
+            <p class="placeholder-text">Belum ada tugas yang ditambahkan.</p>
+            <button class="btn-primary">+ Tambah Tugas</button>
+          </div>
+        </section>
+
+        <!-- HALAMAN: ANGGOTA TIM -->
+        <section class="page" id="page-anggota">
+          <div class="panel">
+            <h2>Anggota Tim</h2>
+            <p class="placeholder-text">Daftar anggota tim akan tampil di sini.</p>
+          </div>
+        </section>
+
+        <!-- HALAMAN: LAPORAN -->
+        <section class="page" id="page-laporan">
+          <div class="panel">
+            <h2>Laporan</h2>
+            <p class="placeholder-text">Belum ada laporan yang dibuat.</p>
+          </div>
+        </section>
+
+        <!-- HALAMAN: PENGATURAN -->
+        <section class="page" id="page-pengaturan">
+          <div class="panel">
+            <h2>Pengaturan</h2>
+            <p class="placeholder-text">Pengaturan akun dan proyek akan tampil di sini.</p>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

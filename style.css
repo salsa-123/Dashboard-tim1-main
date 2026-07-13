@@ -280,7 +280,6 @@ body {
   }
 }
 
-
 /* Grid untuk Proyek */
 .project-grid {
     display: grid;
@@ -452,7 +451,6 @@ body {
     cursor: pointer;
 }
 
-
 /* halaman anggota tim */
 .team-grid {
   display: grid;
@@ -500,7 +498,6 @@ body {
 }
 
 .btn-detail:hover { background: #e5e7eb; }
-
 
   /* Style untuk Halaman Laporan */
 .report-form {
@@ -553,7 +550,6 @@ body {
 .empty-msg {
   color: #636e72;
 }
-
 
 /* Style untuk Pengaturan */
 .settings-grid {

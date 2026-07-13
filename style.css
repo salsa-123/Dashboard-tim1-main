@@ -481,3 +481,56 @@ body {
     border: 1px solid #eee;
   }
   .icon { margin-right: 10px; color: #00b894; }
+
+
+  /* Style untuk Halaman Laporan */
+.report-form {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input, 
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box; /* Agar padding tidak merusak lebar */
+}
+
+.btn-submit {
+  background: #00b894;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-submit:hover {
+  background: #009475;
+}
+
+.report-list {
+  border-top: 2px solid #eee;
+  padding-top: 15px;
+}
+
+.empty-msg {
+  color: #636e72;
+}

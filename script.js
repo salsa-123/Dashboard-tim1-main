@@ -149,3 +149,37 @@ btnSimpanTugas.addEventListener('click', () => {
   document.getElementById('inputDeadlineTugas').value = '';
   modalTugas.classList.remove('active');
 });
+
+
+// TAMBAH Laporan
+  document.querySelector('.btn-submit').addEventListener('click', function() {
+    // 1. Mengambil nilai dari input dan textarea
+    const judul = document.getElementById('judulLaporan').value;
+    const isi = document.getElementById('isiLaporan').value;
+
+    // 2. Validasi sederhana agar tidak mengirim laporan kosong
+    if (judul === '' || isi === '') {
+      alert('Mohon isi judul dan isi laporan!');
+      return;
+    }
+
+    // 3. Membuat elemen laporan baru
+    const reportList = document.getElementById('riwayatLaporan');
+    const emptyMsg = document.querySelector('.empty-msg');
+    
+    // Hapus pesan "Belum ada laporan" jika sudah ada laporan
+    if (emptyMsg) emptyMsg.remove();
+
+    // 4. Membuat kartu laporan baru
+    const newReport = document.createElement('div');
+    newReport.style.cssText = "background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #00b894;";
+    newReport.innerHTML = `
+      <h4 style="margin: 0 0 5px 0;">${judul}</h4>
+      <p style="margin: 0;">${isi}</p>
+    `;
+
+    // 5. Menambahkan ke daftar dan mengosongkan form
+    reportList.appendChild(newReport);
+    document.getElementById('judulLaporan').value = '';
+    document.getElementById('isiLaporan').value = '';
+  });

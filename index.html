@@ -214,7 +214,25 @@
         <section class="page" id="page-laporan">
           <div class="panel">
             <h2>Laporan</h2>
-            <p class="placeholder-text">Belum ada laporan yang dibuat.</p>
+            
+          <!-- Form Laporan -->
+    <div class="report-form">
+      <div class="form-group">
+        <label>Judul Laporan</label>
+        <input type="text" id="judulLaporan" placeholder="Masukkan judul...">
+      </div>
+      <div class="form-group">
+        <label>Isi Laporan</label>
+        <textarea id="isiLaporan" placeholder="Tulis detail laporan tim di sini..."></textarea>
+      </div>
+      <button class="btn-submit">Kirim Laporan</button>
+    </div>
+
+    <!-- Area Daftar Laporan -->
+    <h3>Riwayat Laporan</h3>
+    <div class="report-list" id="riwayatLaporan">
+      <p class="empty-msg">Belum ada laporan yang masuk.</p>
+    </div>
           </div>
         </section>
 
@@ -223,6 +241,7 @@
           <div class="panel">
             <h2>Pengaturan</h2>
             <p class="placeholder-text">Pengaturan akun dan proyek akan tampil di sini.</p>
+          
           </div>
         </section>
 

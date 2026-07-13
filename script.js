@@ -11,6 +11,8 @@ navItems.forEach(item => {
     e.preventDefault();
 
     const targetPage = item.getAttribute('data-page');
+     if (!targetPage) return;
+
 
     // Hapus status "active" dari semua menu, lalu aktifkan yang diklik
     navItems.forEach(i => i.classList.remove('active'));
@@ -183,3 +185,39 @@ btnSimpanTugas.addEventListener('click', () => {
     document.getElementById('judulLaporan').value = '';
     document.getElementById('isiLaporan').value = '';
   });
+
+// LOGOUT
+document.getElementById('btnLogout').addEventListener('click', function(e) {
+  e.preventDefault();
+  if (confirm('Yakin ingin logout?')) {
+    alert('Anda telah logout. Sampai jumpa lagi!');
+  }
+});
+
+// ===========================
+// DARK MODE
+// ===========================
+
+const themeSelect = document.getElementById("themeSelect");
+
+themeSelect.addEventListener("change", function(){
+
+    if(this.value === "dark"){
+        document.body.classList.add("dark-mode");
+    }else{
+        document.body.classList.remove("dark-mode");
+    }
+
+});
+
+const savedTheme=localStorage.getItem("theme");
+
+if(savedTheme){
+
+    document.body.classList.add(savedTheme);
+
+    themeSelect.value=savedTheme==="dark-mode"
+        ?"dark"
+        :"light";
+
+}

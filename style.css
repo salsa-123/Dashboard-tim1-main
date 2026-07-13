@@ -39,6 +39,22 @@ body {
   transition: transform 0.25s ease;
 }
 
+/* FOOTER SIDEBAR - LOGOUT */
+.sidebar-footer {
+  margin-top: auto;
+  padding: 10px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.logout-item {
+  color: #f87171;
+}
+
+.logout-item:hover {
+  background: rgba(248, 113, 113, 0.12);
+  color: #fca5a5;
+}
+
 .sidebar-brand {
   display: flex;
   align-items: center;

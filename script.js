@@ -95,3 +95,57 @@ btnSimpanProyek.addEventListener('click', () => {
   document.getElementById('inputDeadlineProyek').value = '';
   modalProyek.classList.remove('active');
 });
+
+
+// TAMBAH TUGAS
+const btnTambahTugas = document.getElementById('btnTambahTugas');
+const modalTugas = document.getElementById('modalTugas');
+const btnBatalTugas = document.getElementById('btnBatalTugas');
+const btnSimpanTugas = document.getElementById('btnSimpanTugas');
+const taskTableBody = document.getElementById('taskTableBody');
+
+btnTambahTugas.addEventListener('click', () => {
+  modalTugas.classList.add('active');
+});
+
+btnBatalTugas.addEventListener('click', () => {
+  modalTugas.classList.remove('active');
+});
+
+btnSimpanTugas.addEventListener('click', () => {
+  const nama = document.getElementById('inputNamaTugas').value.trim();
+  const penanggung = document.getElementById('inputPenanggungTugas').value.trim();
+  const deadline = document.getElementById('inputDeadlineTugas').value;
+  const status = document.getElementById('inputStatusTugas').value;
+
+  if (!nama || !penanggung || !deadline) {
+    alert('Semua kolom wajib diisi!');
+    return;
+  }
+
+  const statusMap = {
+    pending: { label: 'Belum Mulai', badge: 'badge-pending' },
+    progress: { label: 'Berjalan', badge: 'badge-progress' },
+    done: { label: 'Selesai', badge: 'badge-done' }
+  };
+  const s = statusMap[status];
+
+  const deadlineFormatted = new Date(deadline).toLocaleDateString('id-ID', {
+    day: 'numeric', month: 'long', year: 'numeric'
+  });
+
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td>${nama}</td>
+    <td>${penanggung}</td>
+    <td>${deadlineFormatted}</td>
+    <td><span class="badge ${s.badge}">${s.label}</span></td>
+  `;
+
+  taskTableBody.appendChild(row);
+
+  document.getElementById('inputNamaTugas').value = '';
+  document.getElementById('inputPenanggungTugas').value = '';
+  document.getElementById('inputDeadlineTugas').value = '';
+  modalTugas.classList.remove('active');
+});

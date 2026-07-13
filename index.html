@@ -8,6 +8,7 @@
 </head>
 <body>
 
+  
   <div class="app">
 
     <!-- SIDEBAR -->
@@ -89,7 +90,53 @@
           <div class="panel">
             <h2>Daftar Proyek</h2>
             <p class="placeholder-text">Belum ada proyek. Klik tombol di bawah untuk menambahkan proyek baru.</p>
-            <button class="btn-primary">+ Tambah Proyek</button>
+            <button class="btn-primary" id="btnTambahProyek">+ Tambah Proyek</button>
+            <div class="project-grid" id="projectGrid">
+      <div class="project-card">
+        <div class="project-header">
+          <h3>Dashboard Tim 1</h3>
+          <span class="badge badge-progress">Berjalan</span>
+        </div>
+        <p class="project-desc">Membangun dashboard internal untuk manajemen tugas tim.</p>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 60%;"></div>
+        </div>
+        <div class="project-footer">
+          <span>60% selesai</span>
+          <span>Deadline: 25 Juli 2026</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <h3>Redesign Logo Tim</h3>
+          <span class="badge badge-done">Selesai</span>
+        </div>
+        <p class="project-desc">Membuat ulang identitas visual logo Tim 1.</p>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 100%;"></div>
+        </div>
+        <div class="project-footer">
+          <span>100% selesai</span>
+          <span>Deadline: 10 Juli 2026</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <h3>Integrasi Database</h3>
+          <span class="badge badge-pending">Belum Mulai</span>
+        </div>
+        <p class="project-desc">Menghubungkan dashboard dengan database tugas.</p>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%;"></div>
+        </div>
+        <div class="project-footer">
+          <span>0% selesai</span>
+          <span>Deadline: 30 Juli 2026</span>
+        </div>
+      </div>
+    </div>
           </div>
         </section>
 
@@ -160,6 +207,34 @@
     </div>
   </div>
 
+  <!-- MODAL TAMBAH PROYEK -->
+<div class="modal-overlay" id="modalProyek">
+  <div class="modal-box">
+    <h3>Tambah Proyek Baru</h3>
+    <label>Nama Proyek</label>
+    <input type="text" id="inputNamaProyek" placeholder="Contoh: Landing Page">
+
+    <label>Deskripsi</label>
+    <input type="text" id="inputDeskProyek" placeholder="Deskripsi singkat proyek">
+
+    <label>Deadline</label>
+    <input type="date" id="inputDeadlineProyek">
+
+    <label>Status</label>
+    <select id="inputStatusProyek">
+      <option value="pending">Belum Mulai</option>
+      <option value="progress">Berjalan</option>
+      <option value="done">Selesai</option>
+    </select>
+
+    <div class="modal-actions">
+      <button class="btn-secondary" id="btnBatalProyek">Batal</button>
+      <button class="btn-primary" id="btnSimpanProyek">Simpan</button>
+    </div>
+  </div>
+</div>
+
   <script src="script.js"></script>
+
 </body>
 </html>

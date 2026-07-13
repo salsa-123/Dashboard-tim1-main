@@ -32,3 +32,66 @@ navItems.forEach(item => {
 menuToggle.addEventListener('click', () => {
   sidebar.classList.toggle('open');
 });
+
+
+// TAMBAH PROYEK
+const btnTambahProyek = document.getElementById('btnTambahProyek');
+const modalProyek = document.getElementById('modalProyek');
+const btnBatalProyek = document.getElementById('btnBatalProyek');
+const btnSimpanProyek = document.getElementById('btnSimpanProyek');
+const projectGrid = document.getElementById('projectGrid');
+
+btnTambahProyek.addEventListener('click', () => {
+  modalProyek.classList.add('active');
+});
+
+btnBatalProyek.addEventListener('click', () => {
+  modalProyek.classList.remove('active');
+});
+
+btnSimpanProyek.addEventListener('click', () => {
+  const nama = document.getElementById('inputNamaProyek').value.trim();
+  const desk = document.getElementById('inputDeskProyek').value.trim();
+  const deadline = document.getElementById('inputDeadlineProyek').value;
+  const status = document.getElementById('inputStatusProyek').value;
+
+  if (!nama || !deadline) {
+    alert('Nama proyek dan deadline wajib diisi!');
+    return;
+  }
+
+  const statusMap = {
+    pending: { label: 'Belum Mulai', badge: 'badge-pending', progress: 0 },
+    progress: { label: 'Berjalan', badge: 'badge-progress', progress: 50 },
+    done: { label: 'Selesai', badge: 'badge-done', progress: 100 }
+  };
+  const s = statusMap[status];
+
+  const deadlineFormatted = new Date(deadline).toLocaleDateString('id-ID', {
+    day: 'numeric', month: 'long', year: 'numeric'
+  });
+
+  const card = document.createElement('div');
+  card.classList.add('project-card');
+  card.innerHTML = `
+    <div class="project-header">
+      <h3>${nama}</h3>
+      <span class="badge ${s.badge}">${s.label}</span>
+    </div>
+    <p class="project-desc">${desk}</p>
+    <div class="progress-bar">
+      <div class="progress-fill" style="width: ${s.progress}%;"></div>
+    </div>
+    <div class="project-footer">
+      <span>${s.progress}% selesai</span>
+      <span>Deadline: ${deadlineFormatted}</span>
+    </div>
+  `;
+
+  projectGrid.appendChild(card);
+
+  document.getElementById('inputNamaProyek').value = '';
+  document.getElementById('inputDeskProyek').value = '';
+  document.getElementById('inputDeadlineProyek').value = '';
+  modalProyek.classList.remove('active');
+});

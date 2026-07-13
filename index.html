@@ -182,8 +182,31 @@
         <!-- HALAMAN: ANGGOTA TIM -->
         <section class="page" id="page-anggota">
           <div class="panel">
-            <h2>Anggota Tim</h2>
-            <p class="placeholder-text">Daftar anggota tim akan tampil di sini.</p>
+    <h2>Anggota Tim</h2>
+    
+    <div class="team-grid">
+      <!-- Tim 1 -->
+      <div class="team-card" style="border-left-color: #0984e3;">
+        <div class="card-title">Tim 1: Logo</div>
+        <div class="member-pill"><span class="icon">👤</span> Anggota 1A</div>
+        <div class="member-pill"><span class="icon">👤</span> Anggota 1B</div>
+      </div>
+
+      <!-- Tim 2 -->
+      <div class="team-card" style="border-left-color: #e17055;">
+        <div class="card-title">Tim 2: Kuliner</div>
+        <div class="member-pill"><span class="icon">👤</span> Anggota 2A</div>
+        <div class="member-pill"><span class="icon">👤</span> Anggota 2B</div>
+      </div>
+
+      <!-- Tim 3 -->
+      <div class="team-card" style="border-left-color: #6c5ce7;">
+        <div class="card-title">Tim 3: Dashboard Project</div>
+        <div class="member-pill"><span class="icon">👤</span> Anggota 3A</div>
+        <div class="member-pill"><span class="icon">👤</span> Anggota 3B</div>
+        <div class="member-pill"><span class="icon">👤</span> Anggota 3C</div>
+      </div>
+    </div>>
           </div>
         </section>
 
@@ -226,6 +249,13 @@
       <option value="progress">Berjalan</option>
       <option value="done">Selesai</option>
     </select>
+
+    <!-- Input File untuk Pengiriman Tugas -->
+<div style="margin-bottom: 15px;">
+  <label style="display: block; margin-bottom: 5px; font-weight: bold;">Lampirkan Hasil Pekerjaan</label>
+  <input type="file" name="file_tugas" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+  <small style="color: #636e72;">Format: .zip, .jpg, .pdf (Maks. 5MB)</small>
+</div>
 
     <div class="modal-actions">
       <button class="btn-secondary" id="btnBatalProyek">Batal</button>

@@ -5,7 +5,129 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Tim 1</title>
   <link rel="stylesheet" href="style.css">
-  
+  <style>
+    /* Tambahan khusus untuk kartu proyek di Dashboard (logo besar, keterangan, progres di bawah) */
+    #page-dashboard .project-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+      gap:18px;
+    }
+    #page-dashboard .project-item{
+      border:1px solid #e5e7eb;
+      border-radius:10px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+    #page-dashboard .project-logo-box{
+      height:110px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      font-weight:700;
+      font-size:1.1rem;
+      letter-spacing:0.05em;
+    }
+    #page-dashboard .project-card{
+      padding:14px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    #page-dashboard .project-card .project-header{
+      border:0;
+      padding:0;
+      margin:0;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+    }
+    #page-dashboard .dash-keterangan{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      font-size:0.85rem;
+      line-height:1.5;
+    }
+    #page-dashboard .dash-keterangan p{
+      margin:0;
+    }
+    #page-dashboard .dash-keterangan .ket-label{
+      font-weight:600;
+      color:#636e72;
+      margin-right:4px;
+    }
+    #page-dashboard .project-progress-below{
+      border-top:1px solid #e5e7eb;
+      background:#fafafa;
+      padding:10px 16px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    #page-dashboard .project-progress-below .progress-bar{
+      flex:1;
+    }
+    #page-dashboard .project-progress-below .progress-percent{
+      font-weight:700;
+      font-size:0.85rem;
+      min-width:34px;
+      text-align:right;
+    }
+
+    /* Carousel dashboard: geser proyek ke kiri/kanan */
+    #page-dashboard .carousel-wrapper{
+      position:relative;
+    }
+    #page-dashboard .project-grid{
+      display:flex;
+      overflow-x:auto;
+      scroll-behavior:smooth;
+      scroll-snap-type:x mandatory;
+      gap:18px;
+      padding:4px 4px 12px;
+      grid-template-columns:none; /* dimatikan, sekarang pakai flex */
+    }
+    #page-dashboard .project-grid::-webkit-scrollbar{
+      height:6px;
+    }
+    #page-dashboard .project-grid::-webkit-scrollbar-thumb{
+      background:#d1d5db;
+      border-radius:100px;
+    }
+    #page-dashboard .project-item{
+      flex:0 0 280px;
+      scroll-snap-align:start;
+    }
+    #page-dashboard .carousel-arrow{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      border:1px solid #e5e7eb;
+      background:#fff;
+      box-shadow:0 2px 6px rgba(0,0,0,0.08);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      font-size:16px;
+      color:#1B2430;
+      z-index:2;
+    }
+    #page-dashboard .carousel-arrow:hover{
+      background:#f3f4f6;
+    }
+    #page-dashboard .carousel-arrow.prev{ left:-14px; }
+    #page-dashboard .carousel-arrow.next{ right:-14px; }
+    @media (max-width:600px){
+      #page-dashboard .carousel-arrow{ display:none; }
+    }
+  </style>
 </head>
 <body>
 
@@ -50,45 +172,84 @@
     <!-- MAIN CONTENT -->
     <div class="main">
 
-      <header class="topbar">
-        <button class="menu-toggle" id="menuToggle" aria-label="Buka menu">☰</button>
-        <h1 class="page-title" id="pageTitle">Dashboard</h1>
-        <div class="topbar-user">
-          <span class="user-name">Melati</span>
-          <span class="user-avatar">M</span>
-        </div>
-      </header>
-
       <main class="content">
 
         <!-- HALAMAN: DASHBOARD -->
         <section class="page active" id="page-dashboard">
-          <div class="stat-grid">
-            <div class="stat-card">
-              <p class="stat-label">Proyek Aktif</p>
-              <p class="stat-value">3</p>
-            </div>
-            <div class="stat-card">
-              <p class="stat-label">Tugas Selesai</p>
-              <p class="stat-value">12</p>
-            </div>
-            <div class="stat-card">
-              <p class="stat-label">Tugas Berjalan</p>
-              <p class="stat-value">5</p>
-            </div>
-            <div class="stat-card">
-              <p class="stat-label">Anggota Tim</p>
-              <p class="stat-value">4</p>
-            </div>
-          </div>
-
           <div class="panel">
-            <h2>Aktivitas Terbaru</h2>
-            <ul class="activity-list">
-              <li><span class="dot"></span> Melati menambahkan halaman Dashboard</li>
-              <li><span class="dot"></span> Repo Dashboard-tim1 dibuat</li>
-              <li><span class="dot"></span> Anggota tim baru bergabung</li>
-            </ul>
+            <h2>Ringkasan Proyek</h2>
+            <div class="carousel-wrapper">
+              <button class="carousel-arrow prev" id="dashPrev" aria-label="Geser ke kiri">&#10094;</button>
+
+              <div class="project-grid" id="dashboardTrack">
+
+              <div class="project-item">
+                <div class="project-logo-box" style="background:#5B4FE9;">LOGO</div>
+                <div class="project-card">
+                  <div class="project-header">
+                    <h3>Dashboard Tim 1</h3>
+                    <span class="badge badge-progress">Berjalan</span>
+                  </div>
+                  <div class="dash-keterangan">
+                    <p><span class="ket-label">Tugas:</span>Membangun dashboard internal untuk manajemen tugas tim.</p>
+                    <p><span class="ket-label">Sudah sampai:</span>Sidebar, halaman Tugas, dan halaman Anggota Tim sudah selesai dibuat.</p>
+                    <p><span class="ket-label">Lanjutan:</span>Integrasi halaman Laporan dan menyambungkan form Pengaturan.</p>
+                  </div>
+                </div>
+                <div class="project-progress-below">
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 60%;"></div>
+                  </div>
+                  <span class="progress-percent">60%</span>
+                </div>
+              </div>
+
+              <div class="project-item">
+                <div class="project-logo-box" style="background:#12A594;">LOGO</div>
+                <div class="project-card">
+                  <div class="project-header">
+                    <h3>Redesign Logo Tim</h3>
+                    <span class="badge badge-done">Selesai</span>
+                  </div>
+                  <div class="dash-keterangan">
+                    <p><span class="ket-label">Tugas:</span>Membuat ulang identitas visual logo Tim 1.</p>
+                    <p><span class="ket-label">Sudah sampai:</span>Semua alternatif logo selesai dan versi final sudah disetujui.</p>
+                    <p><span class="ket-label">Lanjutan:</span>Tidak ada, proyek sudah tuntas.</p>
+                  </div>
+                </div>
+                <div class="project-progress-below">
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 100%;"></div>
+                  </div>
+                  <span class="progress-percent">100%</span>
+                </div>
+              </div>
+
+              <div class="project-item">
+                <div class="project-logo-box" style="background:#E2A03F;">LOGO</div>
+                <div class="project-card">
+                  <div class="project-header">
+                    <h3>Integrasi Database</h3>
+                    <span class="badge badge-pending">Belum Mulai</span>
+                  </div>
+                  <div class="dash-keterangan">
+                    <p><span class="ket-label">Tugas:</span>Menghubungkan dashboard dengan database tugas.</p>
+                    <p><span class="ket-label">Sudah sampai:</span>Belum ada progres, masih tahap perencanaan.</p>
+                    <p><span class="ket-label">Lanjutan:</span>Menentukan struktur tabel database dan metode koneksi.</p>
+                  </div>
+                </div>
+                <div class="project-progress-below">
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%;"></div>
+                  </div>
+                  <span class="progress-percent">0%</span>
+                </div>
+              </div>
+
+            </div>
+
+              <button class="carousel-arrow next" id="dashNext" aria-label="Geser ke kanan">&#10095;</button>
+            </div>
           </div>
         </section>
 
@@ -422,6 +583,29 @@
 </div>
 
   <script src="script.js"></script>
+  <script>
+    // Fungsi geser carousel proyek di Dashboard (tidak mengubah script.js)
+    (function(){
+      var track = document.getElementById('dashboardTrack');
+      var prevBtn = document.getElementById('dashPrev');
+      var nextBtn = document.getElementById('dashNext');
+      if(!track || !prevBtn || !nextBtn) return;
+
+      function scrollStep(){
+        var card = track.querySelector('.project-item');
+        var cardWidth = card ? card.getBoundingClientRect().width : 280;
+        var gap = 18;
+        return cardWidth + gap;
+      }
+
+      prevBtn.addEventListener('click', function(){
+        track.scrollBy({ left: -scrollStep(), behavior: 'smooth' });
+      });
+      nextBtn.addEventListener('click', function(){
+        track.scrollBy({ left: scrollStep(), behavior: 'smooth' });
+      });
+    })();
+  </script>
 
 </body>
 </html>

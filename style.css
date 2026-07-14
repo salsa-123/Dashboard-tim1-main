@@ -432,119 +432,126 @@ body {
     font-size: 1.1rem;
 }
 
-/* Task Grid */
-.task-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;                /* Jarak antar kartu */
-    width: 100%;
-    margin-top: 20px;
+/* ==========================
+   TABEL TUGAS
+========================== */
+
+.table-container{
+    margin-top:20px;
+    overflow-x:auto;
+    background:#fff;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
 }
 
-.task-card {
-    background: #f8fafc;
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    border: 1px solid #e2e8f0;
+.task-table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:1100px;
 }
 
-.task-card:hover { 
-    transform: translateY(-5px);
-    border-color: #dbeafe;
-    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.06), -8px -8px 16px rgba(255, 255, 255, 0.9);
+.task-table thead{
+    background:#f8fafc;
 }
 
-/* Card Header (Status & Deadline) */
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+.task-table th{
+    padding:16px;
+    text-align:left;
+    font-size:14px;
+    font-weight:600;
+    color:#475569;
+    border-bottom:2px solid #e2e8f0;
 }
 
-.badge { 
-    padding: 6px 14px; 
-    border-radius: 50px; 
-    font-size: 0.75rem; 
-    font-weight: 600; 
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+.task-table td{
+    padding:16px;
+    border-bottom:1px solid #edf2f7;
+    font-size:14px;
 }
 
-.completed { background: var(--selesai-bg); color: var(--selesai-text); }
-.in-progress { background: var(--berjalan-bg); color: var(--berjalan-text); }
-.not-started { background: var(--belum-bg); color: var(--belum-text); }
-
-.deadline {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.8rem;
-    color: var(--text-muted);
+.task-table tbody tr{
+    transition:.3s;
 }
 
-.deadline i {
-    font-size: 0.9rem;
+.task-table tbody tr:hover{
+    background:#f8fafc;
 }
 
-/* Card Body (Nama Tugas & Assignee) */
-.card-body h3 { 
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #1e293b;
-    margin: 0 0 15px 0;
+.user-cell{
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
-.assignee {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.user-cell img{
+    width:38px;
+    height:38px;
+    border-radius:50%;
 }
 
-.assignee img {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    object-fit: cover;
-    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.2);
+.status{
+    padding:6px 14px;
+    border-radius:30px;
+    font-size:12px;
+    font-weight:600;
 }
 
-.assignee span {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    font-weight: 500;
+.selesai{
+    background:#dcfce7;
+    color:#166534;
 }
 
-/* Card Footer (Aksi) */
-.card-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: auto;
-    padding-top: 15px;
+.berjalan{
+    background:#fef3c7;
+    color:#92400e;
 }
 
-.action-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    font-size: 1.1rem;
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 8px;
-    transition: all 0.2s ease;
+.belum{
+    background:#dbeafe;
+    color:#1d4ed8;
 }
 
-.action-btn:hover {
-    color: var(--primary-color);
-    background: #e0e7ff;
+.priority{
+    padding:6px 14px;
+    border-radius:30px;
+    font-size:12px;
+    font-weight:600;
 }
 
-/* Indikator Status Tambahan */
-.status-selesai { border-left: 5px solid var(--selesai-text); }
-.status-berjalan { border-left: 5px solid var(--berjalan-text); }
-.status-belum { border-left: 5px solid var(--belum-text); }
+.rendah{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.sedang{
+    background:#fde68a;
+    color:#92400e;
+}
+
+.tinggi{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.icon-btn{
+    width:36px;
+    height:36px;
+    border:none;
+    border-radius:8px;
+    background:#f1f5f9;
+    cursor:pointer;
+    margin-right:5px;
+    transition:.3s;
+}
+
+.icon-btn:hover{
+    background:#22c55e;
+    color:#fff;
+}
+
+.delete:hover{
+    background:#ef4444;
+}
 
 
 /* Modal Tambah Proyek */
@@ -824,3 +831,73 @@ body {
     color: #475569;
 }
 .dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; }
+
+/* Styling untuk Panel Utama */
+.panel {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Styling Form Container */
+.report-form {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    border: 1px solid #eee;
+}
+
+/* Styling Input & Textarea */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #333;
+}
+
+.report-form input, 
+.report-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box; /* Agar padding tidak merusak lebar */
+    transition: 0.3s;
+}
+
+.report-form input:focus, 
+.report-form textarea:focus {
+    border-color: #008080;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 128, 128, 0.2);
+}
+
+/* Styling Tombol */
+.btn-submit {
+    background-color: #008080;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #006666;
+    transform: translateY(-2px);
+}
+
+/* Styling Riwayat */
+.report-list {
+    border-top: 2px solid #f0f0f0;
+    padding-top: 15px;
+}
+

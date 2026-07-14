@@ -221,3 +221,39 @@ if(savedTheme){
         :"light";
 
 }
+
+
+// Tunggu hingga dokumen dimuat
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Ambil elemen tombol berdasarkan ID
+    const btnSimpan = document.getElementById('btn-simpan');
+    
+    if (btnSimpan) {
+        // Tambahkan fungsi saat tombol diklik
+        btnSimpan.addEventListener('click', function(event) {
+            // Mencegah halaman reload jika di dalam formulir
+            event.preventDefault(); 
+            
+            // Pesan konfirmasi
+            alert("Perubahan Berhasil Disimpan!");
+            
+            // Masukkan logika penyimpanan data Anda di sini
+        });
+    }
+});
+
+
+document.getElementById('btnSimpan').addEventListener('click', function() {
+    // Logika untuk menyimpan tugas Anda di sini
+    console.log("Tombol Simpan diklik!");
+    
+    // Contoh: ambil data dari input
+    const namaTugas = document.querySelector('input[name="namaTugas"]').value;
+    alert("Tugas '" + namaTugas + "' berhasil disimpan!");
+});
+
+document.querySelector('.btn-simpan').addEventListener('click', function() {
+    alert('Tombol berhasil diklik!');
+    // Tambahkan logika untuk menyimpan data di sini
+});

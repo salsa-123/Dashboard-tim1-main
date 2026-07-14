@@ -152,36 +152,81 @@
     <h2>Daftar Tugas</h2>
     <button class="btn-primary" id="btnTambahTugas">+ Tambah Tugas</button>
 
-    <table class="task-table" id="taskTable"> 
-      <thead>
-        <tr>
-          <th>Nama Tugas</th>
-          <th>Penanggung Jawab</th>
-          <th>Deadline</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="taskTableBody">
-        <tr>
-          <td>Desain sidebar</td>
-          <td>Melati</td>
-          <td>15 Juli 2026</td>
-          <td><span class="badge badge-done">Selesai</span></td>
-        </tr>
-        <tr>
-          <td>Integrasi halaman Laporan</td>
-          <td>Tim 1</td>
-          <td>20 Juli 2026</td>
-          <td><span class="badge badge-progress">Berjalan</span></td>
-        </tr>
-        <tr>
-          <td>Testing responsif mobile</td>
-          <td>Tim 1</td>
-          <td>22 Juli 2026</td>
-          <td><span class="badge badge-pending">Belum Mulai</span></td>
-        </tr>
-      </tbody>
-    </table>    
+    <div class="dashboard-container">
+    <div class="header-section">
+        <h1><i class="fa-solid fa-list-check"></i> Dasbor Tugas Anda</h1>
+        <button class="btn-premium-add">
+            <i class="fa-solid fa-plus"></i>
+            <span>Tugas Baru</span>
+        </button>
+    </div>
+
+    <div class="task-grid" id="taskContainer">
+        <!-- Kartu Tugas 1 (Selesai) -->
+        <div class="task-card status-selesai">
+            <div class="card-header">
+                <span class="badge completed">Selesai</span>
+                <span class="deadline">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    15 Jul 2026
+                </span>
+            </div>
+            <div class="card-body">
+                <h3>Desain sidebar</h3>
+                <div class="assignee">
+                    <img src="https://ui-avatars.com/api/?name=Melati&background=random" alt="Melati">
+                    <span>Melati (Manajer)</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="action-btn" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button class="action-btn" title="Hapus"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
+        </div>
+
+        <!-- Kartu Tugas 2 (Berjalan) -->
+        <div class="task-card status-berjalan">
+            <div class="card-header">
+                <span class="badge in-progress">Sedang Berjalan</span>
+                <span class="deadline">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    20 Jul 2026
+                </span>
+            </div>
+            <div class="card-body">
+                <h3>Integrasi halaman Laporan</h3>
+                <div class="assignee">
+                    <img src="https://ui-avatars.com/api/?name=Tim1&background=random" alt="Tim 1">
+                    <span>Tim 1 (Dev Team)</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="action-btn" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button class="action-btn" title="Hapus"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
+        </div>
+
+        <!-- Kartu Tugas 3 (Belum Mulai) -->
+        <div class="task-card status-belum">
+            <div class="card-header">
+                <span class="badge not-started">Belum Mulai</span>
+                <span class="deadline">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    22 Jul 2026
+                </span>
+            </div>
+            <div class="card-body">
+                <h3>Testing responsif mobile</h3>
+                <div class="assignee">
+                    <img src="https://ui-avatars.com/api/?name=Tim1&background=random" alt="Tim 1">
+                    <span>Tim 1 (QA Team)</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="action-btn" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button class="action-btn" title="Hapus"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
+        </div>    
   </div>
 </section>
 
@@ -328,7 +373,7 @@
          </div>
          </div>
          </div>
-        <button class="btn-save">Simpan Perubahan</button>
+        <button type="submit" class="btn-primary" id="btn-simpan">Simpan Perubahan</button>
         </div>
         </section>
 

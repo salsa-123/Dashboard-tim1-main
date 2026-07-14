@@ -257,3 +257,4 @@ document.querySelector('.btn-simpan').addEventListener('click', function() {
     alert('Tombol berhasil diklik!');
     // Tambahkan logika untuk menyimpan data di sini
 });
+

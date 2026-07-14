@@ -149,87 +149,155 @@
 
         <!-- HALAMAN: TUGAS -->
         <section class="page" id="page-tugas">
-  <div class="panel">
-    <h2>Daftar Tugas</h2>
-    <button class="btn-primary" id="btnTambahTugas">+ Tambah Tugas</button>
 
-    <div class="dashboard-container">
-    <div class="header-section">
-        <h1><i class="fa-solid fa-list-check"></i> Dasbor Tugas Anda</h1>
-        <button class="btn-premium-add">
-            <i class="fa-solid fa-plus"></i>
-            <span>Tugas Baru</span>
-        </button>
-    </div>
+<div class="dashboard-container">
 
-    <div class="task-grid" id="taskContainer">
-        <!-- Kartu Tugas 1 (Selesai) -->
-        <div class="task-card status-selesai">
-            <div class="card-header">
-                <span class="badge completed">Selesai</span>
-                <span class="deadline">
-                    <i class="fa-regular fa-calendar-days"></i>
-                    15 Jul 2026
-                </span>
-            </div>
-            <div class="card-body">
-                <h3>Desain sidebar</h3>
-                <div class="assignee">
-                    <img src="https://ui-avatars.com/api/?name=Melati&background=random" alt="Melati">
-                    <span>Melati (Manajer)</span>
+<div class="header-section">
+
+    <h1>
+        <i class="fa-solid fa-list-check"></i>
+        Dasbor Tugas
+    </h1>
+
+    <button id="btnTambahTugas" class="btn-premium-add">
+        <i class="fa-solid fa-plus"></i>
+        Tambah Tugas
+    </button>
+
+</div>
+
+    <div class="table-container">
+
+    <table class="task-table">
+
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Tugas</th>
+                <th>Status</th>
+                <th>Penanggung Jawab</th>
+                <th>Tanggal Mulai</th>
+                <th>Deadline</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+
+        <tbody id="taskTableBody">
+
+            <tr>
+                <td>1</td>
+                <td>Desain Sidebar</td>
+
+                <td>
+                    <span class="status selesai">Selesai</span>
+                </td>
+
+                <td>
+                    <div class="user-cell">
+                        <img src="https://ui-avatars.com/api/?name=Melati&background=random" alt="Melati">
+                        <span>Melati</span>
+                    </div>
+                </td>
+
+                <td>08 Jul 2026</td>
+                <td>15 Jul 2026</td>
+
+                <td>
+                    <button class="icon-btn">✏️</button>
+                    <button class="icon-btn delete">🗑️</button>
+                </td>
+            </tr>
+
+            <tr>
+                <td>2</td>
+                <td>Integrasi Halaman Laporan</td>
+
+                <td>
+                    <span class="status berjalan">Sedang Berjalan</span>
+                </td>
+
+                <td>
+                    <div class="user-cell">
+                        <img src="https://ui-avatars.com/api/?name=Tim1&background=random" alt="Tim 1">
+                        <span>Tim 1 (Dev Team)</span>
+                    </div>
+                </td>
+
+                <td>14 Jul 2026</td>
+                <td>20 Jul 2026</td>
+
+                <td>
+                    <button class="icon-btn">✏️</button>
+                    <button class="icon-btn delete">🗑️</button>
+                </td>
+            </tr>
+
+            <tr>
+                <td>3</td>
+                <td>Testing Responsif Mobile</td>
+
+                <td>
+                    <span class="status belum">Belum Mulai</span>
+                </td>
+
+                <td>
+                    <div class="user-cell">
+                        <img src="https://ui-avatars.com/api/?name=Tim1&background=random" alt="Tim 1">
+                        <span>Tim 1 (QA Team)</span>
+                    </div>
+                </td>
+
+                <td>20 Jul 2026</td>
+                <td>22 Jul 2026</td>
+
+                <td>
+                    <button class="icon-btn">✏️</button>
+                    <button class="icon-btn delete">🗑️</button>
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+<!-- MODAL TAMBAH TUGAS DILETAKKAN DI SINI -->
+        <div class="modal-overlay" id="modalTugas">
+
+            <div class="modal-box">
+
+                <h2>Tambah Tugas</h2>
+
+                <label>Nama Tugas</label>
+                <input type="text" id="inputNamaTugas">
+
+                <label>Status</label>
+                <select id="inputStatusTugas">
+                    <option value="pending">Belum Mulai</option>
+                    <option value="progress">Sedang Berjalan</option>
+                    <option value="done">Selesai</option>
+                </select>
+
+                <label>Penanggung Jawab</label>
+                <input type="text" id="inputPenanggungTugas">
+
+                <label>Tanggal Mulai</label>
+                <input type="date" id="inputTanggalMulai">
+
+                <label>Deadline</label>
+                <input type="date" id="inputDeadlineTugas">
+
+                <div class="modal-actions">
+                    <button class="btn-secondary" id="btnBatalTugas">Batal</button>
+                    <button class="btn-primary" id="btnSimpanTugas">Simpan</button>
                 </div>
+
             </div>
-            <div class="card-footer">
-                <button class="action-btn" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-                <button class="action-btn" title="Hapus"><i class="fa-solid fa-trash-can"></i></button>
-            </div>
+
         </div>
 
-        <!-- Kartu Tugas 2 (Berjalan) -->
-        <div class="task-card status-berjalan">
-            <div class="card-header">
-                <span class="badge in-progress">Sedang Berjalan</span>
-                <span class="deadline">
-                    <i class="fa-regular fa-calendar-days"></i>
-                    20 Jul 2026
-                </span>
-            </div>
-            <div class="card-body">
-                <h3>Integrasi halaman Laporan</h3>
-                <div class="assignee">
-                    <img src="https://ui-avatars.com/api/?name=Tim1&background=random" alt="Tim 1">
-                    <span>Tim 1 (Dev Team)</span>
-                </div>
-            </div>
-            <div class="card-footer">
-                <button class="action-btn" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-                <button class="action-btn" title="Hapus"><i class="fa-solid fa-trash-can"></i></button>
-            </div>
-        </div>
+    </div> <!-- Penutup dashboard-container -->
 
-        <!-- Kartu Tugas 3 (Belum Mulai) -->
-        <div class="task-card status-belum">
-            <div class="card-header">
-                <span class="badge not-started">Belum Mulai</span>
-                <span class="deadline">
-                    <i class="fa-regular fa-calendar-days"></i>
-                    22 Jul 2026
-                </span>
-            </div>
-            <div class="card-body">
-                <h3>Testing responsif mobile</h3>
-                <div class="assignee">
-                    <img src="https://ui-avatars.com/api/?name=Tim1&background=random" alt="Tim 1">
-                    <span>Tim 1 (QA Team)</span>
-                </div>
-            </div>
-            <div class="card-footer">
-                <button class="action-btn" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-                <button class="action-btn" title="Hapus"><i class="fa-solid fa-trash-can"></i></button>
-            </div>
-        </div>    
-  </div>
-</section>
+</section> <!-- Penutup page-tugas -->
 
         <!-- HALAMAN: ANGGOTA TIM -->
         <section class="page" id="page-anggota">
@@ -344,6 +412,7 @@
   <option value="light">Default (Light)</option>
   <option value="dark"> Dark Mode</option>
 </select>
+
         </div>
         <div class="form-group">
   <label style="color: #636e72; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; display: block;">Notifikasi Email</label>

@@ -284,5 +284,28 @@ if (btnSimpanByClass) {
   });
 }
 
-/* ==========================
-   DATA TIM
+
+// ===========================
+// CAROUSEL DASHBOARD - GESER PROYEK
+// ===========================
+const dashTrack = document.getElementById('dashboardTrack');
+const dashPrevBtn = document.getElementById('dashPrev');
+const dashNextBtn = document.getElementById('dashNext');
+
+if (dashTrack && dashPrevBtn && dashNextBtn) {
+  function getDashScrollAmount() {
+    const item = dashTrack.querySelector('.project-item');
+    if (!item) return 300;
+    const style = window.getComputedStyle(dashTrack);
+    const gap = parseFloat(style.columnGap || style.gap) || 0;
+    return item.offsetWidth + gap;
+  }
+
+  dashPrevBtn.addEventListener('click', function () {
+    dashTrack.scrollBy({ left: -getDashScrollAmount(), behavior: 'smooth' });
+  });
+
+  dashNextBtn.addEventListener('click', function () {
+    dashTrack.scrollBy({ left: getDashScrollAmount(), behavior: 'smooth' });
+  });
+}

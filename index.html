@@ -348,306 +348,40 @@
                 </div>
               </div>
             </div>
-        </div>
-    </div> 
-</section> 
+          </section>
 
+          <!-- HALAMAN: ANGGOTA TIM -->
+          <section class="page" id="page-anggota">
+            <div class="panel">
+              <h2>Anggota Tim</h2>
 
-<!-- ================= HALAMAN : ANGGOTA TIM ================= -->
-
-<section class="page" id="page-anggota">
-
-    <div class="panel">
-
-        <!-- Judul -->
-        <div class="page-header">
-
-            <h2 class="page-title">
-                <i class="fa-solid fa-users"></i>
-                Anggota Tim
-            </h2>
-
-            <p class="page-subtitle">
-                Daftar anggota pada setiap tim proyek.
-            </p>
-
-        </div>
-
-        <!-- Card Tim -->
-        <div class="team-grid">
-
-            <!-- ================= TIM 1 ================= -->
-
-            <div class="team-card blue">
-
-                <div class="team-header">
-                    <h3>Tim 1 : Logo</h3>
-                </div>
-
-                <p class="team-desc">
-                    Tim yang bertugas membuat desain logo dan identitas visual.
-                </p>
-
-                <div class="member-list">
-
-                    <div class="member">
-
-                        <div class="avatar">
-                            UA
-                        </div>
-
-                        <div class="member-info">
-                            <h4>User A1</h4>
-                            <span>Lead Designer</span>
-                        </div>
-
+              <div class="team-grid">
+                <div class="team-card" style="border-left: 5px solid #3b82f6">
+                  <div class="card-top">
+                    <div
+                      class="icon-box"
+                      style="background: #eff6ff; color: #3b82f6"
+                    ></div>
+                    <div class="card-info">
+                      <h3>Tim 1: Logo</h3>
+                      <p>2 Anggota</p>
                     </div>
-
-                    <div class="member">
-
-                        <div class="avatar">
-                            UB
-                        </div>
-
-                        <div class="member-info">
-                            <h4>User B1</h4>
-                            <span>Motion Graphic Editor</span>
-                        </div>
-
+                  </div>
+                  <p class="desc">
+                    Tim yang fokus pada desain logo kreatif dan identitas brand.
+                  </p>
+                  <div class="member-list">
+                    <div class="member-row">
+                      <span> Anggota 1A</span>
+                      <span class="badge" style="color: #3b82f6">Desainer</span>
                     </div>
-
-                </div>
-
-                <button
-                    type="button"
-                    class="btn-team"
-                    onclick="detailTim(1)">
-                    <i class="fa-solid fa-eye"></i>
-                    Detail Tim
-                </button>
-
-            </div>
-
-            <!-- ================= TIM 2 ================= -->
-
-            <div class="team-card orange">
-
-                <div class="team-header">
-                    <h3>Tim 2 : Kuliner</h3>
-                </div>
-
-                <p class="team-desc">
-                    Tim yang mengerjakan branding bisnis makanan dan minuman.
-                </p>
-
-                <div class="member-list">
-
-                    <div class="member">
-
-                        <div class="avatar">
-                            UA
-                        </div>
-
-                        <div class="member-info">
-                            <h4>User A2</h4>
-                            <span>Brand Strategist</span>
-                        </div>
-
+                    <div class="member-row">
+                      <span> Anggota 1B</span>
+                      <span class="badge" style="color: #3b82f6">Editor</span>
                     </div>
-
-                    <div class="member">
-
-                        <div class="avatar">
-                            UB
-                        </div>
-
-                        <div class="member-info">
-                            <h4>User B2</h4>
-                            <span>Content Creator</span>
-                        </div>
-
-                    </div>
-
+                  </div>
+                  <button class="btn-detail">Lihat Detail Tim ➔</button>
                 </div>
-
-                <button
-                    type="button"
-                    class="btn-team"
-                    onclick="detailTim(2)">
-                    <i class="fa-solid fa-eye"></i>
-                    Detail Tim
-                </button>
-
-            </div>
-
-            <!-- ================= TIM 3 ================= -->
-
-            <div class="team-card dark">
-
-                <div class="team-header">
-                    <h3>Tim 3 : Dashboard Project</h3>
-                </div>
-
-                <p class="team-desc">
-                    Tim yang mengembangkan dashboard dan sistem manajemen proyek.
-                </p>
-
-                <div class="member-list">
-
-                    <div class="member">
-
-                        <div class="avatar">
-                            UA
-                        </div>
-
-                        <div class="member-info">
-                            <h4>User A3</h4>
-                            <span>Full Stack Developer</span>
-                        </div>
-
-                    </div>
-
-                    <div class="member">
-
-                        <div class="avatar">
-                            UB
-                        </div>
-
-                        <div class="member-info">
-                            <h4>User B3</h4>
-                            <span>Database Engineer</span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <button
-                    type="button"
-                    class="btn-team"
-                    onclick="detailTim(3)">
-                    <i class="fa-solid fa-eye"></i>
-                    Detail Tim
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- ================= MODAL ================= -->
-
-    <div class="modal-team" id="teamModal">
-
-        <div class="modal-content-team">
-
-            <div class="modal-header">
-
-                <h3 id="modalTitle">
-                    Detail Tim
-                </h3>
-
-                <button
-                    type="button"
-                    class="close-modal"
-                    onclick="tutupModal()">
-
-                    &times;
-
-                </button>
-
-            </div>
-
-            <div
-                class="modal-body"
-                id="modalBody">
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-        <!-- HALAMAN: LAPORAN -->
-<section class="page" id="page-laporan">
-
-  <div class="page-head">
-    <div>
-      <h1 class="page-head-title">Laporan tim</h1>
-      <p class="page-head-sub">Catat perkembangan pekerjaan tim dan simpan riwayatnya di sini.</p>
-    </div>
-  </div>
-
-  <div class="panel report-panel">
-    <div class="report-panel-head">
-      <span class="report-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6"/></svg>
-      </span>
-      <div>
-        <h2>Buat laporan baru</h2>
-        <p class="report-panel-sub">Isi form di bawah untuk mengirim laporan ke tim.</p>
-      </div>
-    </div>
-
-    <div class="report-form">
-      <div class="form-group">
-        <label>Judul laporan</label>
-        <input type="text" id="judulLaporan" placeholder="Contoh: Progres mingguan tim desain">
-      </div>
-      <div class="form-group">
-        <label>Isi laporan</label>
-        <textarea id="isiLaporan" rows="4" placeholder="Tulis detail laporan tim di sini..."></textarea>
-      </div>
-      <div class="report-form-foot">
-        <span class="report-hint">Laporan akan terlihat oleh seluruh anggota tim.</span>
-        <button class="btn-submit" id="btnKirimLaporan">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-          Kirim laporan
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-head">
-      <h2>Riwayat laporan</h2>
-    </div>
-    <div class="report-list" id="riwayatLaporan">
-      <div class="report-empty">
-        <span class="report-empty-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6"/><path d="M9 13h6M9 17h4"/></svg>
-        </span>
-        <p class="report-empty-title">Belum ada laporan</p>
-        <p class="report-empty-sub">Laporan yang kamu kirim akan muncul di sini.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-        <!-- HALAMAN: PENGATURAN -->
-<section class="page" id="page-pengaturan">
-
-    <div class="settings-header">
-        <h1>
-            <i class="fa-solid fa-gear"></i>
-            Pengaturan
-        </h1>
-        <p>Kelola akun, tampilan, keamanan, dan notifikasi dashboard.</p>
-    </div>
-
-    <!-- Profil -->
-    <div class="settings-card">
-
-        <div class="profile-header">
-        <div>
-                <h2>Admin Dashboard</h2>
-                <p>Administrator</p>
-            </div>
-
-        </div>
 
                 <div class="team-card" style="border-left: 5px solid #f97316">
                   <div class="card-top">

@@ -258,3 +258,142 @@ document.querySelector('.btn-simpan').addEventListener('click', function() {
     // Tambahkan logika untuk menyimpan data di sini
 });
 
+/* ==========================
+   DATA TIM
+========================== */
+
+const dataTim = {
+    1: {
+        judul: "Tim 1 : Logo",
+        isi: `
+            <h2>🎨 Tim Logo</h2>
+            <p>
+                Tim ini bertugas membuat desain logo, branding,
+                identitas visual, serta guideline perusahaan.
+            </p>
+
+            <hr>
+
+            <h3>Anggota</h3>
+
+            <ul>
+                <li>👨‍🎨 User A1 - Lead Designer</li>
+                <li>🎬 User B1 - Motion Graphic Editor</li>
+            </ul>
+        `
+    },
+
+    2: {
+        judul: "Tim 2 : Kuliner",
+        isi: `
+            <h2>🍔 Tim Kuliner</h2>
+
+            <p>
+                Tim ini mengerjakan branding bisnis makanan
+                dan minuman.
+            </p>
+
+            <hr>
+
+            <h3>Anggota</h3>
+
+            <ul>
+                <li>📈 User A2 - Brand Strategist</li>
+                <li>📷 User B2 - Content Creator</li>
+            </ul>
+        `
+    },
+
+    3: {
+        judul: "Tim 3 : Dashboard Project",
+        isi: `
+            <h2>💻 Tim Dashboard</h2>
+
+            <p>
+                Tim ini bertanggung jawab mengembangkan dashboard,
+                frontend, backend, serta database.
+            </p>
+
+            <hr>
+
+            <h3>Anggota</h3>
+
+            <ul>
+                <li>⚙ User A3 - Full Stack Developer</li>
+                <li>🗄 User B3 - Database Engineer</li>
+            </ul>
+        `
+    }
+};
+
+
+/* ==========================
+   MODAL
+========================== */
+
+function detailTim(id) {
+
+    document.getElementById("modalTitle").innerHTML = dataTim[id].judul;
+
+    document.getElementById("modalBody").innerHTML = dataTim[id].isi;
+
+    document.getElementById("teamModal").style.display = "flex";
+
+}
+
+function tutupModal() {
+
+    document.getElementById("teamModal").style.display = "none";
+
+}
+
+window.addEventListener("click", function(e){
+
+    const modal = document.getElementById("teamModal");
+
+    if(e.target === modal){
+
+        modal.style.display = "none";
+
+    }
+
+});
+
+
+/* ==========================
+   ANIMASI CARD
+========================== */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const cards = document.querySelectorAll(".team-card");
+
+    const observer = new IntersectionObserver((entries) => {
+
+        entries.forEach((entry) => {
+
+            if (entry.isIntersecting) {
+
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+
+            }
+
+        });
+
+    }, {
+        threshold: 0.2
+    });
+
+    cards.forEach((card, index) => {
+
+        card.style.opacity = "0";
+        card.style.transform = "translateY(40px)";
+        card.style.transition = `all .6s ease ${index * 0.2}s`;
+
+        observer.observe(card);
+
+    });
+
+});
+

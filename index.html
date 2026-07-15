@@ -1,479 +1,352 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Tim 1</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    /* Tambahan khusus untuk kartu proyek di Dashboard (logo besar, keterangan, progres di bawah) */
-    #page-dashboard .project-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
-      gap:18px;
-    }
-    #page-dashboard .project-item{
-      border:1px solid #e5e7eb;
-      border-radius:10px;
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-    }
-    #page-dashboard .project-logo-box{
-      height:110px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:#fff;
-      font-weight:700;
-      font-size:1.1rem;
-      letter-spacing:0.05em;
-    }
-    #page-dashboard .project-card{
-      padding:14px 16px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-    #page-dashboard .project-card .project-header{
-      border:0;
-      padding:0;
-      margin:0;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:8px;
-    }
-    #page-dashboard .dash-keterangan{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      font-size:0.85rem;
-      line-height:1.5;
-    }
-    #page-dashboard .dash-keterangan p{
-      margin:0;
-    }
-    #page-dashboard .dash-keterangan .ket-label{
-      font-weight:600;
-      color:#636e72;
-      margin-right:4px;
-    }
-    #page-dashboard .project-progress-below{
-      border-top:1px solid #e5e7eb;
-      background:#fafafa;
-      padding:10px 16px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    #page-dashboard .project-progress-below .progress-bar{
-      flex:1;
-    }
-    #page-dashboard .project-progress-below .progress-percent{
-      font-weight:700;
-      font-size:0.85rem;
-      min-width:34px;
-      text-align:right;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Tim 1</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <span class="brand-mark">T1</span>
+          <span class="brand-name">Tim 1</span>
+        </div>
 
-    /* Carousel dashboard: geser proyek ke kiri/kanan */
-    #page-dashboard .carousel-wrapper{
-      position:relative;
-    }
-    #page-dashboard .project-grid{
-      display:flex;
-      overflow-x:auto;
-      scroll-behavior:smooth;
-      scroll-snap-type:x mandatory;
-      gap:18px;
-      padding:4px 4px 12px;
-      grid-template-columns:none; /* dimatikan, sekarang pakai flex */
-    }
-    #page-dashboard .project-grid::-webkit-scrollbar{
-      height:6px;
-    }
-    #page-dashboard .project-grid::-webkit-scrollbar-thumb{
-      background:#d1d5db;
-      border-radius:100px;
-    }
-    #page-dashboard .project-item{
-      flex:0 0 280px;
-      scroll-snap-align:start;
-    }
-    #page-dashboard .carousel-arrow{
-      position:absolute;
-      top:50%;
-      transform:translateY(-50%);
-      width:36px;
-      height:36px;
-      border-radius:50%;
-      border:1px solid #e5e7eb;
-      background:#fff;
-      box-shadow:0 2px 6px rgba(0,0,0,0.08);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      font-size:16px;
-      color:#1B2430;
-      z-index:2;
-    }
-    #page-dashboard .carousel-arrow:hover{
-      background:#f3f4f6;
-    }
-    #page-dashboard .carousel-arrow.prev{ left:-14px; }
-    #page-dashboard .carousel-arrow.next{ right:-14px; }
-    @media (max-width:600px){
-      #page-dashboard .carousel-arrow{ display:none; }
-    }
-  </style>
-</head>
-<body>
+        <nav class="sidebar-nav">
+          <a href="#Home" class="nav-item active" data-page="dashboard">
+            <span class="nav-icon">▦</span> Dashboard
+          </a>
+          <a href="#proyek" class="nav-item" data-page="proyek">
+            <span class="nav-icon">◧</span> Proyek
+          </a>
+          <a href="#tugas" class="nav-item" data-page="tugas">
+            <span class="nav-icon">✓</span> Tugas
+          </a>
+          <a href="#anggota" class="nav-item" data-page="anggota">
+            <span class="nav-icon">◐</span> Anggota Tim
+          </a>
+          <a href="#laporan" class="nav-item" data-page="laporan">
+            <span class="nav-icon">▤</span> Laporan
+          </a>
+          <a href="#pengaturan" class="nav-item" data-page="pengaturan">
+            <span class="nav-icon">⚙</span> Pengaturan
+          </a>
+        </nav>
+        <div class="sidebar-footer">
+          <a href="#" class="nav-item logout-item" id="btnLogout">
+            <span class="nav-icon">⏻</span> Logout
+          </a>
+        </div>
+      </aside>
 
-  
-  <div class="app">
+        <main class="content">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <div class="sidebar-brand">
-        <span class="brand-mark">T1</span>
-        <span class="brand-name">Tim 1</span>
-      </div>
 
-      <nav class="sidebar-nav">
-        <a href="#Home" class="nav-item active" data-page="dashboard">
-          <span class="nav-icon">▦</span> Dashboard
-        </a>
-        <a href="#proyek" class="nav-item" data-page="proyek">
-          <span class="nav-icon">◧</span> Proyek
-        </a>
-        <a href="#tugas" class="nav-item" data-page="tugas">
-          <span class="nav-icon">✓</span> Tugas
-        </a>
-        <a href="#anggota" class="nav-item" data-page="anggota">
-          <span class="nav-icon">◐</span> Anggota Tim
-        </a>
-        <a href="#laporan" class="nav-item" data-page="laporan">
-          <span class="nav-icon">▤</span> Laporan
-        </a>
-        <a href="#pengaturan" class="nav-item" data-page="pengaturan">
-          <span class="nav-icon">⚙</span> Pengaturan
-        </a>
-      </nav>
-      <!-- TOMBOL LOGOUT -->
-      <div class="sidebar-footer">
-        <a href="#" class="nav-item logout-item" id="btnLogout">
-          <span class="nav-icon">⏻</span> Logout
-        </a>
-      </div>
-    </aside>
-
-    <!-- MAIN CONTENT -->
-    <div class="main">
-
-      <main class="content">
-
-        <!-- HALAMAN: DASHBOARD -->
-        <section class="page active" id="page-dashboard">
-          <div class="panel">
-            <h2>Ringkasan Proyek</h2>
-            <div class="carousel-wrapper">
-              <button class="carousel-arrow prev" id="dashPrev" aria-label="Geser ke kiri">&#10094;</button>
-
-              <div class="project-grid" id="dashboardTrack">
-
-              <div class="project-item">
-                <div class="project-logo-box" style="background:#5B4FE9;">LOGO</div>
-                <div class="project-card">
-                  <div class="project-header">
-                    <h3>Dashboard Tim 1</h3>
-                    <span class="badge badge-progress">Berjalan</span>
-                  </div>
-                  <div class="dash-keterangan">
-                    <p><span class="ket-label">Tugas:</span>Membangun dashboard internal untuk manajemen tugas tim.</p>
-                    <p><span class="ket-label">Sudah sampai:</span>Sidebar, halaman Tugas, dan halaman Anggota Tim sudah selesai dibuat.</p>
-                    <p><span class="ket-label">Lanjutan:</span>Integrasi halaman Laporan dan menyambungkan form Pengaturan.</p>
-                  </div>
-                </div>
-                <div class="project-progress-below">
-                  <div class="progress-bar">
-                    <div class="progress-fill" style="width: 60%;"></div>
-                  </div>
-                  <span class="progress-percent">60%</span>
-                </div>
-              </div>
-
-              <div class="project-item">
-                <div class="project-logo-box" style="background:#12A594;">LOGO</div>
-                <div class="project-card">
-                  <div class="project-header">
-                    <h3>Redesign Logo Tim</h3>
-                    <span class="badge badge-done">Selesai</span>
-                  </div>
-                  <div class="dash-keterangan">
-                    <p><span class="ket-label">Tugas:</span>Membuat ulang identitas visual logo Tim 1.</p>
-                    <p><span class="ket-label">Sudah sampai:</span>Semua alternatif logo selesai dan versi final sudah disetujui.</p>
-                    <p><span class="ket-label">Lanjutan:</span>Tidak ada, proyek sudah tuntas.</p>
-                  </div>
-                </div>
-                <div class="project-progress-below">
-                  <div class="progress-bar">
-                    <div class="progress-fill" style="width: 100%;"></div>
-                  </div>
-                  <span class="progress-percent">100%</span>
-                </div>
-              </div>
-
-              <div class="project-item">
-                <div class="project-logo-box" style="background:#E2A03F;">LOGO</div>
-                <div class="project-card">
-                  <div class="project-header">
-                    <h3>Integrasi Database</h3>
-                    <span class="badge badge-pending">Belum Mulai</span>
-                  </div>
-                  <div class="dash-keterangan">
-                    <p><span class="ket-label">Tugas:</span>Menghubungkan dashboard dengan database tugas.</p>
-                    <p><span class="ket-label">Sudah sampai:</span>Belum ada progres, masih tahap perencanaan.</p>
-                    <p><span class="ket-label">Lanjutan:</span>Menentukan struktur tabel database dan metode koneksi.</p>
-                  </div>
-                </div>
-                <div class="project-progress-below">
-                  <div class="progress-bar">
-                    <div class="progress-fill" style="width: 0%;"></div>
-                  </div>
-                  <span class="progress-percent">0%</span>
-                </div>
-              </div>
-
+         <!-- HALAMAN: DASHBOARD -->
+<section class="page active" id="page-dashboard">
+  <div class="panel">
+    <h2>Ringkasan Proyek</h2>
+    <div class="carousel-wrapper">
+      <!-- Tombol panah dihapus -->
+      <div class="project-grid" id="dashboardTrack">
+        <div class="project-item">
+          <div class="project-logo-row">
+            <div class="project-logo-emblem" style="background: #5b4fe9">
+  <img src="emblem/6.jpg" alt="Logo" style="width: 300px; height: auto;">
+</div>
+          </div>
+          <div class="project-keterangan-row">
+            <div class="project-header">
+              <h3>Dashboard Tim 1</h3>
+              <span class="badge badge-progress">Berjalan</span>
             </div>
-
-              <button class="carousel-arrow next" id="dashNext" aria-label="Geser ke kanan">&#10095;</button>
+            <div class="dash-keterangan">
+              <p>
+                <span class="ket-label">Tugas:</span>Membangun dashboard internal untuk manajemen tugas tim.
+              </p>
+              <p>
+                <span class="ket-label">Sudah sampai:</span>Sidebar, halaman Tugas, dan halaman Anggota Tim sudah selesai dibuat.
+              </p>
+              <p>
+                <span class="ket-label">Lanjutan:</span>Integrasi halaman Laporan dan menyambungkan form Pengaturan.
+              </p>
+            </div>
+            <div class="project-progress-below">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 60%"></div>
+              </div>
+              <span class="progress-percent">60%</span>
             </div>
           </div>
-        </section>
+        </div>
 
-        <!-- HALAMAN: PROYEK -->
-<section class="page" id="page-proyek">
+        <div class="project-item">
+          <div class="project-logo-row">
+            <div class="project-logo-emblem" style="background: #5b4fe9">
+  <img src="emblem/1.jpg" alt="Logo" style="width: 300px; height: auto;">
+</div>
+          </div>
+          <div class="project-keterangan-row">
+            <div class="project-header">
+              <h3>Redesign Logo Tim</h3>
+              <span class="badge badge-done">Selesai</span>
+            </div>
+            <div class="dash-keterangan">
+              <p>
+                <span class="ket-label">Tugas:</span>Membuat ulang identitas visual logo Tim 1.
+              </p>
+              <p>
+                <span class="ket-label">Sudah sampai:</span>Semua alternatif logo selesai dan versi final sudah disetujui.
+              </p>
+              <p>
+                <span class="ket-label">Lanjutan:</span>Tidak ada, proyek sudah tuntas.
+              </p>
+            </div>
+            <div class="project-progress-below">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%"></div>
+              </div>
+              <span class="progress-percent">100%</span>
+            </div>
+          </div>
+        </div>
 
-  <div class="page-head">
-    <div>
-      <h1 class="page-head-title">Proyek</h1>
-      <p class="page-head-sub">Pantau seluruh proyek tim dan progresnya di sini.</p>
-    </div>
-  </div>
+        <div class="project-item">
+          <div class="project-logo-row">
+            <div class="project-logo-emblem" style="background: #5b4fe9">
+  <img src="emblem/2.jpg" alt="Logo" style="width: 300px; height: auto;">
+</div>
+          </div>
+          <div class="project-keterangan-row">
+            <div class="project-header">
+              <h3>Integrasi Database</h3>
+              <span class="badge badge-pending">Belum Mulai</span>
+            </div>
+            <div class="dash-keterangan">
+              <p>
+                <span class="ket-label">Tugas:</span>Menghubungkan dashboard dengan database tugas.
+              </p>
+              <p>
+                <span class="ket-label">Sudah sampai:</span>Belum ada progres, masih tahap perencanaan.
+              </p>
+              <p>
+                <span class="ket-label">Lanjutan:</span>Menentukan struktur tabel database dan metode koneksi.
+              </p>
+            </div>
+            <div class="project-progress-below">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%"></div>
+              </div>
+              <span class="progress-percent">0%</span>
+            </div>
+          </div>
+        </div>
 
-  <div class="panel">
-    <div class="panel-head">
-      <div>
-        <h2 style="margin-bottom:2px;">Daftar proyek</h2>
-      </div>
-      <button class="btn-submit" id="btnTambahProyek">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M12 5v14M5 12h14"/></svg>
-        Tambah proyek
-      </button>
-    </div>
+        <div class="project-item">
+          <div class="project-logo-row">
+            <div class="project-logo-emblem" style="background: #5b4fe9">
+  <img src="emblem/3.jpg" alt="Logo" style="width: 300px; height: auto;">
+</div>
+          </div>
+          <div class="project-keterangan-row">
+            <div class="project-header">
+              <h3>Aplikasi Mobile Tim</h3>
+              <span class="badge badge-progress">Berjalan</span>
+            </div>
+            <div class="dash-keterangan">
+              <p>
+                <span class="ket-label">Tugas:</span>Membangun aplikasi mobile pendamping dashboard.
+              </p>
+              <p>
+                <span class="ket-label">Sudah sampai:</span>Wireframe dan desain UI sudah disetujui.
+              </p>
+              <p>
+                <span class="ket-label">Lanjutan:</span>Mulai development fitur login dan notifikasi.
+              </p>
+            </div>
+            <div class="project-progress-below">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 35%"></div>
+              </div>
+              <span class="progress-percent">35%</span>
+            </div>
+          </div>
+        </div>
 
-    <div class="project-grid-v2" id="projectGrid">
+        <div class="project-item">
+          <div class="project-logo-row">
+           <div class="project-logo-emblem" style="background: #5b4fe9">
+  <img src="emblem/4.jpg" alt="Logo" style="width: 300px; height: auto;">
+</div>
+          </div>
+          <div class="project-keterangan-row">
+            <div class="project-header">
+              <h3>Optimasi Server</h3>
+              <span class="badge badge-progress">Berjalan</span>
+            </div>
+            <div class="dash-keterangan">
+              <p>
+                <span class="ket-label">Tugas:</span>Meningkatkan performa dan kecepatan server backend.
+              </p>
+              <p>
+                <span class="ket-label">Sudah sampai:</span>Migrasi database dan caching sudah berjalan.
+              </p>
+              <p>
+                <span class="ket-label">Lanjutan:</span>Load testing dan monitoring performa.
+              </p>
+            </div>
+            <div class="project-progress-below">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 80%"></div>
+              </div>
+              <span class="progress-percent">80%</span>
+            </div>
+          </div>
+        </div>
 
-      <div class="project-card-v2 status-berjalan">
-        <div class="project-card-head">
-          <h3>Dashboard Tim 1</h3>
-          <span class="badge-status badge-berjalan">Berjalan</span>
-        </div>
-        <p class="project-desc">Membangun dashboard internal untuk manajemen tugas tim.</p>
-        <div class="progress-bar-v2">
-          <div class="progress-fill-v2 fill-berjalan" style="width: 60%;"></div>
-        </div>
-        <div class="project-footer-v2">
-          <span class="project-pct">60% selesai</span>
-          <span class="project-deadline">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 3v3M16 3v3"/></svg>
-            25 Juli 2026
-          </span>
-        </div>
-      </div>
-
-      <div class="project-card-v2 status-selesai">
-        <div class="project-card-head">
-          <h3>Redesign Logo Tim</h3>
-          <span class="badge-status badge-selesai">Selesai</span>
-        </div>
-        <p class="project-desc">Membuat ulang identitas visual logo Tim 1.</p>
-        <div class="progress-bar-v2">
-          <div class="progress-fill-v2 fill-selesai" style="width: 100%;"></div>
-        </div>
-        <div class="project-footer-v2">
-          <span class="project-pct">100% selesai</span>
-          <span class="project-deadline">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 3v3M16 3v3"/></svg>
-            10 Juli 2026
-          </span>
-        </div>
-      </div>
-
-      <div class="project-card-v2 status-pending">
-        <div class="project-card-head">
-          <h3>Integrasi Database</h3>
-          <span class="badge-status badge-pending">Belum mulai</span>
-        </div>
-        <p class="project-desc">Menghubungkan dashboard dengan database tugas.</p>
-        <div class="progress-bar-v2">
-          <div class="progress-fill-v2 fill-pending" style="width: 0%;"></div>
-        </div>
-        <div class="project-footer-v2">
-          <span class="project-pct">0% selesai</span>
-          <span class="project-deadline">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 3v3M16 3v3"/></svg>
-            30 Juli 2026
-          </span>
+        <div class="project-item">
+          <div class="project-logo-row">
+            <div class="project-logo-emblem" style="background: #5b4fe9">
+  <img src="emblem/5.jpg" alt="Logo" style="width: 300px; height: auto;">
+</div>
+          </div>
+          <div class="project-keterangan-row">
+            <div class="project-header">
+              <h3>Dokumentasi Sistem</h3>
+              <span class="badge badge-pending">Belum Mulai</span>
+            </div>
+            <div class="dash-keterangan">
+              <p>
+                <span class="ket-label">Tugas:</span>Menyusun dokumentasi teknis seluruh modul sistem.
+              </p>
+              <p>
+                <span class="ket-label">Sudah sampai:</span>Belum ada progres, masih tahap perencanaan.
+              </p>
+              <p>
+                <span class="ket-label">Lanjutan:</span>Menentukan format dan struktur dokumentasi.
+              </p>
+            </div>
+            <div class="project-progress-below">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%"></div>
+              </div>
+              <span class="progress-percent">0%</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-        <!-- HALAMAN: TUGAS -->
-        <section class="page" id="page-tugas">
+          <!-- HALAMAN: TUGAS -->
+          <section class="page" id="page-tugas">
+            <div class="panel">
+              <h2>Daftar Tugas</h2>
+              <button class="btn-primary" id="btnTambahTugas">
+                + Tambah Tugas
+              </button>
 
-<div class="dashboard-container">
-
-<div class="header-section">
-
-    <h1>
-        <i class="fa-solid fa-list-check"></i>
-        Dashboard Tugas
-    </h1>
-
-    <button id="btnTambahTugas" class="btn-premium-add">
-        <i class="fa-solid fa-plus"></i>
-        Tambah Tugas
-    </button>
-
-</div>
-
-    <div class="table-container">
-
-    <table class="task-table">
-
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Tugas</th>
-                <th>Status</th>
-                <th>Penanggung Jawab</th>
-                <th>Tanggal Mulai</th>
-                <th>Deadline</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-
-        <tbody id="taskTableBody">
-
-            <tr>
-                <td>1</td>
-                <td>Desain Sidebar</td>
-
-                <td>
-                    <span class="status selesai">Selesai</span>
-                </td>
-
-                <td>
-                    <div class="user-cell">
-                        <img src="https://ui-avatars.com/api/?name=Melati&background=random" alt="Melati">
-                        <span>Melati</span>
-                    </div>
-                </td>
-
-                <td>08 Jul 2026</td>
-                <td>15 Jul 2026</td>
-
-                <td>
-                    <button class="icon-btn">✏️</button>
-                    <button class="icon-btn delete">🗑️</button>
-                </td>
-            </tr>
-
-            <tr>
-                <td>2</td>
-                <td>Integrasi Halaman Laporan</td>
-
-                <td>
-                    <span class="status berjalan">Sedang Berjalan</span>
-                </td>
-
-                <td>
-                    <div class="user-cell">
-                        <img src="https://ui-avatars.com/api/?name=Tim1&background=random" alt="Tim 1">
-                        <span>Tim 1 (Dev Team)</span>
-                    </div>
-                </td>
-
-                <td>14 Jul 2026</td>
-                <td>20 Jul 2026</td>
-
-                <td>
-                    <button class="icon-btn">✏️</button>
-                    <button class="icon-btn delete">🗑️</button>
-                </td>
-            </tr>
-
-            <tr>
-                <td>3</td>
-                <td>Testing Responsif Mobile</td>
-
-                <td>
-                    <span class="status belum">Belum Mulai</span>
-                </td>
-
-                <td>
-                    <div class="user-cell">
-                        <img src="https://ui-avatars.com/api/?name=Tim1&background=random" alt="Tim 1">
-                        <span>Tim 1 (QA Team)</span>
-                    </div>
-                </td>
-
-                <td>20 Jul 2026</td>
-                <td>22 Jul 2026</td>
-
-                <td>
-                    <button class="icon-btn">✏️</button>
-                    <button class="icon-btn delete">🗑️</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-<!-- MODAL TAMBAH TUGAS DILETAKKAN DI SINI -->
-        <div class="modal-overlay" id="modalTugas">
-
-            <div class="modal-box">
-
-                <h2>Tambah Tugas</h2>
-
-                <label>Nama Tugas</label>
-                <input type="text" id="inputNamaTugas">
-
-                <label>Status</label>
-                <select id="inputStatusTugas">
-                    <option value="pending">Belum Mulai</option>
-                    <option value="progress">Sedang Berjalan</option>
-                    <option value="done">Selesai</option>
-                </select>
-
-                <label>Penanggung Jawab</label>
-                <input type="text" id="inputPenanggungTugas">
-
-                <label>Tanggal Mulai</label>
-                <input type="date" id="inputTanggalMulai">
-
-                <label>Deadline</label>
-                <input type="date" id="inputDeadlineTugas">
-
-                <div class="modal-actions">
-                    <button class="btn-secondary" id="btnBatalTugas">Batal</button>
-                    <button class="btn-primary" id="btnSimpanTugas">Simpan</button>
+              <div class="dashboard-container">
+                <div class="header-section">
+                  <h1>
+                    <i class="fa-solid fa-list-check"></i> Dasbor Tugas Anda
+                  </h1>
+                  <button class="btn-premium-add">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Tugas Baru</span>
+                  </button>
                 </div>
+
+                <div class="task-grid" id="taskContainer">
+                  <div class="task-card status-selesai">
+                    <div class="card-header">
+                      <span class="badge completed">Selesai</span>
+                      <span class="deadline">
+                        <i class="fa-regular fa-calendar-days"></i>
+                        15 Jul 2026
+                      </span>
+                    </div>
+                    <div class="card-body">
+                      <h3>Desain sidebar</h3>
+                      <div class="assignee">
+                        <img
+                          src="https://ui-avatars.com/api/?name=Melati&background=random"
+                          alt="Melati"
+                        />
+                        <span>Melati (Manajer)</span>
+                      </div>
+                    </div>
+                    <div class="card-footer">
+                      <button class="action-btn" title="Edit">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                      </button>
+                      <button class="action-btn" title="Hapus">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="task-card status-berjalan">
+                    <div class="card-header">
+                      <span class="badge in-progress">Sedang Berjalan</span>
+                      <span class="deadline">
+                        <i class="fa-regular fa-calendar-days"></i>
+                        20 Jul 2026
+                      </span>
+                    </div>
+                    <div class="card-body">
+                      <h3>Integrasi halaman Laporan</h3>
+                      <div class="assignee">
+                        <img
+                          src="https://ui-avatars.com/api/?name=Tim1&background=random"
+                          alt="Tim 1"
+                        />
+                        <span>Tim 1 (Dev Team)</span>
+                      </div>
+                    </div>
+                    <div class="card-footer">
+                      <button class="action-btn" title="Edit">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                      </button>
+                      <button class="action-btn" title="Hapus">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="task-card status-belum">
+                    <div class="card-header">
+                      <span class="badge not-started">Belum Mulai</span>
+                      <span class="deadline">
+                        <i class="fa-regular fa-calendar-days"></i>
+                        22 Jul 2026
+                      </span>
+                    </div>
+                    <div class="card-body">
+                      <h3>Testing responsif mobile</h3>
+                      <div class="assignee">
+                        <img
+                          src="https://ui-avatars.com/api/?name=Tim1&background=random"
+                          alt="Tim 1"
+                        />
+                        <span>Tim 1 (QA Team)</span>
+                      </div>
+                    </div>
+                    <div class="card-footer">
+                      <button class="action-btn" title="Edit">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                      </button>
+                      <button class="action-btn" title="Hapus">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
         </div>
     </div> 
@@ -776,260 +649,241 @@
 
         </div>
 
-        <div class="setting-group">
+                <div class="team-card" style="border-left: 5px solid #f97316">
+                  <div class="card-top">
+                    <div
+                      class="icon-box"
+                      style="background: #fff7ed; color: #f97316"
+                    ></div>
+                    <div class="card-info">
+                      <h3>Tim 2: Kuliner</h3>
+                      <p>2 Anggota</p>
+                    </div>
+                  </div>
+                  <p class="desc">
+                    Tim spesialis untuk branding bisnis kuliner dan restoran.
+                  </p>
+                  <div class="member-list">
+                    <div class="member-row">
+                      <span> Anggota 2A</span>
+                      <span class="badge" style="color: #f97316">Desainer</span>
+                    </div>
+                    <div class="member-row">
+                      <span> Anggota 2B</span>
+                      <span class="badge" style="color: #f97316">Editor</span>
+                    </div>
+                  </div>
+                  <button class="btn-detail">Lihat Detail Tim ➔</button>
+                </div>
 
-            <div class="setting-item">
-                <label>Nama</label>
-                <input type="text" value="Admin Dashboard">
+                <div class="team-card" style="border-left: 5px solid #8b5cf6">
+                  <div class="card-top">
+                    <div
+                      class="icon-box"
+                      style="background: #f5f3ff; color: #8b5cf6"
+                    ></div>
+                    <div class="card-info">
+                      <h3>Tim 3: Dashboard Project</h3>
+                      <p>3 Anggota</p>
+                    </div>
+                  </div>
+                  <p class="desc">
+                    Tim pengembang dashboard dan sistem manajemen proyek.
+                  </p>
+                  <div class="member-list">
+                    <div class="member-row">
+                      <span> Anggota 3A</span>
+                      <span class="badge" style="color: #8b5cf6"
+                        >Developer</span
+                      >
+                    </div>
+                    <div class="member-row">
+                      <span> Anggota 3B</span>
+                      <span class="badge" style="color: #8b5cf6"
+                        >Developer</span
+                      >
+                    </div>
+                  </div>
+                  <button class="btn-detail">Lihat Detail Tim ➔</button>
+                </div>
+              </div>
             </div>
+          </section>
 
-            <div class="setting-item">
-                <label>Email</label>
-                <input type="email" value="admin@email.com">
+          <!-- HALAMAN: LAPORAN -->
+          <section class="page" id="page-laporan">
+            <div class="panel">
+              <h2>Laporan</h2>
+
+              <div class="report-form">
+                <div class="form-group">
+                  <label>Judul Laporan</label>
+                  <input
+                    type="text"
+                    id="judulLaporan"
+                    placeholder="Masukkan judul..."
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Isi Laporan</label>
+                  <textarea
+                    id="isiLaporan"
+                    placeholder="Tulis detail laporan tim di sini..."
+                  ></textarea>
+                </div>
+                <button class="btn-submit">Kirim Laporan</button>
+              </div>
+
+              <h3>Riwayat Laporan</h3>
+              <div class="report-list" id="riwayatLaporan">
+                <p class="empty-msg">Belum ada laporan yang masuk.</p>
+              </div>
             </div>
+          </section>
 
-            <div class="setting-item">
-                <label>Nomor HP</label>
-                <input type="text" value="081234567890">
+          <!-- HALAMAN: PENGATURAN -->
+          <section class="page" id="page-pengaturan">
+            <div class="panel">
+              <h2>Pengaturan Akun</h2>
+
+              <div class="settings-grid">
+                <div class="settings-card">
+                  <h3>Profil Tim</h3>
+                  <div class="form-group">
+                    <label>Nama Tim</label>
+                    <input type="text" value="Tim 1: Logo" />
+                  </div>
+                  <div class="form-group">
+                    <label>Email Ketua</label>
+                    <input type="email" value="melati@email.com" />
+                  </div>
+                </div>
+
+                <div class="settings-card">
+                  <h3>Preferensi Proyek</h3>
+                  <div class="form-group">
+                    <label>Tema Dashboard</label>
+                    <select id="themeSelect">
+                      <option value="light">Default (Light)</option>
+                      <option value="dark">Dark Mode</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label
+                      style="
+                        color: #636e72;
+                        font-size: 0.85rem;
+                        font-weight: 600;
+                        margin-bottom: 5px;
+                        display: block;
+                      "
+                      >Notifikasi Email</label
+                    >
+                    <label class="checkbox-container">
+                      <input type="checkbox" checked />
+                      <span>Aktifkan notifikasi tugas</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="btn-primary" id="btn-simpan">
+                Simpan Perubahan
+              </button>
             </div>
-
-        </div>
-
-        <button class="btn-save">
-            <i class="fa-solid fa-user-pen"></i>
-            Edit Profil
-        </button>
-
+          </section>
+        </main>
+      </div>
     </div>
 
-    <!-- Tampilan -->
-    <div class="settings-card">
+    <!-- MODAL TAMBAH PROYEK -->
+    <div class="modal-overlay" id="modalProyek">
+      <div class="modal-box">
+        <h3>Tambah Proyek Baru</h3>
+        <label>Nama Proyek</label>
+        <input
+          type="text"
+          id="inputNamaProyek"
+          placeholder="Contoh: Landing Page"
+        />
 
-        <h2>
-            <i class="fa-solid fa-palette"></i>
-            Tampilan
-        </h2>
+        <label>Deskripsi</label>
+        <input
+          type="text"
+          id="inputDeskProyek"
+          placeholder="Deskripsi singkat proyek"
+        />
 
-        <div class="setting-item">
-            <label>Dark Mode</label>
+        <label>Deadline</label>
+        <input type="date" id="inputDeadlineProyek" />
 
-            <label class="switch">
-                <input type="checkbox">
-                <span class="slider"></span>
-            </label>
+        <label>Status</label>
+        <select id="inputStatusProyek">
+          <option value="pending">Belum Mulai</option>
+          <option value="progress">Berjalan</option>
+          <option value="done">Selesai</option>
+        </select>
 
+        <div style="margin-bottom: 15px">
+          <label style="display: block; margin-bottom: 5px; font-weight: bold"
+            >Lampirkan Hasil Pekerjaan</label
+          >
+          <input
+            type="file"
+            name="file_tugas"
+            style="
+              width: 100%;
+              padding: 8px;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+            "
+          />
+          <small style="color: #636e72"
+            >Format: .zip, .jpg, .pdf (Maks. 5MB)</small
+          >
         </div>
 
-        <div class="setting-item">
-
-            <label>Warna Tema</label>
-
-            <select>
-
-                <option>Emerald</option>
-                <option>Blue</option>
-                <option>Purple</option>
-                <option>Orange</option>
-
-            </select>
-
+        <div class="modal-actions">
+          <button class="btn-secondary" id="btnBatalProyek">Batal</button>
+          <button class="btn-primary" id="btnSimpanProyek">Simpan</button>
         </div>
-
-        <div class="setting-item">
-
-            <label>Ukuran Font</label>
-
-            <select>
-
-                <option>Kecil</option>
-                <option selected>Sedang</option>
-                <option>Besar</option>
-
-            </select>
-
-        </div>
-
+      </div>
     </div>
 
-    <!-- Keamanan -->
-    <div class="settings-card">
+    <!-- MODAL TAMBAH TUGAS -->
+    <div class="modal-overlay" id="modalTugas">
+      <div class="modal-box">
+        <h3>Tambah Tugas Baru</h3>
+        <label>Nama Tugas</label>
+        <input
+          type="text"
+          id="inputNamaTugas"
+          placeholder="Contoh: Desain halaman Login"
+        />
 
-        <h2>
-            <i class="fa-solid fa-shield-halved"></i>
-            Keamanan
-        </h2>
+        <label>Penanggung Jawab</label>
+        <input
+          type="text"
+          id="inputPenanggungTugas"
+          placeholder="Nama penanggung jawab"
+        />
 
-        <div class="setting-item">
-            <label>Password Lama</label>
-            <input type="password">
+        <label>Deadline</label>
+        <input type="date" id="inputDeadlineTugas" />
+
+        <label>Status</label>
+        <select id="inputStatusTugas">
+          <option value="pending">Belum Mulai</option>
+          <option value="progress">Berjalan</option>
+          <option value="done">Selesai</option>
+        </select>
+
+        <div class="modal-actions">
+          <button class="btn-secondary" id="btnBatalTugas">Batal</button>
+          <button class="btn-primary" id="btnSimpanTugas">Simpan</button>
         </div>
-
-        <div class="setting-item">
-            <label>Password Baru</label>
-            <input type="password">
-        </div>
-
-        <div class="setting-item">
-            <label>Konfirmasi Password</label>
-            <input type="password">
-        </div>
-
-        <button class="btn-save">
-            <i class="fa-solid fa-key"></i>
-            Ubah Password
-        </button>
-
+      </div>
     </div>
 
-    <!-- Notifikasi -->
-    <div class="settings-card">
-
-        <h2>
-            <i class="fa-solid fa-bell"></i>
-            Notifikasi
-        </h2>
-
-        <div class="setting-item">
-
-            <label>Email Notifikasi</label>
-
-            <label class="switch">
-                <input type="checkbox" checked>
-                <span class="slider"></span>
-            </label>
-
-        </div>
-
-        <div class="setting-item">
-
-            <label>Notifikasi Dashboard</label>
-
-            <label class="switch">
-                <input type="checkbox" checked>
-                <span class="slider"></span>
-            </label>
-
-        </div>
-
-        <div class="setting-item">
-
-            <label>Push Notification</label>
-
-            <label class="switch">
-                <input type="checkbox">
-                <span class="slider"></span>
-            </label>
-
-        </div>
-
-    </div>
-
-    <!-- Tombol -->
-    <div class="settings-footer">
-
-        <button class="btn-save">
-
-            <i class="fa-solid fa-floppy-disk"></i>
-            Simpan Perubahan
-
-        </button>
-
-        <button class="btn-reset">
-
-            <i class="fa-solid fa-rotate-left"></i>
-            Reset Pengaturan
-
-        </button>
-
-    </div>
-
-</section>
-
-  <!-- MODAL TAMBAH PROYEK -->
-<div class="modal-overlay" id="modalProyek">
-  <div class="modal-box">
-    <h3>Tambah Proyek Baru</h3>
-    <label>Nama Proyek</label>
-    <input type="text" id="inputNamaProyek" placeholder="Contoh: Landing Page">
-
-    <label>Deskripsi</label>
-    <input type="text" id="inputDeskProyek" placeholder="Deskripsi singkat proyek">
-
-    <label>Deadline</label>
-    <input type="date" id="inputDeadlineProyek">
-
-    <label>Status</label>
-    <select id="inputStatusProyek">
-      <option value="pending">Belum Mulai</option>
-      <option value="progress">Berjalan</option>
-      <option value="done">Selesai</option>
-    </select>
-
-    <!-- Input File untuk Pengiriman Tugas -->
-<div style="margin-bottom: 15px;">
-  <label style="display: block; margin-bottom: 5px; font-weight: bold;">Lampirkan Hasil Pekerjaan</label>
-  <input type="file" name="file_tugas" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-  <small style="color: #636e72;">Format: .zip, .jpg, .pdf (Maks. 5MB)</small>
-</div>
-
-    <div class="modal-actions">
-      <button class="btn-secondary" id="btnBatalProyek">Batal</button>
-      <button class="btn-primary" id="btnSimpanProyek">Simpan</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL TAMBAH TUGAS -->
-<div class="modal-overlay" id="modalTugas">
-  <div class="modal-box">
-    <h3>Tambah Tugas Baru</h3>
-    <label>Nama Tugas</label>
-    <input type="text" id="inputNamaTugas" placeholder="Contoh: Desain halaman Login">
-
-    <label>Penanggung Jawab</label>
-    <input type="text" id="inputPenanggungTugas" placeholder="Nama penanggung jawab">
-
-    <label>Deadline</label>
-    <input type="date" id="inputDeadlineTugas">
-
-    <label>Status</label>
-    <select id="inputStatusTugas">
-      <option value="pending">Belum Mulai</option>
-      <option value="progress">Berjalan</option>
-      <option value="done">Selesai</option>
-    </select>
-
-    <div class="modal-actions">
-      <button class="btn-secondary" id="btnBatalTugas">Batal</button>
-      <button class="btn-primary" id="btnSimpanTugas">Simpan</button>
-    </div>
-  </div>
-</div>
-
-  <script src="script.js"></script>
-  <script>
-    // Fungsi geser carousel proyek di Dashboard (tidak mengubah script.js)
-    (function(){
-      var track = document.getElementById('dashboardTrack');
-      var prevBtn = document.getElementById('dashPrev');
-      var nextBtn = document.getElementById('dashNext');
-      if(!track || !prevBtn || !nextBtn) return;
-
-      function scrollStep(){
-        var card = track.querySelector('.project-item');
-        var cardWidth = card ? card.getBoundingClientRect().width : 280;
-        var gap = 18;
-        return cardWidth + gap;
-      }
-
-      prevBtn.addEventListener('click', function(){
-        track.scrollBy({ left: -scrollStep(), behavior: 'smooth' });
-      });
-      nextBtn.addEventListener('click', function(){
-        track.scrollBy({ left: scrollStep(), behavior: 'smooth' });
-      });
-    })();
-  </script>
-
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

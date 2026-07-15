@@ -296,60 +296,162 @@ body {
   }
 }
 
-
-/* Grid untuk Proyek */
-.project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 16px;
-    margin-top: 15px;
+/* Grid untuk Proyek (Dashboard - Carousel) */
+.carousel-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.project-card {
-    background: #f8f9fa;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    padding: 16px;
+.project-grid {
+  display: flex;
+  overflow-x: auto; /* memungkinkan geser ke kanan */
+  gap: 20px; /* jarak antar item */
+  padding: 10px 0;
+  /* Hilangkan grid-template-columns dan gunakan flex untuk bisa digeser */
+}
+
+.project-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.project-item {
+  flex: 0 0 250px; /* atau sesuai lebar yang diinginkan */
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #333;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  padding: 15px; /* memberi jarak dari tepi */
+  box-sizing: border-box;
+}
+
+.project-item h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.project-item p {
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.project-item span {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #555;
+}
+
+.project-logo-row {
+  padding: 0;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f7f7;
+  overflow: hidden;
+}
+
+.project-logo-emblem {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.project-keterangan-row {
+  border-top: 2px solid rgba(0, 0, 0, 0.05); /* Lebih transparan lagi */
 }
 
 .project-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
 }
 
 .project-header h3 {
-    font-size: 1rem;
-    margin: 0;
+  font-size: 1rem;
+  margin: 0;
 }
 
-.project-desc {
-    font-size: 0.9em;
-    color: #555;
-    margin-bottom: 12px;
+.dash-keterangan p {
+  margin: 0 0 4px;
+  font-size: 13px;
+  color: #555;
+}
+
+.ket-label {
+  font-weight: bold;
+  color: #222;
+  margin-right: 4px;
+}
+
+.project-progress-below {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .progress-bar {
-    background: #e2e3e5;
-    border-radius: 4px;
-    height: 8px;
-    overflow: hidden;
-    margin-bottom: 8px;
+  flex: 1;
+  height: 8px;
+  border: 1.5px solid #333;
+  border-radius: 5px;
+  overflow: hidden;
+  background: #eee;
 }
 
 .progress-fill {
-    background-color: #007bff;
-    height: 100%;
+  height: 100%;
+  background: #5B4FE9;
 }
 
-.project-footer {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8em;
-    color: #777;
+.progress-percent {
+  font-size: 12px;
+  font-weight: bold;
 }
 
+.badge-progress {
+  background: #dbeafe;
+  color: #1d4ed8;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge-done {
+  background: #dcfce7;
+  color: #166534;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge-pending {
+  background: #f1f5f9;
+  color: #64748b;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.project-grid::-webkit-scrollbar {
+  display: none;
+}
 /* Styling Umum Panel Halaman Tugas */
 /* Reset & Gaya Dasar */
 :root {

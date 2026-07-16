@@ -283,3 +283,4 @@ if (btnSimpanByClass) {
     alert('Tombol berhasil diklik!');
   });
 }
+

@@ -385,161 +385,52 @@
 
           <!-- ================= HALAMAN PENGATURAN ================= -->
 <section class="page" id="page-pengaturan">
+    <div class="container">
+        <div class="card">
+            <h1>Pengaturan Dashboard</h1>
 
-    <div class="panel">
+            <h3>Akun</h3>
+            <div class="setting-row"><span>Nama Lengkap</span><input type="text" value="Budi Santoso"></div>
+            <div class="setting-row"><span>Email</span><input type="email" value="budi@example.com"></div>
 
-        <div class="page-header">
-            <h2 class="page-title">
-                <i class="fa-solid fa-gear"></i>
-                Pengaturan
-            </h2>
+            <h3>Keamanan</h3>
+            <div class="setting-row"><span>Autentikasi 2FA</span><select><option>Aktif</option><option>Nonaktif</option></select></div>
+            <div class="setting-row"><span>Password</span><button class="btn btn-secondary">Ubah Password</button></div>
 
-            <p class="page-subtitle">
-                Kelola akun dan preferensi dashboard.
-            </p>
-        </div>
+            <h3>Tampilan</h3>
+            <div class="setting-row"><span>Tema</span><select><option>Light Mode</option><option>Dark Mode</option></select></div>
 
-        <div class="settings-wrapper">
+            <h3>Notifikasi</h3>
+            <div class="setting-row"><span>Notifikasi Email</span><select><option>Aktif</option><option>Nonaktif</option></select></div>
 
-            <!-- ================= PROFIL ================= -->
+            <h3>Tim & Proyek</h3>
+            <div class="setting-row"><span>Peran Akses</span><select><option>Admin</option><option>Editor</option></select></div>
+            <div class="setting-row"><span>Proyek Aktif</span><input type="text" value="Proyek Alpha"></div>
 
-            <div class="settings-card">
+            <h3>Backup & Data</h3>
+            <div class="setting-row"><span>Ekspor Data</span><button class="btn btn-secondary">Unduh CSV</button></div>
 
-                <h3 class="settings-title">
-                    <i class="fa-solid fa-user-group"></i>
-                    Profil Tim
-                </h3>
+            <h3>Integrasi</h3>
+            <div class="setting-row"><span>GitHub/Slack</span><button class="btn btn-secondary">Hubungkan</button></div>
 
-                <div class="form-group">
-                    <label>Nama Tim</label>
-                    <input type="text" placeholder="Masukkan nama tim">
-                </div>
+            <h3>Preferensi Sistem & Tentang</h3>
+            <div class="setting-row"><span>Zona Waktu</span><select><option>WIB</option><option>WITA</option></select></div>
+            <div class="setting-row"><span>Versi Aplikasi</span><span>v1.2.0</span></div>
 
-                <div class="form-group">
-                    <label>Nama Ketua</label>
-                    <input type="text" placeholder="Nama ketua tim">
-                </div>
-
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" placeholder="email@contoh.com">
-                </div>
-
-                <div class="form-group">
-                    <label>Nomor Telepon</label>
-                    <input type="text" placeholder="08xxxxxxxxxx">
-                </div>
-
-            </div>
-
-            <!-- ================= KEAMANAN ================= -->
-
-            <div class="settings-card">
-
-                <h3 class="settings-title">
-                    <i class="fa-solid fa-lock"></i>
-                    Keamanan
-                </h3>
-                <div class="form-group">
-                    <label>Password Lama</label>
-                    <input type="password">
-                </div>
-
-                <div class="form-group">
-                    <label>Password Baru</label>
-                    <input type="password">
-                </div>
-
-                <div class="form-group">
-                    <label>Konfirmasi Password</label>
-                    <input type="password">
-                </div>
-
-                <button class="btn-secondary">
-                    <i class="fa-solid fa-key"></i>
-                    Ubah Password
-                </button>
-
-            </div>
-
-            <!-- ================= TAMPILAN ================= -->
-
-            <div class="settings-card">
-
-                <h3 class="settings-title">
-                    <i class="fa-solid fa-display"></i>
-                    Tampilan
-                </h3>
-
-                <div class="form-group">
-                    <label>Tema Dashboard</label>
-
-                    <select>
-                        <option>Light Mode</option>
-                        <option>Dark Mode</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Bahasa</label>
-
-                    <select>
-                        <option>Indonesia</option>
-                        <option>English</option>
-                    </select>
-                </div>
-
-            </div>
-
-            <!-- ================= NOTIFIKASI ================= -->
-
-            <div class="settings-card">
-
-                <h3 class="settings-title">
-                    <i class="fa-solid fa-bell"></i>
-                    Notifikasi
-                </h3>
-
-                <label class="checkbox-item">
-                    <input type="checkbox" checked>
-                    <span>Notifikasi tugas baru</span>
-                </label>
-
-                <label class="checkbox-item">
-                    <input type="checkbox" checked>
-                    <span>Deadline proyek</span>
-                </label>
-
-                <label class="checkbox-item">
-                    <input type="checkbox">
-                    <span>Email harian</span>
-                </label>
-
-                <label class="checkbox-item">
-                    <input type="checkbox">
-                    <span>Pengingat meeting</span>
-                </label>
-
-            </div>
-
-        </div>
-
-        <div class="setting-footer">
-
-            <button class="btn-danger">
-                <i class="fa-solid fa-rotate-left"></i>
-                Reset
-            </button>
-
-            <button class="btn-primary">
-                <i class="fa-solid fa-floppy-disk"></i>
-                Simpan Perubahan
-            </button>
-
-        </div>
-
+            <div style="margin-top: 30px; text-align: right;">
+                <button class="btn">Simpan Semua Perubahan</button>
+                <!-- Jendela Modal untuk Ubah Password -->
+<div id="modal-password" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center;">
+    <div style="background:white; padding:30px; border-radius:8px; width:400px;">
+        <h3>Ubah Password</h3>
+        <input type="password" placeholder="Password Lama" style="width:100%; margin-bottom:10px;">
+        <input type="password" placeholder="Password Baru" style="width:100%; margin-bottom:10px;">
+        <button onclick="tutupModal()" class="btn">Simpan</button>
     </div>
-
+</div>
+            </div>
+        </div>
+    </div>
 </section>
         
     <!-- MODAL TAMBAH PROYEK -->

@@ -284,3 +284,18 @@ if (btnSimpanByClass) {
   });
 }
 
+
+/*tombol password */
+    const tombolUbah = document.querySelector('.btn-secondary'); // Sesuaikan class tombol Anda
+    const modal = document.getElementById('modal-password');
+
+    // Menampilkan modal saat tombol diklik
+    tombolUbah.onclick = function() {
+        modal.style.display = 'flex';
+    };
+
+    // Fungsi untuk menutup modal
+    function tutupModal() {
+        modal.style.display = 'none';
+        alert('Password berhasil diubah!');
+    }

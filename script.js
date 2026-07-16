@@ -283,6 +283,3 @@ if (btnSimpanByClass) {
     alert('Tombol berhasil diklik!');
   });
 }
-
-/* ==========================
-   DATA TIM

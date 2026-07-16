@@ -181,42 +181,216 @@ if (btnSimpanTugas && taskTableBody) {
 }
 
 
-// ===========================
-// TAMBAH LAPORAN
-// ===========================
-const btnSubmitLaporan = document.querySelector('.btn-submit');
-if (btnSubmitLaporan) {
-  btnSubmitLaporan.addEventListener('click', function () {
-    const judulEl = document.getElementById('judulLaporan');
-    const isiEl = document.getElementById('isiLaporan');
-    const reportList = document.getElementById('riwayatLaporan');
+/* ============================================
+   HALAMAN LAPORAN
+============================================ */
 
-    if (!judulEl || !isiEl || !reportList) return;
+// Data laporan
+const laporanData = [
 
-    const judul = judulEl.value;
-    const isi = isiEl.value;
+    {
+        judul: "Dashboard UI",
+        tanggal: "16 Juli 2026",
+        penulis: "Puja Shinta",
+        prioritas: "Tinggi",
+        status: "selesai",
+        file: "dashboard-ui.pdf",
+        isi: "Dashboard proyek berhasil diperbarui dengan tampilan baru yang lebih modern. Sidebar, halaman tugas, dan halaman pengaturan telah selesai dikembangkan. Tahap selanjutnya adalah pengembangan halaman laporan."
+    },
 
-    if (judul === '' || isi === '') {
-      alert('Mohon isi judul dan isi laporan!');
-      return;
+    {
+        judul: "Backend API",
+        tanggal: "15 Juli 2026",
+        penulis: "Andi",
+        prioritas: "Sedang",
+        status: "review",
+        file: "backend-api.pdf",
+        isi: "Backend API login dan autentikasi berhasil dibuat. Saat ini masih dalam proses review sebelum digabungkan ke branch utama."
+    },
+
+    {
+        judul: "Testing Sistem",
+        tanggal: "14 Juli 2026",
+        penulis: "Sinta",
+        prioritas: "Rendah",
+        status: "pending",
+        file: "testing.pdf",
+        isi: "Proses pengujian sistem masih berlangsung. Beberapa bug ditemukan dan sedang diperbaiki."
+    },
+
+    {
+        judul: "Database",
+        tanggal: "13 Juli 2026",
+        penulis: "Budi",
+        prioritas: "Sedang",
+        status: "selesai",
+        file: "database.pdf",
+        isi: "Perancangan database selesai. Seluruh tabel sudah saling terhubung dan siap digunakan."
+    },
+
+    {
+        judul: "Landing Page",
+        tanggal: "12 Juli 2026",
+        penulis: "Rina",
+        prioritas: "Tinggi",
+        status: "review",
+        file: "landing-page.pdf",
+        isi: "Landing page selesai dibuat dan sedang dilakukan revisi berdasarkan masukan dari pembimbing."
+    },
+
+    {
+        judul: "Login System",
+        tanggal: "11 Juli 2026",
+        penulis: "Dimas",
+        prioritas: "Sedang",
+        status: "pending",
+        file: "login.pdf",
+        isi: "Fitur login masih memerlukan validasi tambahan serta peningkatan keamanan."
     }
 
-    const emptyMsg = document.querySelector('.empty-msg');
-    if (emptyMsg) emptyMsg.remove();
+];
 
-    const newReport = document.createElement('div');
-    newReport.style.cssText = "background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #00b894;";
-    newReport.innerHTML = `
-      <h4 style="margin: 0 0 5px 0;">${judul}</h4>
-      <p style="margin: 0;">${isi}</p>
+
+/* ============================================
+   ELEMENT
+============================================ */
+
+const laporanItems = document.querySelectorAll(".laporan-item");
+
+const detailTitle = document.querySelector(".detail-header h3");
+
+const detailBadge = document.querySelector(".badge");
+
+const detailPenulis = document.querySelectorAll(".detail-info p")[0];
+
+const detailTanggal = document.querySelectorAll(".detail-info p")[1];
+
+const detailPrioritas = document.querySelectorAll(".detail-info p")[2];
+
+const detailIsi = document.querySelector(".detail-content p");
+
+const detailFile = document.querySelector(".detail-file");
+
+const searchInput = document.querySelector(".search-box input");
+
+
+/* ============================================
+   UBAH DETAIL
+============================================ */
+
+function tampilkanLaporan(index){
+
+    const data = laporanData[index];
+
+    detailTitle.textContent = data.judul;
+
+    detailPenulis.textContent = data.penulis;
+
+    detailTanggal.textContent = data.tanggal;
+
+    detailPrioritas.textContent = data.prioritas;
+
+    detailIsi.textContent = data.isi;
+
+    detailFile.innerHTML = `
+        <i class="fa-solid fa-paperclip"></i>
+        ${data.file}
     `;
 
-    reportList.appendChild(newReport);
-    judulEl.value = '';
-    isiEl.value = '';
-  });
+    detailBadge.textContent =
+        data.status.charAt(0).toUpperCase() +
+        data.status.slice(1);
+
+    detailBadge.className = "badge " + data.status;
+
 }
 
+
+/* ============================================
+   KLIK ITEM
+============================================ */
+
+laporanItems.forEach((item,index)=>{
+
+    item.addEventListener("click",()=>{
+
+        laporanItems.forEach(i=>{
+
+            i.classList.remove("active");
+
+        });
+
+        item.classList.add("active");
+
+        tampilkanLaporan(index);
+
+    });
+
+});
+
+
+/* ============================================
+   SEARCH
+============================================ */
+
+searchInput.addEventListener("keyup",function(){
+
+    const keyword = this.value.toLowerCase();
+
+    laporanItems.forEach((item,index)=>{
+
+        const judul = laporanData[index].judul.toLowerCase();
+
+        if(judul.includes(keyword)){
+
+            item.style.display="flex";
+
+        }else{
+
+            item.style.display="none";
+
+        }
+
+    });
+
+});
+
+
+/* ============================================
+   EDIT
+============================================ */
+
+const btnEdit = document.querySelector(".btn-edit");
+
+btnEdit.addEventListener("click",()=>{
+
+    alert("Fitur Edit akan dikembangkan.");
+
+});
+
+
+/* ============================================
+   HAPUS
+============================================ */
+
+const btnDelete = document.querySelector(".btn-delete");
+
+btnDelete.addEventListener("click",()=>{
+
+    if(confirm("Apakah Anda yakin ingin menghapus laporan ini?")){
+
+        alert("Laporan berhasil dihapus.");
+
+    }
+
+});
+
+
+/* ============================================
+   LOAD PERTAMA
+============================================ */
+
+tampilkanLaporan(0);
 
 // ===========================
 // LOGOUT

@@ -326,61 +326,262 @@
     </div>
 </section>
 
-
-        <!-- HALAMAN: LAPORAN -->
+  <!-- ================= HALAMAN : LAPORAN ================= -->
 <section class="page" id="page-laporan">
 
-  <div class="page-head">
-    <div>
-      <h1 class="page-head-title">Laporan tim</h1>
-      <p class="page-head-sub">Catat perkembangan pekerjaan tim dan simpan riwayatnya di sini.</p>
-    </div>
-  </div>
+    <div class="panel laporan-panel">
 
-  <div class="panel report-panel">
-    <div class="report-panel-head">
-      <span class="report-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6"/></svg>
-      </span>
-      <div>
-        <h2>Buat laporan baru</h2>
-        <p class="report-panel-sub">Isi form di bawah untuk mengirim laporan ke tim.</p>
-      </div>
+        <!-- Header -->
+        <div class="page-header">
+
+            <div>
+                <h2 class="page-title">
+                    <i class="fa-solid fa-file-lines"></i>
+                    Laporan Tim
+                </h2>
+
+                <p class="page-subtitle">
+                    Kelola dan lihat seluruh laporan proyek tim.
+                </p>
+            </div>
+
+            <button class="btn-primary">
+                <i class="fa-solid fa-plus"></i>
+                Buat Laporan
+            </button>
+
+        </div>
+
+        <!-- Layout -->
+        <div class="laporan-layout">
+
+            <!-- ================= LEFT ================= -->
+
+            <aside class="laporan-sidebar">
+
+                <div class="search-box">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="text"
+                        placeholder="Cari laporan..."
+                    >
+
+                </div>
+
+                <div class="laporan-list">
+
+                    <!-- Item -->
+
+                    <div class="laporan-item active">
+
+                        <div class="laporan-icon selesai">
+                            <i class="fa-solid fa-file"></i>
+                        </div>
+
+                        <div class="laporan-info">
+
+                            <h4>Dashboard UI</h4>
+
+                            <span>16 Juli 2026</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="laporan-item">
+
+                        <div class="laporan-icon review">
+                            <i class="fa-solid fa-file"></i>
+                        </div>
+
+                        <div class="laporan-info">
+
+                            <h4>Backend API</h4>
+
+                            <span>15 Juli 2026</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="laporan-item">
+
+                        <div class="laporan-icon pending">
+                            <i class="fa-solid fa-file"></i>
+                        </div>
+
+                        <div class="laporan-info">
+
+                            <h4>Testing Sistem</h4>
+
+                            <span>14 Juli 2026</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="laporan-item">
+
+                        <div class="laporan-icon selesai">
+                            <i class="fa-solid fa-file"></i>
+                        </div>
+
+                        <div class="laporan-info">
+
+                            <h4>Database</h4>
+
+                            <span>13 Juli 2026</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="laporan-item">
+
+                        <div class="laporan-icon review">
+                            <i class="fa-solid fa-file"></i>
+                        </div>
+
+                        <div class="laporan-info">
+
+                            <h4>Landing Page</h4>
+
+                            <span>12 Juli 2026</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="laporan-item">
+
+                        <div class="laporan-icon pending">
+                            <i class="fa-solid fa-file"></i>
+                        </div>
+
+                        <div class="laporan-info">
+
+                            <h4>Login System</h4>
+
+                            <span>11 Juli 2026</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+            <!-- ================= RIGHT ================= -->
+
+            <div class="laporan-detail">
+
+                <!-- Card -->
+
+                <div class="detail-card">
+
+                    <div class="detail-header">
+
+                        <div>
+
+                            <h3>Dashboard UI</h3>
+
+                            <span class="badge selesai">
+                                Selesai
+                            </span>
+
+                        </div>
+
+                        <div class="detail-action">
+
+                            <button class="btn-edit">
+
+                                <i class="fa-solid fa-pen"></i>
+
+                                Edit
+
+                            </button>
+
+                            <button class="btn-delete">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                                Hapus
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Informasi -->
+
+                    <div class="detail-info">
+
+                        <div>
+
+                            <small>Penulis</small>
+
+                            <p>Puja Shinta</p>
+
+                        </div>
+
+                        <div>
+
+                            <small>Tanggal</small>
+
+                            <p>16 Juli 2026</p>
+
+                        </div>
+
+                        <div>
+
+                            <small>Prioritas</small>
+
+                            <p>Tinggi</p>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Isi -->
+
+                    <div class="detail-content">
+
+                        <h4>Ringkasan</h4>
+
+                        <p>
+
+                            Dashboard proyek berhasil diperbarui dengan
+                            tampilan baru yang lebih modern. Sidebar,
+                            halaman tugas, serta halaman pengaturan telah
+                            selesai dikembangkan. Selanjutnya akan dilakukan
+                            pengembangan halaman laporan dan integrasi data.
+
+                        </p>
+
+                    </div>
+
+                    <!-- Lampiran -->
+
+                    <div class="detail-file">
+
+                        <i class="fa-solid fa-paperclip"></i>
+
+                        dashboard-ui.pdf
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="report-form">
-      <div class="form-group">
-        <label>Judul laporan</label>
-        <input type="text" id="judulLaporan" placeholder="Contoh: Progres mingguan tim desain">
-      </div>
-      <div class="form-group">
-        <label>Isi laporan</label>
-        <textarea id="isiLaporan" rows="4" placeholder="Tulis detail laporan tim di sini..."></textarea>
-      </div>
-      <div class="report-form-foot">
-        <span class="report-hint">Laporan akan terlihat oleh seluruh anggota tim.</span>
-        <button class="btn-submit" id="btnKirimLaporan">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-          Kirim laporan
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-head">
-      <h2>Riwayat laporan</h2>
-    </div>
-    <div class="report-list" id="riwayatLaporan">
-      <div class="report-empty">
-        <span class="report-empty-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6"/><path d="M9 13h6M9 17h4"/></svg>
-        </span>
-        <p class="report-empty-title">Belum ada laporan</p>
-        <p class="report-empty-sub">Laporan yang kamu kirim akan muncul di sini.</p>
-      </div>
-    </div>
-  </div>
 </section>
 
           <!-- ================= HALAMAN PENGATURAN ================= -->

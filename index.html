@@ -19,14 +19,8 @@
           <a href="#Home" class="nav-item active" data-page="dashboard">
             <span class="nav-icon">▦</span> Dashboard
           </a>
-          <a href="#proyek" class="nav-item" data-page="proyek">
-            <span class="nav-icon">◧</span> Proyek
-          </a>
           <a href="#tugas" class="nav-item" data-page="tugas">
             <span class="nav-icon">✓</span> Tugas
-          </a>
-          <a href="#anggota" class="nav-item" data-page="anggota">
-            <span class="nav-icon">◐</span> Anggota Tim
           </a>
           <a href="#laporan" class="nav-item" data-page="laporan">
             <span class="nav-icon">▤</span> Laporan
@@ -204,7 +198,7 @@
               </div>
               <span class="progress-percent">80%</span>
             </div>
-          </div>
+          </div> 
         </div>
 
         <div class="project-item">
@@ -241,6 +235,11 @@
     </div>
   </div>
 </section>
+
+<!-- ================= HALAMAN : Proyek ================= -->
+
+
+
 
 <!-- ================= HALAMAN : Tugas ================= -->
 
@@ -327,223 +326,7 @@
 
     </div>
 </section>
-<!-- ================= HALAMAN : ANGGOTA TIM ================= -->
 
-<section class="page" id="page-anggota">
-
-    <div class="panel">
-
-        <!-- Judul -->
-        <div class="page-header">
-
-            <h2 class="page-title">
-                <i class="fa-solid fa-users"></i>
-                Anggota Tim
-            </h2>
-
-            <p class="page-subtitle">
-                Daftar anggota pada setiap tim proyek.
-            </p>
-
-        </div>
-
-        <!-- Card Tim -->
-        <div class="team-grid">
-
-            <!-- ================= TIM 1 ================= -->
-
-            <div class="team-card blue">
-
-                <div class="team-header">
-                    <h3>Tim 1 : Logo</h3>
-                </div>
-
-                <p class="team-desc">
-                    Tim yang bertugas membuat desain logo dan identitas visual.
-                </p>
-
-                <div class="member-list">
-
-                    <div class="member">
-
-                        <div class="avatar">
-                            UA
-                        </div>
-
-                        <div class="member-info">
-                            <h4>User A1</h4>
-                            <span>Lead Designer</span>
-                        </div>
-
-                    </div>
-
-                    <div class="member">
-
-                        <div class="avatar">
-                            UB
-                        </div>
-
-                        <div class="member-info">
-                            <h4>User B1</h4>
-                            <span>Motion Graphic Editor</span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <button
-                    type="button"
-                    class="btn-team"
-                    onclick="detailTim(1)">
-                    <i class="fa-solid fa-eye"></i>
-                    Detail Tim
-                </button>
-
-            </div>
-
-            <!-- ================= TIM 2 ================= -->
-
-            <div class="team-card orange">
-
-                <div class="team-header">
-                    <h3>Tim 2 : Kuliner</h3>
-                </div>
-
-                <p class="team-desc">
-                    Tim yang mengerjakan branding bisnis makanan dan minuman.
-                </p>
-
-                <div class="member-list">
-
-                    <div class="member">
-
-                        <div class="avatar">
-                            UA
-                        </div>
-
-                        <div class="member-info">
-                            <h4>User A2</h4>
-                            <span>Brand Strategist</span>
-                        </div>
-
-                    </div>
-
-                    <div class="member">
-
-                        <div class="avatar">
-                            UB
-                        </div>
-
-                        <div class="member-info">
-                            <h4>User B2</h4>
-                            <span>Content Creator</span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <button
-                    type="button"
-                    class="btn-team"
-                    onclick="detailTim(2)">
-                    <i class="fa-solid fa-eye"></i>
-                    Detail Tim
-                </button>
-
-            </div>
-
-            <!-- ================= TIM 3 ================= -->
-
-            <div class="team-card dark">
-
-                <div class="team-header">
-                    <h3>Tim 3 : Dashboard Project</h3>
-                </div>
-
-                <p class="team-desc">
-                    Tim yang mengembangkan dashboard dan sistem manajemen proyek.
-                </p>
-
-                <div class="member-list">
-
-                    <div class="member">
-
-                        <div class="avatar">
-                            UA
-                        </div>
-
-                        <div class="member-info">
-                            <h4>User A3</h4>
-                            <span>Full Stack Developer</span>
-                        </div>
-
-                    </div>
-
-                    <div class="member">
-
-                        <div class="avatar">
-                            UB
-                        </div>
-
-                        <div class="member-info">
-                            <h4>User B3</h4>
-                            <span>Database Engineer</span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <button
-                    type="button"
-                    class="btn-team"
-                    onclick="detailTim(3)">
-                    <i class="fa-solid fa-eye"></i>
-                    Detail Tim
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- ================= MODAL ================= -->
-
-    <div class="modal-team" id="teamModal">
-
-        <div class="modal-content-team">
-
-            <div class="modal-header">
-
-                <h3 id="modalTitle">
-                    Detail Tim
-                </h3>
-
-                <button
-                    type="button"
-                    class="close-modal"
-                    onclick="tutupModal()">
-
-                    &times;
-
-                </button>
-
-            </div>
-
-            <div
-                class="modal-body"
-                id="modalBody">
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
 
         <!-- HALAMAN: LAPORAN -->
 <section class="page" id="page-laporan">

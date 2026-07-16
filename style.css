@@ -1420,6 +1420,7 @@ GRID
     align-items:stretch; /* Diubah dari 'start' menjadi 'stretch' */
 }
 
+
 /*=====================
 CARD
 ======================*/
@@ -1559,6 +1560,7 @@ BUTTON
     position:relative;
     z-index:10;
 }
+
 .blue .btn-team{
     background:#2563eb;
 }

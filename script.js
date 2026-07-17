@@ -112,17 +112,98 @@ if (btnSimpanProyek && projectGrid) {
 }
 
 
-// ===========================
-// TAMBAH TUGAS
-// ===========================
+// ======================================================
+// HALAMAN TUGAS: helper avatar & warna
+// ======================================================
+const avatarColors = ['#3b82f6', '#f59e0b', '#8b5cf6', '#ef4444', '#10b981', '#ec4899'];
+
+function getInisial(nama) {
+  const parts = nama.trim().split(' ');
+  if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+  return (parts[0][0] + parts[1][0]).toUpperCase();
+}
+
+function getWarnaAcak(nama) {
+  let hash = 0;
+  for (let i = 0; i < nama.length; i++) hash = nama.charCodeAt(i) + ((hash << 5) - hash);
+  return avatarColors[Math.abs(hash) % avatarColors.length];
+}
+
+const statusMapTugas = {
+  pending: { key: 'belum', label: 'Belum Mulai', icon: 'fa-circle' },
+  progress: { key: 'proses', label: 'Sedang Berjalan', icon: 'fa-spinner' },
+  done: { key: 'selesai', label: 'Selesai', icon: 'fa-check' }
+};
+
+// key (belum/proses/selesai) -> value select (pending/progress/done)
+const statusKeyToValue = { belum: 'pending', proses: 'progress', selesai: 'done' };
+
+// ======================================================
+// LANJUTAN HALAMAN TUGAS: update kartu statistik
+// ======================================================
+function updateStatTugas() {
+  const rows = document.querySelectorAll('#taskTableBody tr');
+  let total = rows.length, selesai = 0, proses = 0, belum = 0;
+
+  rows.forEach(row => {
+    const status = row.getAttribute('data-status');
+    if (status === 'selesai') selesai++;
+    else if (status === 'proses') proses++;
+    else if (status === 'belum') belum++;
+  });
+
+  const elTotal = document.getElementById('statTotalTugas');
+  const elSelesai = document.getElementById('statSelesaiTugas');
+  const elProses = document.getElementById('statProsesTugas');
+  const elBelum = document.getElementById('statBelumTugas');
+
+  if (elTotal) elTotal.textContent = total;
+  if (elSelesai) elSelesai.textContent = selesai;
+  if (elProses) elProses.textContent = proses;
+  if (elBelum) elBelum.textContent = belum;
+}
+
+// ======================================================
+//  LANJUTAN HALAMAN TUGAS: penomoran ulang kolom No
+// ======================================================
+function renomorTugas() {
+  const rows = document.querySelectorAll('#taskTableBody tr');
+  rows.forEach((row, i) => {
+    row.children[0].textContent = i + 1;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', updateStatTugas);
+
+// =====================================================================
+// LANJUTAN HALAMAN TUGASTAMBAH / EDIT TUGAS (modal sama, mode berbeda)
+// =====================================================================
 const btnTambahTugas = document.getElementById('btnTambahTugas');
 const modalTugas = document.getElementById('modalTugas');
+const modalTugasTitle = document.getElementById('modalTugasTitle');
 const btnBatalTugas = document.getElementById('btnBatalTugas');
 const btnSimpanTugas = document.getElementById('btnSimpanTugas');
 const taskTableBody = document.getElementById('taskTableBody');
 
+const inputNamaTugas = document.getElementById('inputNamaTugas');
+const inputPenanggungTugas = document.getElementById('inputPenanggungTugas');
+const inputDeadlineTugas = document.getElementById('inputDeadlineTugas');
+const inputStatusTugas = document.getElementById('inputStatusTugas');
+
+let editingRow = null; // null = mode tambah, berisi <tr> = mode edit
+
+function resetModalTugas() {
+  inputNamaTugas.value = '';
+  inputPenanggungTugas.value = '';
+  inputDeadlineTugas.value = '';
+  inputStatusTugas.value = 'pending';
+  editingRow = null;
+  if (modalTugasTitle) modalTugasTitle.textContent = 'Tambah Tugas Baru';
+}
+
 if (btnTambahTugas && modalTugas) {
   btnTambahTugas.addEventListener('click', () => {
+    resetModalTugas();
     modalTugas.classList.add('active');
   });
 }
@@ -130,56 +211,191 @@ if (btnTambahTugas && modalTugas) {
 if (btnBatalTugas && modalTugas) {
   btnBatalTugas.addEventListener('click', () => {
     modalTugas.classList.remove('active');
+    resetModalTugas();
   });
+}
+
+function buatBadgeHTML(statusKey) {
+  const found = Object.values(statusMapTugas).find(s => s.key === statusKey);
+  return `<span class="status ${found.key}"><i class="fa-solid ${found.icon}"></i> ${found.label}</span>`;
 }
 
 if (btnSimpanTugas && taskTableBody) {
   btnSimpanTugas.addEventListener('click', () => {
-    const inputNama = document.getElementById('inputNamaTugas');
-    const inputPenanggung = document.getElementById('inputPenanggungTugas');
-    const inputDeadline = document.getElementById('inputDeadlineTugas');
-    const inputStatus = document.getElementById('inputStatusTugas');
-
-    if (!inputNama || !inputPenanggung || !inputDeadline || !inputStatus) return;
-
-    const nama = inputNama.value.trim();
-    const penanggung = inputPenanggung.value.trim();
-    const deadline = inputDeadline.value;
-    const status = inputStatus.value;
+    const nama = inputNamaTugas.value.trim();
+    const penanggung = inputPenanggungTugas.value.trim();
+    const deadline = inputDeadlineTugas.value;
+    const status = inputStatusTugas.value;
 
     if (!nama || !penanggung || !deadline) {
       alert('Semua kolom wajib diisi!');
       return;
     }
 
-    const statusMap = {
-      pending: { label: 'Belum Mulai', badge: 'badge-pending' },
-      progress: { label: 'Berjalan', badge: 'badge-progress' },
-      done: { label: 'Selesai', badge: 'badge-done' }
-    };
-    const s = statusMap[status];
-
+    const s = statusMapTugas[status];
     const deadlineFormatted = new Date(deadline).toLocaleDateString('id-ID', {
-      day: 'numeric', month: 'long', year: 'numeric'
+      day: 'numeric', month: 'short', year: 'numeric'
     });
+    const inisial = getInisial(penanggung);
+    const warna = getWarnaAcak(penanggung);
 
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${nama}</td>
-      <td>${penanggung}</td>
-      <td>${deadlineFormatted}</td>
-      <td><span class="badge ${s.badge}">${s.label}</span></td>
-    `;
+    if (editingRow) {
+      // MODE EDIT: perbarui baris yang sudah ada
+      editingRow.setAttribute('data-status', s.key);
+      editingRow.children[1].textContent = nama;
+      editingRow.children[2].innerHTML = `
+        <div class="user-cell">
+          <span class="avatar-circle" style="background:${warna}">${inisial}</span>
+          ${penanggung}
+        </div>
+      `;
+      editingRow.children[3].textContent = deadlineFormatted;
+      editingRow.children[4].innerHTML = buatBadgeHTML(s.key);
+    } else {
+      // MODE TAMBAH: buat baris baru
+      const row = document.createElement('tr');
+      row.setAttribute('data-status', s.key);
+      row.innerHTML = `
+        <td></td>
+        <td>${nama}</td>
+        <td>
+          <div class="user-cell">
+            <span class="avatar-circle" style="background:${warna}">${inisial}</span>
+            ${penanggung}
+          </div>
+        </td>
+        <td>${deadlineFormatted}</td>
+        <td>${buatBadgeHTML(s.key)}</td>
+        <td>
+          <div class="action-cell">
+            <button class="icon-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
+            <button class="icon-btn delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </td>
+      `;
+      taskTableBody.appendChild(row);
+    }
 
-    taskTableBody.appendChild(row);
-
-    inputNama.value = '';
-    inputPenanggung.value = '';
-    inputDeadline.value = '';
-    modalTugas.classList.remove('active');
+ modalTugas.classList.remove('active');
+    resetModalTugas();
+    renomorTugas();
+    updateStatTugas();
   });
 }
 
+// ==================================================================
+// LANJUTAN HALAMAN TUGAS: klik tombol Edit / Hapus di tabel
+// ==================================================================
+if (taskTableBody) {
+  taskTableBody.addEventListener('click', (e) => {
+    const btnHapus = e.target.closest('.icon-btn.delete');
+    const btnEdit = e.target.closest('.icon-btn:not(.delete)');
+
+    if (btnHapus) {
+      if (confirm('Yakin ingin menghapus tugas ini?')) {
+        btnHapus.closest('tr').remove();
+        renomorTugas();
+        updateStatTugas();
+      }
+      return;
+    }
+
+    if (btnEdit) {
+      const row = btnEdit.closest('tr');
+      editingRow = row;
+
+      const nama = row.children[1].textContent.trim();
+      const penanggung = row.children[2].querySelector('.user-cell').textContent.trim();
+      const deadlineText = row.children[3].textContent.trim();
+      const statusKey = row.getAttribute('data-status');
+
+      inputNamaTugas.value = nama;
+      inputPenanggungTugas.value = penanggung;
+      inputStatusTugas.value = statusKeyToValue[statusKey] || 'pending';
+
+      // Konversi "15 Jul 2026" -> format input date (yyyy-mm-dd)
+      const parsedDate = new Date(deadlineText);
+      if (!isNaN(parsedDate)) {
+        const yyyy = parsedDate.getFullYear();
+        const mm = String(parsedDate.getMonth() + 1).padStart(2, '0');
+        const dd = String(parsedDate.getDate()).padStart(2, '0');
+        inputDeadlineTugas.value = `${yyyy}-${mm}-${dd}`;
+      } else {
+        inputDeadlineTugas.value = '';
+      }
+
+      if (modalTugasTitle) modalTugasTitle.textContent = 'Edit Tugas';
+      modalTugas.classList.add('active');
+    }
+  });
+}
+
+// ======================================================
+// LANJUTAN HALAMAN TUGAS: search & filter status
+// ======================================================
+const searchTugas = document.getElementById('searchTugas');
+const filterStatusTugas = document.getElementById('filterStatusTugas');
+const tugasEmpty = document.getElementById('tugasEmpty');
+
+function terapkanFilterTugas() {
+  if (!taskTableBody) return;
+  const keyword = searchTugas ? searchTugas.value.toLowerCase() : '';
+  const statusFilter = filterStatusTugas ? filterStatusTugas.value : '';
+  const rows = taskTableBody.querySelectorAll('tr');
+  let visibleCount = 0;
+
+  rows.forEach(row => {
+    const teks = row.textContent.toLowerCase();
+    const statusRow = row.getAttribute('data-status');
+    const cocokKeyword = teks.includes(keyword);
+    const cocokStatus = !statusFilter || statusRow === statusFilter;
+
+    if (cocokKeyword && cocokStatus) {
+      row.classList.remove('row-hidden');
+      visibleCount++;
+    } else {
+      row.classList.add('row-hidden');
+    }
+  });
+
+  if (tugasEmpty) tugasEmpty.style.display = visibleCount === 0 ? 'block' : 'none';
+}
+
+if (searchTugas) searchTugas.addEventListener('keyup', terapkanFilterTugas);
+if (filterStatusTugas) filterStatusTugas.addEventListener('change', terapkanFilterTugas);
+
+// ======================================================
+// LANJUTAN HALAMAN TUGAS: sorting kolom (klik header)
+// ======================================================
+document.querySelectorAll('#tabelTugas .th-sort').forEach(th => {
+  let ascending = true;
+  th.addEventListener('click', () => {
+    const sortKey = th.getAttribute('data-sort');
+    const tbody = document.getElementById('taskTableBody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+
+    rows.sort((a, b) => {
+      let valA, valB;
+      if (sortKey === 'status') {
+        valA = a.getAttribute('data-status');
+        valB = b.getAttribute('data-status');
+      } else if (sortKey === 'deadline') {
+        valA = new Date(a.children[3].textContent.trim());
+        valB = new Date(b.children[3].textContent.trim());
+      } else {
+        valA = a.children[1].textContent.trim().toLowerCase();
+        valB = b.children[1].textContent.trim().toLowerCase();
+      }
+      if (valA < valB) return ascending ? -1 : 1;
+      if (valA > valB) return ascending ? 1 : -1;
+      return 0;
+    });
+
+    rows.forEach(row => tbody.appendChild(row));
+    ascending = !ascending;
+    renomorTugas();
+  });
+});
 
 /* ============================================
    HALAMAN LAPORAN

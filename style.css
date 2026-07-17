@@ -27,61 +27,165 @@ body {
   display: flex;
   min-height: 100vh;
 }
+/* ==========================================================================
+   CSS FULL DASHBOARD (FIXED SIDEBAR, NATURAL SCROLL & ACTIVE TOGGLE BUTTON)
+   ========================================================================== */
 
-/* SIDEBAR */
+/* 1. ATURAN LAYOUT UTAMA (Scroll Alami Browser Aktif 100% Untuk Dashboard) */
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: sans-serif; /* Sesuaikan dengan font projekmu */
+}
+
+body {
+  display: flex; /* Sidebar dan Konten berdampingan secara Flexbox */
+}
+
+/* 2. SIDEBAR STYLE (Hanya elemen ini yang diam/sticky di kiri) */
 .sidebar {
   width: 230px;
-  background: var(--sidebar-bg);
-  color: var(--sidebar-text);
+  background: var(--sidebar-bg, #0f172a); 
+  color: var(--sidebar-text, #ffffff);
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
-  transition: transform 0.25s ease;
+  flex-shrink: 0; /* Mencegah sidebar menjadi gepeng/kegencet */
+  
+  /* KUNCI STICKY/FIXED: Sidebar menempel mati di layar kiri */
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 100vh;
+  
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  z-index: 1000;
 }
 
-/* FOOTER SIDEBAR - LOGOUT */
-.sidebar-footer {
-  margin-top: auto;
-  padding: 10px;
-  border-top: 1px solid rgba(255,255,255,0.08);
+/* KETIKA SIDEBAR DITUTUP (MENCIL / COLLAPSED) */
+.sidebar.collapsed {
+  width: 70px; /* Menyisakan lebar pas seukuran area ikon */
 }
 
-.logout-item {
-  color: #f87171;
-}
-
-.logout-item:hover {
-  background: rgba(248, 113, 113, 0.12);
-  color: #fca5a5;
-}
-
+/* SIDEBAR BRAND HEADER - DIRUBAH AGAR TOMBOL KE KANAN */
 .sidebar-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 20px;
+  justify-content: space-between; /* Mendorong tombol ke kanan */
+  padding: 0 16px; 
   border-bottom: 1px solid rgba(255,255,255,0.08);
+  height: 75px;
+  box-sizing: border-box;
+}
+
+/* Posisikan tombol tepat di tengah saat mini sidebar aktif */
+.sidebar.collapsed .sidebar-brand {
+  justify-content: center;
+  padding: 0;
+}
+
+/* ==========================================
+   BAGIAN BARU: TOMBOL KOTAK & EFFECT LINGKARAN ABU
+   ========================================== */
+
+/* 🟢 LINGKARAN SOROT ABU-ABU DI LUAR */
+.brand-toggle-btn {
+  background: transparent; 
+  color: #ffffff; /* Warna putih mengikuti teks sidebar */
+  border: none;
+  width: 40px;  
+  height: 40px;
+  border-radius: 50%; /* Membuat area luar bulat sempurna saat di-hover */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+  position: relative;
+  pointer-events: auto; 
+}
+
+/* Efek Sorot Lingkaran Abu-Abu Ringan saat Hover */
+.brand-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.08); 
+}
+
+/* 🟢 BENTUK KOTAK MELENGKUNG DI DALAM LINGKARAN */
+.brand-toggle-btn .toggle-icon svg {
+  border: 1.5px solid currentColor; /* Bingkai kotak kecil di dalam */
+  border-radius: 6px; /* Sudut melengkung halus pada kotak */
+  padding: 4px; /* Ruang dalam kotak */
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  transition: transform 0.25s ease;
+}
+
+/* 🟢 LOGIKA MENYEMBUNYIKAN & MEMUNCULKAN PANAH KECIL */
+.brand-toggle-btn .gemini-arrow {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+/* Panah otomatis muncul saat disorot kursor mouse */
+.brand-toggle-btn:hover .gemini-arrow {
+  opacity: 1;
+}
+
+/* Arah panah default hadap kiri [|<] saat sidebar lebar */
+.brand-toggle-btn .toggle-icon {
+  transform: scaleX(1);
+}
+
+/* Membalik arah ikon secara horizontal menjadi [>|] saat sidebar mengecil */
+.sidebar.collapsed .brand-toggle-btn .toggle-icon {
+  transform: scaleX(-1);
+}
+
+/* Sembunyikan tooltip hitam bawaan agar tampilan tetap bersih */
+.brand-toggle-btn .sidebar-tooltip {
+  display: none !important;
+}
+
+/* BRAND LOGO WRAPPER */
+.brand-logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
 }
 
 .brand-mark {
-  background: var(--accent);
+  background: #22c55e;
   color: #0f172a;
   font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
   font-size: 14px;
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-shrink: 0;
 }
 
 .brand-name {
   font-weight: 600;
   font-size: 16px;
   color: #ffffff;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+.sidebar.collapsed .brand-name,
+.sidebar.collapsed .brand-mark {
+  opacity: 0;
+  display: none;
+}
+
+/* NAVIGASI & MENU */
 .sidebar-nav {
   display: flex;
   flex-direction: column;
@@ -92,13 +196,14 @@ body {
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  color: var(--sidebar-text);
+  gap: 12px;
+  padding: 10px 14px; 
+  color: var(--sidebar-text, #94a3b8);
   text-decoration: none;
   border-radius: 8px;
   font-size: 14px;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: all 0.15s ease;
+  white-space: nowrap; 
 }
 
 .nav-item:hover {
@@ -108,16 +213,56 @@ body {
 
 .nav-item.active {
   background: rgba(34, 197, 94, 0.15);
-  color: var(--accent);
+  color: var(--accent, #22c55e);
   font-weight: 600;
 }
 
 .nav-icon {
-  font-size: 15px;
-  width: 18px;
+  font-size: 16px;
+  width: 20px;
   text-align: center;
+  flex-shrink: 0; 
 }
 
+.sidebar.collapsed .nav-item {
+  font-size: 0; 
+  justify-content: center;
+  padding: 10px 0;
+}
+
+/* FOOTER SIDEBAR */
+.sidebar-footer {
+  margin-top: auto;
+  padding: 10px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.logout-item {
+  color: #f87171;
+}
+
+/* 3. AREA KONTEN UTAMA DASHBOARD */
+.sidebar ~ * {
+  flex: 1;
+  padding: 24px;
+  box-sizing: border-box;
+  min-width: 0;
+  margin-left: 230px; 
+  transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar.collapsed ~ * {
+  margin-left: 70px;
+}
+
+.page {
+  display: none;
+  width: 100%;
+}
+
+.page.active {
+  display: block;
+}
 /* MAIN */
 .main {
   flex: 1;
@@ -305,28 +450,35 @@ body {
 
 .project-grid {
   display: flex;
-  overflow-x: auto; /* memungkinkan geser ke kanan */
-  gap: 20px; /* jarak antar item */
+  overflow-x: auto; /* Tetap menyamping */
+  gap: 20px;
   padding: 10px 0;
-  /* Hilangkan grid-template-columns dan gunakan flex untuk bisa digeser */
+  scroll-snap-type: x mandatory; /* Membantu agar geseran berhenti pas di kartu */
+  width: 100%;
 }
-
 .project-grid::-webkit-scrollbar {
   display: none;
 }
 
 .project-item {
-  flex: 0 0 250px; /* atau sesuai lebar yang diinginkan */
+  /* Mengatur lebar agar pas 3 kartu terlihat di layar */
+  flex: 0 0 calc(33.33% - 14px); 
+  
+  /* Memberikan tinggi yang konsisten agar terlihat besar */
+  min-height: 450px; 
+  
   display: flex;
   flex-direction: column;
   border: 2px solid #333;
   border-radius: 14px;
   overflow: hidden;
   background: #fff;
-  padding: 15px; /* memberi jarak dari tepi */
+  padding: 20px;
   box-sizing: border-box;
+  
+  /* Agar geseran berhenti pas di kartu */
+  scroll-snap-align: start; 
 }
-
 .project-item h3 {
   font-size: 16px;
   margin-bottom: 8px;

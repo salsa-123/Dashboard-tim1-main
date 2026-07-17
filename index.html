@@ -663,14 +663,22 @@
             <div class="setting-row"><span>Password</span><button class="btn btn-secondary">Ubah Password</button></div>
 
             <h3>Tampilan</h3>
-            <div class="setting-row"><span>Tema</span><select><option>Light Mode</option><option>Dark Mode</option></select></div>
+<div class="setting-row"><span>Tema</span>
+  <select id="tema"><option>Light Mode</option><option>Dark Mode</option></select>
+</div>
 
-            <h3>Notifikasi</h3>
-            <div class="setting-row"><span>Notifikasi Email</span><select><option>Aktif</option><option>Nonaktif</option></select></div>
+<h3>Notifikasi</h3>
+<div class="setting-row"><span>Notifikasi Email</span>
+  <select id="notifEmail"><option>Aktif</option><option>Nonaktif</option></select>
+</div>
 
-            <h3>Tim & Proyek</h3>
-            <div class="setting-row"><span>Peran Akses</span><select><option>Admin</option><option>Editor</option></select></div>
-            <div class="setting-row"><span>Proyek Aktif</span><input type="text" value="Proyek Alpha"></div>
+<h3>Tim & Proyek</h3>
+<div class="setting-row"><span>Peran Akses</span>
+  <select id="peranAkses"><option>Admin</option><option>Editor</option></select>
+</div>
+<div class="setting-row"><span>Proyek Aktif</span>
+  <input type="text" id="proyekAktif" value="Proyek Alpha">
+</div>
 
             <h3>Backup & Data</h3>
             <div class="setting-row"><span>Ekspor Data</span><button class="btn btn-secondary">Unduh CSV</button></div>
@@ -683,11 +691,11 @@
             <div class="setting-row"><span>Versi Aplikasi</span><span>v1.2.0</span></div>
 
             <div style="margin-top: 30px; text-align: right;">
-                <button class="btn">Simpan Semua Perubahan</button>
+                <button class="btn" onclick="simpanSemuaPerubahan()">Simpan Semua Perubahan</button>
                 <!-- Jendela Modal untuk Ubah Password -->
 <div id="modal-password" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center;">
     <div style="background:white; padding:30px; border-radius:8px; width:400px;">
-        <h3>Ubah Password</h3>
+        <button class="btn btn-secondary" onclick="bukaModal()">Ubah Password</button>
         <input type="password" placeholder="Password Lama" style="width:100%; margin-bottom:10px;">
         <input type="password" placeholder="Password Baru" style="width:100%; margin-bottom:10px;">
         <button onclick="tutupModal()" class="btn">Simpan</button>

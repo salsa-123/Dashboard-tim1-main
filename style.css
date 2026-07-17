@@ -1947,11 +1947,22 @@ body {
 
 /* ========================================
    HALAMAN PENGATURAN
-======================================== */
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
         /* Jangan gunakan 'body' atau '*' jika sudah ada di proyek utama */
-#page-pengaturan .container { max-width: 800px; margin: 20px auto; } 
+#page-pengaturan .container { 
+    max-width: 2000px; /* Ubah ke angka yang lebih besar sesuai keinginanmu */
+    width: 100%;        /* Tambahkan ini agar responsif di layar kecil */
+    margin: 20px auto; 
+} 
+
+input, select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 300px; /* Perlebar dari 200px menjadi 300px atau lebih */
+}
+
 #page-pengaturan .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 /* ... tambahkan kelas lainnya dengan prefix #page-pengaturan agar tidak bentrok */
         .container { max-width: 800px; margin: 0 auto; }

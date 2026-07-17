@@ -689,3 +689,102 @@ if (btnSimpanByClass) {
         modal.style.display = 'none';
         alert('Password berhasil diubah!');
     }
+
+
+
+// Kunci penyimpanan di localStorage
+const STORAGE_KEY = 'pengaturan_dashboard';
+
+// Muat pengaturan yang tersimpan saat halaman dibuka
+function muatPengaturan() {
+  const data = localStorage.getItem(STORAGE_KEY);
+  if (!data) return;
+
+  const s = JSON.parse(data);
+  if (s.tema) document.getElementById('tema').value = s.tema;
+  if (s.notifEmail) document.getElementById('notifEmail').value = s.notifEmail;
+  if (s.peranAkses) document.getElementById('peranAkses').value = s.peranAkses;
+  if (s.proyekAktif) document.getElementById('proyekAktif').value = s.proyekAktif;
+
+  // Terapkan tema langsung
+  terapkanTema(s.tema);
+}
+
+// Terapkan tema hanya ke dalam elemen kartu pengaturan
+function terapkanTema(tema) {
+  const card = document.querySelector('#page-pengaturan .card');
+  
+  if (tema === 'Dark Mode') {
+    card.style.background = '#1e1e1e';
+    card.style.color = '#f0f0f0';
+    // Menyesuaikan warna judul dan teks h3 di dalam card agar tetap terbaca
+    card.querySelectorAll('h1, h3').forEach(el => el.style.color = '#ffffff');
+  } else {
+    card.style.background = '#ffffff';
+    card.style.color = '#333333';
+    // Mengembalikan warna teks judul
+    card.querySelectorAll('h1').forEach(el => el.style.color = '#2c3e50');
+    card.querySelectorAll('h3').forEach(el => el.style.color = '#34495e');
+  }
+}
+
+// Simpan semua perubahan
+function simpanSemuaPerubahan() {
+  const pengaturan = {
+    tema: document.getElementById('tema').value,
+    notifEmail: document.getElementById('notifEmail').value,
+    peranAkses: document.getElementById('peranAkses').value,
+    proyekAktif: document.getElementById('proyekAktif').value
+  };
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(pengaturan));
+  terapkanTema(pengaturan.tema);
+
+  alert('Semua perubahan berhasil disimpan!');
+  console.log('Pengaturan tersimpan:', pengaturan);
+}
+
+// Buka modal ubah password
+function bukaModal() {
+  document.getElementById('modal-password').style.display = 'flex';
+}
+
+// Tutup modal ubah password
+function tutupModal() {
+  document.getElementById('modal-password').style.display = 'none';
+}
+
+// Jalankan saat halaman pertama kali dimuat
+document.addEventListener('DOMContentLoaded', muatPengaturan);
+
+    // 1. FUNGSI UNDUH CSV
+    document.querySelector('.btn-secondary:nth-of-type(1)').addEventListener('click', function() {
+        // Contoh data yang akan diunduh
+        const data = [
+            ["Nama", "Email", "Proyek"],
+            ["Budi Santoso", "budi@example.com", "Proyek Alpha"]
+        ];
+
+        // Mengubah array menjadi format CSV
+        let csvContent = "data:text/csv;charset=utf-8,";
+        data.forEach(function(rowArray) {
+            let row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+
+        // Membuat link unduhan otomatis
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "data_pengaturan.csv");
+        document.body.appendChild(link);
+        link.click(); // Memicu klik otomatis
+        document.body.removeChild(link);
+    });
+
+    // 2. FUNGSI HUBUNGKAN (GitHub/Slack)
+    document.querySelector('.btn-secondary:nth-of-type(2)').addEventListener('click', function() {
+        alert("Mengarahkan ke halaman otorisasi GitHub/Slack...");
+        // Di sini biasanya kamu akan me-redirect pengguna ke URL API pihak ketiga
+        // window.location.href = "https://github.com/login/oauth/authorize?...";
+    });

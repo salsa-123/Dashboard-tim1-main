@@ -9,37 +9,56 @@
   </head>
   <body>
     <div class="app">
-      <!-- SIDEBAR -->
-      <aside class="sidebar">
-        <div class="sidebar-brand">
-          <span class="brand-mark">T1</span>
-          <span class="brand-name">Team Work</span>
-        </div>
+<!-- ==========================================================================
+     STRUKTUR HTML SIDEBAR (VERSI TOMBOL KOTAK KECIL DENGAN GARIS & PANAH HOVER)
+     ========================================================================== -->
 
-        <nav class="sidebar-nav">
-          <a href="#Home" class="nav-item active" data-page="dashboard">
-            <span class="nav-icon">▦</span> Dashboard
-          </a>
-          <a href="#tugas" class="nav-item" data-page="tugas">
-            <span class="nav-icon">✓</span> Tugas
-          </a>
-          <a href="#laporan" class="nav-item" data-page="laporan">
-            <span class="nav-icon">▤</span> Laporan
-          </a>
-          <a href="#pengaturan" class="nav-item" data-page="pengaturan">
-            <span class="nav-icon">⚙</span> Pengaturan
-          </a>
-        </nav>
-        <div class="sidebar-footer">
-          <a href="#" class="nav-item logout-item" id="btnLogout">
-            <span class="nav-icon">⏻</span> Logout
-          </a>
-        </div>
-      </aside>
+<!-- SIDEBAR -->
+<aside class="sidebar" id="mySidebar">
+  <div class="sidebar-brand">
+    <!-- 🟢 TOMBOL KOTAK KECIL (Hanya garis lurus, panah muncul saat hover kursor) -->
+    <button id="brandToggle" class="brand-toggle-btn">
+      <span class="toggle-icon">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Garis Tegak Lurus Tetap (Selalu Muncul) -->
+          <line x1="6" y1="4" x2="6" y2="20" class="gemini-line"></line>
+          <!-- Panah Kiri (Tersembunyi, Muncul Saat Hover) -->
+          <polyline points="18 5 11 12 18 19" class="gemini-arrow"></polyline>
+        </svg>
+      </span>
+      
+      <!-- Balon text hitam melayang di samping tombol -->
+      <span class="sidebar-tooltip">Tutup sidebar</span>
+    </button>
 
-        <main class="content">
+    <!-- 🟢 LOGO & NAMA APLIKASI (Terpisah rapi agar tidak ikut rusak/terdorong teks) -->
+    <div class="brand-logo-wrapper">
+      <span class="brand-mark">T1</span>
+      <span class="brand-name">Team Work</span>
+    </div>
+  </div>
 
-
+  <nav class="sidebar-nav">
+    <a href="#Home" class="nav-item active" data-page="dashboard">
+      <span class="nav-icon">▦</span> Dashboard
+    </a>
+    <a href="#tugas" class="nav-item" data-page="tugas">
+      <span class="nav-icon">✓</span> Tugas
+    </a>
+    <a href="#laporan" class="nav-item" data-page="laporan">
+      <span class="nav-icon">▤</span> Laporan
+    </a>
+    <a href="#pengaturan" class="nav-item" data-page="pengaturan">
+      <span class="nav-icon">⚙</span> Pengaturan
+    </a>
+  </nav>
+  
+  <div class="sidebar-footer">
+    <a href="#" class="nav-item logout-item" id="btnLogout">
+      <span class="nav-icon">⏻</span> Logout
+    </a>
+  </div>
+</aside>
          <!-- HALAMAN: DASHBOARD -->
 <section class="page active" id="page-dashboard">
   <div class="panel">
@@ -50,7 +69,7 @@
         <div class="project-item">
           <div class="project-logo-row">
             <div class="project-logo-emblem" style="background: #5b4fe9">
-  <img src="emblem/6.jpg" alt="Logo" style="width: 300px; height: auto;">
+  <img src="emblem/6.jpg" alt="Logo" style="width: 400px; height: auto;">
 </div>
           </div>
           <div class="project-keterangan-row">
@@ -81,7 +100,7 @@
         <div class="project-item">
           <div class="project-logo-row">
             <div class="project-logo-emblem" style="background: #5b4fe9">
-  <img src="emblem/1.jpg" alt="Logo" style="width: 300px; height: auto;">
+  <img src="emblem/1.jpg" alt="Logo" style="width: 400px; height: auto;">
 </div>
           </div>
           <div class="project-keterangan-row">
@@ -112,7 +131,7 @@
         <div class="project-item">
           <div class="project-logo-row">
             <div class="project-logo-emblem" style="background: #5b4fe9">
-  <img src="emblem/2.jpg" alt="Logo" style="width: 300px; height: auto;">
+  <img src="emblem/2.jpg" alt="Logo" style="width: 400px; height: auto;">
 </div>
           </div>
           <div class="project-keterangan-row">
@@ -143,7 +162,7 @@
         <div class="project-item">
           <div class="project-logo-row">
             <div class="project-logo-emblem" style="background: #5b4fe9">
-  <img src="emblem/3.jpg" alt="Logo" style="width: 300px; height: auto;">
+  <img src="emblem/3.jpg" alt="Logo" style="width: 400px; height: auto;">
 </div>
           </div>
           <div class="project-keterangan-row">
@@ -174,7 +193,7 @@
         <div class="project-item">
           <div class="project-logo-row">
            <div class="project-logo-emblem" style="background: #5b4fe9">
-  <img src="emblem/4.jpg" alt="Logo" style="width: 300px; height: auto;">
+  <img src="emblem/4.jpg" alt="Logo" style="width: 400px; height: auto;">
 </div>
           </div>
           <div class="project-keterangan-row">
@@ -205,7 +224,7 @@
         <div class="project-item">
           <div class="project-logo-row">
             <div class="project-logo-emblem" style="background: #5b4fe9">
-  <img src="emblem/5.jpg" alt="Logo" style="width: 300px; height: auto;">
+  <img src="emblem/5.jpg" alt="Logo" style="width: 400px; height: auto;">
 </div>
           </div>
           <div class="project-keterangan-row">

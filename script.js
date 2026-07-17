@@ -1,38 +1,64 @@
-// ===========================
-// NAVIGASI SIDEBAR & HALAMAN
-// ===========================
-const navItems = document.querySelectorAll('.nav-item');
-const pages = document.querySelectorAll('.page');
-const pageTitle = document.getElementById('pageTitle');
-const menuToggle = document.getElementById('menuToggle');
-const sidebar = document.querySelector('.sidebar');
+// ==========================================================================
+// NAVIGASI SIDEBAR, BUKA-TUTUP, & HALAMAN (VERSI FULL INTEGRATED)
+// ==========================================================================
+document.addEventListener("DOMContentLoaded", () => {
+  const navItems = document.querySelectorAll('.nav-item');
+  const pages = document.querySelectorAll('.page');
+  const pageTitle = document.getElementById('pageTitle');
+  const sidebar = document.querySelector('.sidebar');
+  
+  // 🟢 ID disesuaikan dengan tombol kotak hijau utama
+  const brandToggle = document.getElementById('brandToggle'); 
 
-navItems.forEach(item => {
-  item.addEventListener('click', (e) => {
-    e.preventDefault();
+  // FUNGSI 1: Logika Buka-Tutup Sidebar (Toggle Collapse)
+  if (brandToggle && sidebar) {
+    brandToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation(); // Mencegah bentrokan klik dengan elemen di luarnya
+      sidebar.classList.toggle('collapsed');
+    });
+  }
 
-    const targetPage = item.getAttribute('data-page');
-    if (!targetPage) return;
+  // FUNGSI 2: Pindah Halaman & Navigasi Menu Aktif
+  navItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      // Abaikan jika yang diklik adalah tombol khusus seperti logout
+      if (item.classList.contains('logout-item')) return;
+      
+      e.preventDefault();
 
-    navItems.forEach(i => i.classList.remove('active'));
-    item.classList.add('active');
+      const targetPage = item.getAttribute('data-page');
+      if (!targetPage) return;
 
-    pages.forEach(page => page.classList.remove('active'));
-    const target = document.getElementById('page-' + targetPage);
-    if (target) target.classList.add('active');
+      // 1. Ubah status menu aktif
+      navItems.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
 
-    if (pageTitle) pageTitle.textContent = item.textContent.trim();
+      // 2. Pindah tampilan halaman aktif
+      pages.forEach(page => page.classList.remove('active'));
+      const target = document.getElementById('page-' + targetPage);
+      if (target) target.classList.add('active');
 
-    if (sidebar) sidebar.classList.remove('open');
+      // 3. Update Judul Halaman di atas dashboard jika ada
+      if (pageTitle) {
+        // Membersihkan ikon simbol/emoji bawaan agar teks judul rapi
+        const cleanText = item.textContent.replace(/[\u25A0-\u25FF\u2700-\u27BF\u2600-\u26FF\u2B50]/g, '').trim();
+        pageTitle.textContent = cleanText;
+      }
+
+      // Sidebar tetap kokoh (fixed/sticky) di posisinya saat menu diklik
+    });
   });
 });
-
+// ==========================================
+// KONTROL BUKA/TUTUP (HANYA DARI TOMBOL HAMBURGER)
+// ==========================================
 if (menuToggle && sidebar) {
   menuToggle.addEventListener('click', () => {
-    sidebar.classList.toggle('open');
+    // Sidebar HANYA akan hilang atau muncul saat tombol menuToggle ini dipencet
+    sidebar.classList.toggle('collapsed'); 
   });
 }
-
 
 // ===========================
 // TAMBAH PROYEK

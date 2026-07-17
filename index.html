@@ -311,8 +311,7 @@
         <thead>
           <tr>
             <th>No</th>
-            <th class="th-sort" data-sort="nama">Nama Tugas <i class="fa-solid fa-sort"></i></th>
-            <th>Penanggung Jawab</th>
+            <th class="th-sort" data-sort="nama">Nama Tugas <i class="fa-solid fa-sort"></i></th>            
             <th class="th-sort" data-sort="deadline">Deadline <i class="fa-solid fa-sort"></i></th>
             <th class="th-sort" data-sort="status">Status <i class="fa-solid fa-sort"></i></th>
             <th>Aksi</th>
@@ -323,12 +322,6 @@
           <tr data-status="selesai">
             <td>1</td>
             <td>Desain Sidebar Dashboard</td>
-            <td>
-              <div class="user-cell">
-                <span class="avatar-circle" style="background:#f59e0b">M</span>
-                Melati
-              </div>
-            </td>
             <td>15 Jul 2026</td>
             <td><span class="status selesai"><i class="fa-solid fa-check"></i> Selesai</span></td>
             <td>
@@ -342,12 +335,6 @@
           <tr data-status="proses">
             <td>2</td>
             <td>Integrasi Halaman Laporan</td>
-            <td>
-              <div class="user-cell">
-                <span class="avatar-circle" style="background:#3b82f6">T1</span>
-                Tim 1
-              </div>
-            </td>
             <td>20 Jul 2026</td>
             <td><span class="status proses"><i class="fa-solid fa-spinner"></i> Sedang Berjalan</span></td>
             <td>
@@ -361,12 +348,6 @@
           <tr data-status="belum">
             <td>3</td>
             <td>Testing Responsive Mobile</td>
-            <td>
-              <div class="user-cell">
-                <span class="avatar-circle" style="background:#8b5cf6">TQ</span>
-                Tim QA
-              </div>
-            </td>
             <td>22 Jul 2026</td>
             <td><span class="status belum"><i class="fa-solid fa-circle"></i> Belum Mulai</span></td>
             <td>
@@ -409,10 +390,10 @@
                 </p>
             </div>
 
-            <button class="btn-primary">
-                <i class="fa-solid fa-plus"></i>
-                Buat Laporan
-            </button>
+           <button class="btn-primary" onclick="bukaFormLaporan()">
+    <i class="fa-solid fa-plus"></i>
+    Buat Laporan
+</button>
 
         </div>
 
@@ -636,6 +617,19 @@
 
                         dashboard-ui.pdf
 
+                        <!-- Modal Formulir -->
+<div id="modal-laporan" class="modal-overlay">
+    <div class="modal-content">
+        <h3>Buat Laporan Baru</h3>
+        <input type="text" id="judulLaporan" placeholder="Judul Laporan" class="modal-input">
+        <textarea id="isiLaporan" placeholder="Isi Laporan" class="modal-textarea"></textarea>
+        
+        <div class="modal-actions">
+            <button class="btn-primary" onclick="simpanLaporan()">Simpan</button>
+            <button class="btn-delete" onclick="tutupModal()">Batal</button>
+        </div>
+    </div>
+</div>
                     </div>
 
                 </div>

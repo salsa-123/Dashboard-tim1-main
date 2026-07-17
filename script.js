@@ -788,3 +788,12 @@ document.addEventListener('DOMContentLoaded', muatPengaturan);
         // Di sini biasanya kamu akan me-redirect pengguna ke URL API pihak ketiga
         // window.location.href = "https://github.com/login/oauth/authorize?...";
     });
+
+
+    function bukaFormLaporan() {
+        // Contoh aksi: menampilkan pesan atau membuka modal
+        alert("Formulir Buat Laporan akan segera muncul!");
+
+        // Jika Anda ingin mengarahkan ke halaman lain, gunakan:
+        // window.location.href = "halaman_laporan.html";
+    }

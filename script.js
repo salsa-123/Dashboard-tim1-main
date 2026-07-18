@@ -50,29 +50,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-
-
-// ==========================================================================
-// LOGIKA NAVIGASI GESER CAROUSEL RINGKASAN PROYEK
-// ==========================================================================
-document.addEventListener("DOMContentLoaded", function () {
-  const track = document.getElementById("dashboardTrack");
-  const btnPrev = document.getElementById("btnPrev");
-  const btnNext = document.getElementById("btnNext");
-
-  // Jika elemen tidak ditemukan di halaman ini, script tidak akan dipaksa jalan (menghindari error)
-  if (!track || !btnPrev || !btnNext) return;
-
-  // Menghitung jarak geser dinamis berdasarkan lebar 1 kotak proyek + gap CSS (16px)
-  const getScrollAmount = () => {
-    const firstItem = track.querySelector(".project-item");
-    return firstItem ? firstItem.clientWidth + 16 : 356; 
-  };
-
-  // Fungsi klik tombol Kanan (Maju)
-  btnNext.addEventListener("click", () => {
-    track.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
-  });
+// ==========================================
+// KONTROL BUKA/TUTUP (HANYA DARI TOMBOL HAMBURGER)
+// ==========================================
 
   // Fungsi klik tombol Kiri (Mundur)
   btnPrev.addEventListener("click", () => {
@@ -780,49 +760,52 @@ if (btnSimpanByClass) {
 
 
 
-// Kunci penyimpanan di localStorage
+// =====================================================
+// PENGATURAN DASHBOARD (VERSI BERSIH, TANPA DUPLIKAT)
+// =====================================================
 const STORAGE_KEY = 'pengaturan_dashboard';
 
-// Muat pengaturan yang tersimpan saat halaman dibuka
+// Terapkan warna tema ke kartu halaman Pengaturan saja
+function terapkanTema(tema) {
+  if (tema === 'dark') {
+    document.body.classList.add('dark-mode');
+  } else {
+    document.body.classList.remove('dark-mode');
+  }
+}
+
+// Muat pengaturan tersimpan saat halaman dibuka
 function muatPengaturan() {
   const data = localStorage.getItem(STORAGE_KEY);
   if (!data) return;
 
   const s = JSON.parse(data);
-  if (s.tema) document.getElementById('tema').value = s.tema;
-  if (s.notifEmail) document.getElementById('notifEmail').value = s.notifEmail;
-  if (s.peranAkses) document.getElementById('peranAkses').value = s.peranAkses;
-  if (s.proyekAktif) document.getElementById('proyekAktif').value = s.proyekAktif;
+  const elTema = document.getElementById('tema');
+  const elNotif = document.getElementById('notifEmail');
+  const elPeran = document.getElementById('peranAkses');
+  const elProyek = document.getElementById('proyekAktif');
 
-  // Terapkan tema langsung
+  if (s.tema && elTema) elTema.value = s.tema;
+  if (s.notifEmail && elNotif) elNotif.value = s.notifEmail;
+  if (s.peranAkses && elPeran) elPeran.value = s.peranAkses;
+  if (s.proyekAktif && elProyek) elProyek.value = s.proyekAktif;
+
   terapkanTema(s.tema);
 }
 
-// Terapkan tema hanya ke dalam elemen kartu pengaturan
-function terapkanTema(tema) {
-  const card = document.querySelector('#page-pengaturan .card');
-  
-  if (tema === 'Dark Mode') {
-    card.style.background = '#1e1e1e';
-    card.style.color = '#f0f0f0';
-    // Menyesuaikan warna judul dan teks h3 di dalam card agar tetap terbaca
-    card.querySelectorAll('h1, h3').forEach(el => el.style.color = '#ffffff');
-  } else {
-    card.style.background = '#ffffff';
-    card.style.color = '#333333';
-    // Mengembalikan warna teks judul
-    card.querySelectorAll('h1').forEach(el => el.style.color = '#2c3e50');
-    card.querySelectorAll('h3').forEach(el => el.style.color = '#34495e');
-  }
-}
-
-// Simpan semua perubahan
+// Simpan semua perubahan (HANYA SATU fungsi ini di seluruh file)
 function simpanSemuaPerubahan() {
+  const elTema = document.getElementById('tema');
+  if (!elTema) {
+    alert('Elemen tema tidak ditemukan, cek id="tema" di HTML.');
+    return;
+  }
+
   const pengaturan = {
-    tema: document.getElementById('tema').value,
-    notifEmail: document.getElementById('notifEmail').value,
-    peranAkses: document.getElementById('peranAkses').value,
-    proyekAktif: document.getElementById('proyekAktif').value
+    tema: elTema.value,
+    notifEmail: document.getElementById('notifEmail')?.value || '',
+    peranAkses: document.getElementById('peranAkses')?.value || '',
+    proyekAktif: document.getElementById('proyekAktif')?.value || ''
   };
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(pengaturan));
@@ -832,84 +815,87 @@ function simpanSemuaPerubahan() {
   console.log('Pengaturan tersimpan:', pengaturan);
 }
 
-// Buka modal ubah password
+// Buka / tutup modal ubah password
 function bukaModal() {
-  document.getElementById('modal-password').style.display = 'flex';
+  const modal = document.getElementById('modal-password');
+  if (modal) modal.style.display = 'flex';
 }
-
-// Tutup modal ubah password
 function tutupModal() {
-  document.getElementById('modal-password').style.display = 'none';
+  const modal = document.getElementById('modal-password');
+  if (modal) modal.style.display = 'none';
 }
 
-// Jalankan saat halaman pertama kali dimuat
-document.addEventListener('DOMContentLoaded', muatPengaturan);
+function bukaFormLaporan() {
+  alert('Formulir Buat Laporan akan segera muncul!');
+}
 
-    // 1. FUNGSI UNDUH CSV
-    document.querySelector('.btn-secondary:nth-of-type(1)').addEventListener('click', function() {
-        // Contoh data yang akan diunduh
-        const data = [
-            ["Nama", "Email", "Proyek"],
-            ["Budi Santoso", "budi@example.com", "Proyek Alpha"]
-        ];
+// Semua event listener didaftarkan setelah DOM siap, dan semua dicek null dulu
+document.addEventListener('DOMContentLoaded', function () {
+  muatPengaturan();
 
-        // Mengubah array menjadi format CSV
-        let csvContent = "data:text/csv;charset=utf-8,";
-        data.forEach(function(rowArray) {
-            let row = rowArray.join(",");
-            csvContent += row + "\r\n";
-        });
-
-        // Membuat link unduhan otomatis
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "data_pengaturan.csv");
-        document.body.appendChild(link);
-        link.click(); // Memicu klik otomatis
-        document.body.removeChild(link);
+  // Update tema langsung saat dropdown diganti (real-time)
+  const elTema = document.getElementById('tema');
+  if (elTema) {
+    elTema.addEventListener('change', function () {
+      terapkanTema(this.value);
     });
+  }
 
-    // 2. FUNGSI HUBUNGKAN (GitHub/Slack)
-const btnHubungkan = document.querySelector('.btn-secondary:nth-of-type(2)');
+  // Tombol Unduh CSV
+  const btnCSV = document.getElementById('btnEksporCSV');
+  if (btnCSV) {
+    btnCSV.addEventListener('click', function () {
+      const data = [
+        ["Nama", "Email", "Proyek"],
+        ["Budi Santoso", "budi@example.com", "Proyek Alpha"]
+      ];
+      let csvContent = "data:text/csv;charset=utf-8,";
+      data.forEach(row => csvContent += row.join(",") + "\r\n");
 
-if (btnHubungkan) {
+      const link = document.createElement("a");
+      link.setAttribute("href", encodeURI(csvContent));
+      link.setAttribute("download", "data_pengaturan.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  }
+
+  // Tombol Hubungkan GitHub/Slack
+  const btnHubungkan = document.getElementById('btnHubungkan');
+  if (btnHubungkan) {
     btnHubungkan.addEventListener('click', function () {
-        alert("Mengarahkan ke halaman otorisasi GitHub/Slack...");
-        
+      alert("Mengarahkan ke halaman otorisasi GitHub/Slack...");
     });
-}
+  }
+});
 
 
-    function bukaFormLaporan() {
-    const modalLaporan = document.getElementById('modal-laporan');
-
-    if (modalLaporan) {
-        modalLaporan.style.display = 'flex';
-
-        document.getElementById('judulLaporan').value = '';
-        document.getElementById('penulisLaporan').value = '';
-        document.getElementById('isiLaporan').value = '';
-        document.getElementById('fileLaporan').value = '';
-    }
+// ===========================
+// MODAL BUAT LAPORAN
+// ===========================
+function bukaFormLaporan() {
+    const modal = document.getElementById('modal-laporan');
+    if (modal) modal.classList.add('active');
 }
 
 function tutupModalLaporan() {
-    const modalLaporan = document.getElementById('modal-laporan');
-    if (modalLaporan) modalLaporan.style.display = 'none';
+    const modal = document.getElementById('modal-laporan');
+    if (modal) modal.classList.remove('active');
+
+    document.getElementById('judulLaporan').value = '';
+    document.getElementById('penulisLaporan').value = '';
+    document.getElementById('isiLaporan').value = '';
+    document.getElementById('prioritasLaporan').value = 'Rendah';
+    document.getElementById('statusLaporan').value = 'pending';
 }
 
 function simpanLaporan() {
-
     const judul = document.getElementById('judulLaporan').value.trim();
     const penulis = document.getElementById('penulisLaporan').value.trim();
+    const prioritas = document.getElementById('prioritasLaporan').value;
+    const status = document.getElementById('statusLaporan').value;
     const isi = document.getElementById('isiLaporan').value.trim();
-
-    const fileInput = document.getElementById('fileLaporan');
-    const namaFile =
-        fileInput.files.length > 0
-        ? fileInput.files[0].name
-        : '-';
 
     if (!judul || !penulis || !isi) {
         alert('Judul, penulis, dan isi laporan wajib diisi!');
@@ -917,35 +903,41 @@ function simpanLaporan() {
     }
 
     const tanggalSekarang = new Date().toLocaleDateString('id-ID', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
+        day: 'numeric', month: 'long', year: 'numeric'
     });
 
-    laporanData.unshift({
+    const laporanBaru = {
         judul: judul,
         tanggal: tanggalSekarang,
         penulis: penulis,
-        prioritas: 'Sedang',
-        status: 'selesai',
-        file: namaFile,
+        prioritas: prioritas,
+        status: status,
+        file: '-',
         isi: isi
-    });
+    };
 
+    laporanData.unshift(laporanBaru);
     renderLaporanList();
-    tutupModalLaporan();
     tampilkanLaporan(0);
+
+    tutupModalLaporan();
+    alert('Laporan berhasil dibuat!');
 }
 
+// ===========================
+// RENDER DAFTAR LAPORAN (dinamis dari array laporanData)
+// ===========================
 function renderLaporanList() {
-    const listContainer = document.querySelector('.laporan-list');
-    if (!listContainer) return;
+    const container = document.querySelector('.laporan-list');
+    if (!container) return;
 
-    listContainer.innerHTML = '';
+    container.innerHTML = '';
+
     laporanData.forEach((data, index) => {
         const item = document.createElement('div');
         item.classList.add('laporan-item');
         if (index === 0) item.classList.add('active');
+
         item.innerHTML = `
             <div class="laporan-icon ${data.status}">
                 <i class="fa-solid fa-file"></i>
@@ -955,11 +947,14 @@ function renderLaporanList() {
                 <span>${data.tanggal}</span>
             </div>
         `;
+
         item.addEventListener('click', () => {
             document.querySelectorAll('.laporan-item').forEach(i => i.classList.remove('active'));
             item.classList.add('active');
             tampilkanLaporan(index);
         });
-        listContainer.appendChild(item);
+
+        container.appendChild(item);
     });
 }
+    

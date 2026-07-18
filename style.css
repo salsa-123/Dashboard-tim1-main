@@ -2039,7 +2039,7 @@ body {
 
 .btn-edit:hover{
 
-    background:#4f46e5;
+    background:#10b981;
 
     color:#fff;
 
@@ -2380,7 +2380,7 @@ input, select {
         h3 { color: #34495e; margin: 20px 0 15px 0; font-size: 1.1rem; }
         .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; }
         input, select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 200px; }
-        .btn { background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
         .btn-secondary { background: #95a5a6; }
 
 
@@ -3254,4 +3254,105 @@ RESPONSIVE
   top: 0;
   z-index: 9;
   background: #f8fafc;
+}
+
+
+.modal-content select.modal-input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #dbe3ef;
+    border-radius: 12px;
+    box-sizing: border-box;
+    background: #fff;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   DARK MODE GLOBAL
+===================================================== */
+body.dark-mode {
+  --bg: #14181f;
+  --sidebar-bg: #0d1117;
+  --card-bg: #1e2530;
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --border: #2d3543;
+  --laporan-bg: #14181f;
+  --laporan-card: #1e2530;
+  --laporan-border: #2d3543;
+  --laporan-text: #e5e7eb;
+  --laporan-text-light: #9ca3af;
+}
+
+body.dark-mode,
+body.dark-mode .laporan-panel {
+  background: var(--bg);
+  color: var(--text-main);
+}
+
+body.dark-mode .panel,
+body.dark-mode .stat-card,
+body.dark-mode .team-card,
+body.dark-mode .tugas-stat-card,
+body.dark-mode .laporan-sidebar,
+body.dark-mode .laporan-detail,
+body.dark-mode .settings-card,
+body.dark-mode #page-pengaturan .card,
+body.dark-mode .modal-content,
+body.dark-mode .modal-box,
+body.dark-mode .detail-info div,
+body.dark-mode .detail-content,
+body.dark-mode .detail-file,
+body.dark-mode .project-item {
+  background: var(--card-bg);
+  color: var(--text-main);
+  border-color: var(--border);
+}
+
+body.dark-mode .task-table,
+body.dark-mode .task-table th,
+body.dark-mode .task-table td,
+body.dark-mode .table-wrapper,
+body.dark-mode #tabelTugas thead th {
+  background: var(--card-bg);
+  color: var(--text-main);
+  border-color: var(--border);
+}
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea,
+body.dark-mode .search-box input,
+body.dark-mode .tugas-search-box input {
+  background: #262f3d;
+  color: var(--text-main);
+  border-color: var(--border);
+}
+
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
+body.dark-mode h4, body.dark-mode p, body.dark-mode span,
+body.dark-mode label, body.dark-mode .laporan-info h4,
+body.dark-mode .detail-header h3, body.dark-mode .page-title {
+  color: var(--text-main);
+}
+
+body.dark-mode .topbar,
+body.dark-mode .topbar-search,
+body.dark-mode .topbar-icon-btn {
+  background: var(--card-bg);
+  border-color: var(--border);
+}
+
+body.dark-mode .laporan-item:hover,
+body.dark-mode .laporan-item.active {
+  background: #262f3d;
+}
+
+body.dark-mode .dash-keterangan p,
+body.dark-mode .ket-label,
+body.dark-mode .project-item span {
+  color: var(--text-muted);
 }

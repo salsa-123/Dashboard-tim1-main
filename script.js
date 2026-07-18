@@ -50,13 +50,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
 // ==========================================
 // KONTROL BUKA/TUTUP (HANYA DARI TOMBOL HAMBURGER)
 // ==========================================
-if (menuToggle && sidebar) {
-  menuToggle.addEventListener('click', () => {
-    // Sidebar HANYA akan hilang atau muncul saat tombol menuToggle ini dipencet
-    sidebar.classList.toggle('collapsed'); 
+const menuToggleBtn = document.querySelector('.menu-toggle');
+const sidebarEl = document.querySelector('.sidebar');
+if (menuToggleBtn && sidebarEl) {
+  menuToggleBtn.addEventListener('click', () => {
+    sidebarEl.classList.toggle('collapsed');
   });
 }
 
@@ -212,7 +214,7 @@ const btnSimpanTugas = document.getElementById('btnSimpanTugas');
 const taskTableBody = document.getElementById('taskTableBody');
 
 const inputNamaTugas = document.getElementById('inputNamaTugas');
-const inputPenanggungTugas = document.getElementById('inputPenanggungTugas');
+
 const inputDeadlineTugas = document.getElementById('inputDeadlineTugas');
 const inputStatusTugas = document.getElementById('inputStatusTugas');
 
@@ -220,7 +222,7 @@ let editingRow = null; // null = mode tambah, berisi <tr> = mode edit
 
 function resetModalTugas() {
   inputNamaTugas.value = '';
-  inputPenanggungTugas.value = '';
+
   inputDeadlineTugas.value = '';
   inputStatusTugas.value = 'pending';
   editingRow = null;
@@ -249,11 +251,11 @@ function buatBadgeHTML(statusKey) {
 if (btnSimpanTugas && taskTableBody) {
   btnSimpanTugas.addEventListener('click', () => {
     const nama = inputNamaTugas.value.trim();
-    const penanggung = inputPenanggungTugas.value.trim();
+
     const deadline = inputDeadlineTugas.value;
     const status = inputStatusTugas.value;
 
-    if (!nama || !penanggung || !deadline) {
+    if (!nama || !deadline) {
       alert('Semua kolom wajib diisi!');
       return;
     }
@@ -262,21 +264,14 @@ if (btnSimpanTugas && taskTableBody) {
     const deadlineFormatted = new Date(deadline).toLocaleDateString('id-ID', {
       day: 'numeric', month: 'short', year: 'numeric'
     });
-    const inisial = getInisial(penanggung);
-    const warna = getWarnaAcak(penanggung);
+
 
     if (editingRow) {
       // MODE EDIT: perbarui baris yang sudah ada
       editingRow.setAttribute('data-status', s.key);
       editingRow.children[1].textContent = nama;
-      editingRow.children[2].innerHTML = `
-        <div class="user-cell">
-          <span class="avatar-circle" style="background:${warna}">${inisial}</span>
-          ${penanggung}
-        </div>
-      `;
-      editingRow.children[3].textContent = deadlineFormatted;
-      editingRow.children[4].innerHTML = buatBadgeHTML(s.key);
+      editingRow.children[2].textContent = deadlineFormatted;
+      editingRow.children[3].innerHTML = buatBadgeHTML(s.key);
     } else {
       // MODE TAMBAH: buat baris baru
       const row = document.createElement('tr');
@@ -284,12 +279,7 @@ if (btnSimpanTugas && taskTableBody) {
       row.innerHTML = `
         <td></td>
         <td>${nama}</td>
-        <td>
-          <div class="user-cell">
-            <span class="avatar-circle" style="background:${warna}">${inisial}</span>
-            ${penanggung}
-          </div>
-        </td>
+        
         <td>${deadlineFormatted}</td>
         <td>${buatBadgeHTML(s.key)}</td>
         <td>
@@ -331,12 +321,11 @@ if (taskTableBody) {
       editingRow = row;
 
       const nama = row.children[1].textContent.trim();
-      const penanggung = row.children[2].querySelector('.user-cell').textContent.trim();
-      const deadlineText = row.children[3].textContent.trim();
+      const deadlineText = row.children[2].textContent.trim();
       const statusKey = row.getAttribute('data-status');
 
       inputNamaTugas.value = nama;
-      inputPenanggungTugas.value = penanggung;
+
       inputStatusTugas.value = statusKeyToValue[statusKey] || 'pending';
 
       // Konversi "15 Jul 2026" -> format input date (yyyy-mm-dd)
@@ -406,8 +395,8 @@ document.querySelectorAll('#tabelTugas .th-sort').forEach(th => {
         valA = a.getAttribute('data-status');
         valB = b.getAttribute('data-status');
       } else if (sortKey === 'deadline') {
-        valA = new Date(a.children[3].textContent.trim());
-        valB = new Date(b.children[3].textContent.trim());
+        valA = new Date(a.children[2].textContent.trim());
+        valB = new Date(b.children[2].textContent.trim());
       } else {
         valA = a.children[1].textContent.trim().toLowerCase();
         valB = b.children[1].textContent.trim().toLowerCase();
@@ -501,7 +490,7 @@ const laporanItems = document.querySelectorAll(".laporan-item");
 
 const detailTitle = document.querySelector(".detail-header h3");
 
-const detailBadge = document.querySelector(".badge");
+const detailBadge = document.querySelector(".detail-header .badge");
 
 const detailPenulis = document.querySelectorAll(".detail-info p")[0];
 
@@ -548,27 +537,8 @@ function tampilkanLaporan(index){
 }
 
 
-/* ============================================
-   KLIK ITEM
-============================================ */
 
-laporanItems.forEach((item,index)=>{
 
-    item.addEventListener("click",()=>{
-
-        laporanItems.forEach(i=>{
-
-            i.classList.remove("active");
-
-        });
-
-        item.classList.add("active");
-
-        tampilkanLaporan(index);
-
-    });
-
-});
 
 
 /* ============================================
@@ -631,7 +601,7 @@ btnDelete.addEventListener("click",()=>{
 /* ============================================
    LOAD PERTAMA
 ============================================ */
-
+renderLaporanList();
 tampilkanLaporan(0);
 
 // ===========================
@@ -809,17 +779,95 @@ document.addEventListener('DOMContentLoaded', muatPengaturan);
     });
 
     // 2. FUNGSI HUBUNGKAN (GitHub/Slack)
-    document.querySelector('.btn-secondary:nth-of-type(2)').addEventListener('click', function() {
+const btnHubungkan = document.querySelector('.btn-secondary:nth-of-type(2)');
+
+if (btnHubungkan) {
+    btnHubungkan.addEventListener('click', function () {
         alert("Mengarahkan ke halaman otorisasi GitHub/Slack...");
-        // Di sini biasanya kamu akan me-redirect pengguna ke URL API pihak ketiga
-        // window.location.href = "https://github.com/login/oauth/authorize?...";
+        
     });
+}
 
 
     function bukaFormLaporan() {
-        // Contoh aksi: menampilkan pesan atau membuka modal
-        alert("Formulir Buat Laporan akan segera muncul!");
+    const modalLaporan = document.getElementById('modal-laporan');
 
-        // Jika Anda ingin mengarahkan ke halaman lain, gunakan:
-        // window.location.href = "halaman_laporan.html";
+    if (modalLaporan) {
+        modalLaporan.style.display = 'flex';
+
+        document.getElementById('judulLaporan').value = '';
+        document.getElementById('penulisLaporan').value = '';
+        document.getElementById('isiLaporan').value = '';
+        document.getElementById('fileLaporan').value = '';
     }
+}
+
+function tutupModalLaporan() {
+    const modalLaporan = document.getElementById('modal-laporan');
+    if (modalLaporan) modalLaporan.style.display = 'none';
+}
+
+function simpanLaporan() {
+
+    const judul = document.getElementById('judulLaporan').value.trim();
+    const penulis = document.getElementById('penulisLaporan').value.trim();
+    const isi = document.getElementById('isiLaporan').value.trim();
+
+    const fileInput = document.getElementById('fileLaporan');
+    const namaFile =
+        fileInput.files.length > 0
+        ? fileInput.files[0].name
+        : '-';
+
+    if (!judul || !penulis || !isi) {
+        alert('Judul, penulis, dan isi laporan wajib diisi!');
+        return;
+    }
+
+    const tanggalSekarang = new Date().toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+
+    laporanData.unshift({
+        judul: judul,
+        tanggal: tanggalSekarang,
+        penulis: penulis,
+        prioritas: 'Sedang',
+        status: 'selesai',
+        file: namaFile,
+        isi: isi
+    });
+
+    renderLaporanList();
+    tutupModalLaporan();
+    tampilkanLaporan(0);
+}
+
+function renderLaporanList() {
+    const listContainer = document.querySelector('.laporan-list');
+    if (!listContainer) return;
+
+    listContainer.innerHTML = '';
+    laporanData.forEach((data, index) => {
+        const item = document.createElement('div');
+        item.classList.add('laporan-item');
+        if (index === 0) item.classList.add('active');
+        item.innerHTML = `
+            <div class="laporan-icon ${data.status}">
+                <i class="fa-solid fa-file"></i>
+            </div>
+            <div class="laporan-info">
+                <h4>${data.judul}</h4>
+                <span>${data.tanggal}</span>
+            </div>
+        `;
+        item.addEventListener('click', () => {
+            document.querySelectorAll('.laporan-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            tampilkanLaporan(index);
+        });
+        listContainer.appendChild(item);
+    });
+}

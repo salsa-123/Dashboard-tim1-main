@@ -636,19 +636,7 @@
 
                         dashboard-ui.pdf
 
-                        <!-- Modal Formulir -->
-<div id="modal-laporan" class="modal-overlay">
-    <div class="modal-content">
-        <h3>Buat Laporan Baru</h3>
-        <input type="text" id="judulLaporan" placeholder="Judul Laporan" class="modal-input">
-        <textarea id="isiLaporan" placeholder="Isi Laporan" class="modal-textarea"></textarea>
-        
-        <div class="modal-actions">
-            <button class="btn-primary" onclick="simpanLaporan()">Simpan</button>
-            <button class="btn-delete" onclick="tutupModal()">Batal</button>
-        </div>
-    </div>
-</div>
+                
                     </div>
 
                 </div>
@@ -784,12 +772,8 @@
           placeholder="Contoh: Desain halaman Login"
         />
 
-        <label>Penanggung Jawab</label>
-        <input
-          type="text"
-          id="inputPenanggungTugas"
-          placeholder="Nama penanggung jawab"
-        />
+
+
 
         <label>Deadline</label>
         <input type="date" id="inputDeadlineTugas" />
@@ -806,6 +790,24 @@
           <button class="btn-primary" id="btnSimpanTugas">Simpan</button>
         </div>
       </div>
+    </div>
+
+    <!-- MODAL BUAT LAPORAN -->
+    <div id="modal-laporan" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Buat Laporan Baru</h3>
+            <input type="text" id="judulLaporan" placeholder="Judul Laporan" class="modal-input">
+            <input type="text" id="penulisLaporan" placeholder="Nama Penulis" class="modal-input">
+            <textarea id="isiLaporan" placeholder="Isi Laporan" class="modal-textarea"></textarea>
+
+            <label style="display:block; margin-top:10px; font-size:0.9em; font-weight:600;">Lampirkan File</label>
+            <input type="file" id="fileLaporan" class="modal-input" accept=".pdf,.doc,.docx,.jpg,.png">
+
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="simpanLaporan()">Simpan</button>
+                <button class="btn-delete" onclick="tutupModalLaporan()">Batal</button>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>

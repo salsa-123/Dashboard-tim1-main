@@ -58,7 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
   btnPrev.addEventListener("click", () => {
     track.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
   });
-});
 
 
 // ==========================================

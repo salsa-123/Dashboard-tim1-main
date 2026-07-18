@@ -659,6 +659,35 @@
 
     </div>
 
+    <!-- MODAL BUAT LAPORAN -->
+<div id="modal-laporan" class="modal-overlay">
+    <div class="modal-content">
+        <h3>Buat Laporan Baru</h3>
+
+        <input type="text" id="judulLaporan" placeholder="Judul Laporan" class="modal-input">
+        <input type="text" id="penulisLaporan" placeholder="Nama Penulis" class="modal-input">
+
+        <select id="prioritasLaporan" class="modal-input">
+            <option value="Rendah">Prioritas Rendah</option>
+            <option value="Sedang">Prioritas Sedang</option>
+            <option value="Tinggi">Prioritas Tinggi</option>
+        </select>
+
+        <select id="statusLaporan" class="modal-input">
+            <option value="pending">Belum Mulai</option>
+            <option value="review">Sedang Review</option>
+            <option value="selesai">Selesai</option>
+        </select>
+
+        <textarea id="isiLaporan" placeholder="Isi Laporan" class="modal-textarea"></textarea>
+
+        <div class="modal-actions">
+            <button class="btn-primary" onclick="simpanLaporan()">Simpan</button>
+            <button class="btn-delete" onclick="tutupModalLaporan()">Batal</button>
+        </div>
+    </div>
+</div>
+
 </section>
 
           <!-- ================= HALAMAN PENGATURAN ================= -->
@@ -676,8 +705,12 @@
             <div class="setting-row"><span>Password</span><button class="btn btn-secondary">Ubah Password</button></div>
 
             <h3>Tampilan</h3>
-<div class="setting-row"><span>Tema</span>
-  <select id="tema"><option>Light Mode</option><option>Dark Mode</option></select>
+<div class="setting-row">
+  <span>Tema</span>
+  <select id="tema">
+    <option value="light">Light Mode</option>
+    <option value="dark">Dark Mode</option>
+  </select>
 </div>
 
 <h3>Notifikasi</h3>
@@ -686,18 +719,27 @@
 </div>
 
 <h3>Tim & Proyek</h3>
-<div class="setting-row"><span>Peran Akses</span>
-  <select id="peranAkses"><option>Admin</option><option>Editor</option></select>
+<div class="setting-row">
+    <span class="label">Peran Akses</span>
+    <select class="input-field">
+        <option>Admin</option>
+        <option>Editor</option>
+    </select>
 </div>
-<div class="setting-row"><span>Proyek Aktif</span>
-  <input type="text" id="proyekAktif" value="Proyek Alpha">
+<div class="setting-row">
+    <span class="label">Proyek Aktif</span>
+    <input type="text" class="input-field" value="Proyek Alpha">
 </div>
 
             <h3>Backup & Data</h3>
-            <div class="setting-row"><span>Ekspor Data</span><button class="btn btn-secondary">Unduh CSV</button></div>
+            <div class="setting-row"><span>Ekspor Data</span>
+  <button class="btn btn-secondary" id="btnEksporCSV">Unduh CSV</button>
+</div>
 
             <h3>Integrasi</h3>
-            <div class="setting-row"><span>GitHub/Slack</span><button class="btn btn-secondary">Hubungkan</button></div>
+            <div class="setting-row"><span>GitHub/Slack</span>
+  <button class="btn btn-secondary" id="btnHubungkan">Hubungkan</button>
+</div>
 
             <h3>Preferensi Sistem & Tentang</h3>
             <div class="setting-row"><span>Zona Waktu</span><select><option>WIB</option><option>WITA</option></select></div>

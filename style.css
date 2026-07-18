@@ -1,13 +1,13 @@
 :root {
   --bg: #f5f3ef;
-  --sidebar-bg: #26374d;
-  --sidebar-text: #cbd5e1;
-  --sidebar-active: #22c55e;
+  --sidebar-bg: #fffff;
+  --sidebar-text: #16181b;
+  --sidebar-active: #5b4fe9;
   --card-bg: #ffffff;
   --text-main: #1f2937;
   --text-muted: #6b7280;
   --border: #e5e7eb;
-  --accent: #22c55e;
+  --accent: #5b4fe9;
   --radius: 10px;
 }
 
@@ -47,11 +47,12 @@ body {
 /* 2. SIDEBAR STYLE (Hanya elemen ini yang diam/sticky di kiri) */
 .sidebar {
   width: 230px;
-  background: var(--sidebar-bg, #0f172a); 
-  color: var(--sidebar-text, #ffffff);
+  background: var(--sidebar-bg, #ffffff); 
+  color: var(--sidebar-text, #000000);
   display: flex;
   flex-direction: column;
   flex-shrink: 0; /* Mencegah sidebar menjadi gepeng/kegencet */
+  
   
   /* KUNCI STICKY/FIXED: Sidebar menempel mati di layar kiri */
   position: fixed;
@@ -73,11 +74,11 @@ body {
 /* SIDEBAR BRAND HEADER - DIRUBAH AGAR TOMBOL KE KANAN */
 .sidebar-brand {
   display: flex;
+  flex-direction: row-reverse; /* MAGIC TRICK: Membalik urutan visual (Kanan jadi Kiri, Kiri jadi Kanan) */
   align-items: center;
-  justify-content: space-between; /* Mendorong tombol ke kanan */
-  padding: 0 16px; 
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  height: 75px;
+  justify-content: space-between; /* Mendorong logo ke ujung kiri dan tombol ke ujung kanan */
+  padding: 16px; /* Memberikan ruang jarak di dalam border */
+  width: 100%;
   box-sizing: border-box;
 }
 
@@ -94,10 +95,10 @@ body {
 /* 🟢 LINGKARAN SOROT ABU-ABU DI LUAR */
 .brand-toggle-btn {
   background: transparent; 
-  color: #ffffff; /* Warna putih mengikuti teks sidebar */
+  color: #000000; /* Warna putih mengikuti teks sidebar */
   border: none;
-  width: 40px;  
-  height: 40px;
+  width: 28px;  
+  height: 28px;
   border-radius: 50%; /* Membuat area luar bulat sempurna saat di-hover */
   display: inline-flex;
   align-items: center;
@@ -107,6 +108,7 @@ body {
   transition: background 0.2s ease;
   position: relative;
   pointer-events: auto; 
+
 }
 
 /* Efek Sorot Lingkaran Abu-Abu Ringan saat Hover */
@@ -118,10 +120,10 @@ body {
 .brand-toggle-btn .toggle-icon svg {
   border: 1.5px solid currentColor; /* Bingkai kotak kecil di dalam */
   border-radius: 6px; /* Sudut melengkung halus pada kotak */
-  padding: 4px; /* Ruang dalam kotak */
+  padding: 3px; /* Ruang dalam kotak */
   box-sizing: border-box;
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   transition: transform 0.25s ease;
 }
 
@@ -157,10 +159,11 @@ body {
   align-items: center;
   gap: 8px;
   overflow: hidden;
+  margin-right: auto; /* Memastikan logo menempel erat di sisi kiri */
 }
 
 .brand-mark {
-  background: #22c55e;
+  background: #dbe0dd;
   color: #0f172a;
   font-weight: 700;
   padding: 4px 8px;
@@ -172,7 +175,7 @@ body {
 .brand-name {
   font-weight: 600;
   font-size: 16px;
-  color: #ffffff;
+  color: #000000;
   white-space: nowrap;
   transition: opacity 0.15s ease;
   overflow: hidden;
@@ -213,9 +216,10 @@ body {
 
 .nav-item.active {
   background: rgba(34, 197, 94, 0.15);
-  color: var(--accent, #22c55e);
+  color: var(--accent, #5b4fe9);
   font-weight: 600;
 }
+
 
 .nav-icon {
   font-size: 16px;
@@ -336,6 +340,187 @@ body {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
+/* ==========================================================================
+   KUSTOMISASI CAROUSEL / SLIDER RINGKASAN PROYEK
+   ========================================================================== */
+
+/* 1. Mengatur Jalur Lintasan Kotak Proyek (Horizontal & Smooth) */
+#dashboardTrack {
+  display: flex !important;
+  flex-direction: row !important;
+  overflow-x: auto !important;
+  scroll-behavior: smooth; /* Membuat efek geser menjadi halus */
+  gap: 16px;              /* Jarak antar kotak proyek */
+  padding: 12px 4px;      /* Ruang atas-bawah agar bayangan box-shadow tidak terpotong */
+  
+  /* Sembunyikan Scrollbar Bawaan Browser agar Tampilan Bersih */
+  -ms-overflow-style: none;  /* Perangkat Windows/Edge */
+  scrollbar-width: none;     /* Browser Firefox */
+}
+#dashboardTrack::-webkit-scrollbar {
+  display: none; /* Browser Chrome, Safari, dan Opera */
+}
+
+/* 2. Menentukan Ukuran Kotak Proyek agar Tidak Mengempis/Gepeng */
+.project-item {
+  flex: 0 0 340px; /* Setiap kotak proyek akan mengunci lebar di 340px */
+  box-sizing: border-box;
+}
+
+/* 3. Desain Tombol Panah Kanan & Kiri */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background-color: #ffffff; /* 🔄 DIUBAH: Putih bersih agar menyatu dengan tema baru */
+  color: #111827;            /* 🔄 DIUBAH: Warna panah menjadi hitam pekat/gelap agar kontras */
+  border: 1px solid #e5e7eb; /* Garis tepi tipis abu-abu terang */
+  border-radius: 50%;        /* Bulat sempurna */
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Dibuat sedikit lebih halus bayangannya */
+  transition: all 0.2s ease;
+}
+
+/* Tambahkan efek ini agar interaksinya terasa hidup saat didekati kursor */
+.carousel-btn:hover {
+  background-color: #f3f4f6; /* Berubah abu-abu super terang saat di-hover */
+  transform: translateY(-50%) scale(1.05); /* Sedikit membesar lembut */
+}
+
+/* Posisi Spesifik Panah Kiri */
+.prev-btn {
+  left: -22px; /* Melayang sedikit keluar di sisi kiri */
+}
+
+/* Posisi Spesifik Panah Kanan */
+.next-btn {
+  right: -22px; /* Melayang sedikit keluar di sisi kanan */
+}
+
+/* 4. Efek Interaktif Saat Tombol Panah Disorot Kursor (Hover) */
+.carousel-btn:hover {
+  background-color: #5b4fe9; /* Berubah menjadi Ungu senada dengan tema warna logo */
+  color: #ffffff;            /* Warna panah berubah jadi putih */
+  border-color: #5b4fe9;
+  transform: translateY(-50%) scale(1.08); /* Tombol sedikit membesar lembut */
+}
+
+/* 5. Pengaturan Responsif untuk Layar HP / Mobile */
+@media (max-width: 768px) {
+  .project-item {
+    flex: 0 0 280px; /* Di layar HP, kotak proyek otomatis mengecil sedikit agar pas */
+  }
+  .prev-btn {
+    left: 4px;  /* Di layar kecil, posisi digeser ke dalam agar tidak keluar layar */
+  }
+  .next-btn {
+    right: 4px; /* Di layar kecil, posisi digeser ke dalam agar tidak keluar layar */
+  }
+}
+
+/* ==========================================================================
+   KUSTOMISASI MODAL DETAIL PROYEK & PENYEMBUNYIAN KOLOM KETERANGAN
+   ========================================================================== */
+
+/* 🟢 1. Menyembunyikan teks keterangan panjang di halaman dashboard utama */
+.project-item .dash-keterangan {
+  display: none !important;
+}
+
+/* Memastikan kartu proyek interaktif saat diarahkan kursor */
+.project-item {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.project-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+/* 🟢 2. Base Style untuk Lapisan Gelap Modal (Overlay) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999 !important; /* Di atas segalanya */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+/* Aktifkan efek modal muncul */
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Kotak Konten Putih Tengah */
+.modal-content {
+  background: #ffffff;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  transform: scale(0.9);
+  transition: transform 0.25s ease;
+}
+
+.modal-overlay.active .modal-content {
+  transform: scale(1);
+}
+
+/* Header Modal (Judul & Close) */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.modal-header h2 {
+  font-size: 18px;
+  color: #1e293b;
+  margin: 0;
+}
+
+.close-modal-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #9ca3af;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.close-modal-btn:hover {
+  color: #ef4444;
+}
+
+/* 🟢 3. Menampilkan kembali teks keterangan dengan rapi khusus saat di dalam modal */
+.modal-body .dash-keterangan,
+.modal-body p {
+  display: block !important;
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #475569;
+}
 
 /* STAT CARDS */
 .stat-grid {
@@ -443,9 +628,10 @@ body {
 
 /* Grid untuk Proyek (Dashboard - Carousel) */
 .carousel-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  position: relative; /* Mengubah dari flex menjadi relative agar panah bisa melayang */
+  width: 100%;
+  padding: 0 20px;    /* Memberikan jarak aman di kanan-kiri agar kartu tidak mepet */
+  box-sizing: border-box;
 }
 
 .project-grid {
@@ -461,41 +647,75 @@ body {
 }
 
 .project-item {
-  /* Mengatur lebar agar pas 3 kartu terlihat di layar */
-  flex: 0 0 calc(33.33% - 14px); 
+  /* Mengatur lebar presisi 3 kartu dalam 1 layar */
+  flex: 0 0 calc((100% - 40px) / 3) !important; 
   
-  /* Memberikan tinggi yang konsisten agar terlihat besar */
+  /* Tinggi konsisten */
   min-height: 450px; 
   
   display: flex;
   flex-direction: column;
-  border: 2px solid #333;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #fff;
-  padding: 20px;
+  justify-content: space-between; /* Membuat progress bar otomatis berada di paling bawah */
+  
+  /* Perubahan Utama: Mengganti border tebal dengan border halus & bayangan modern */
+  border: 1px solid #9aacc5;      /* Abu-abu super tipis */
+  border-radius: 16px;            /* Sudut melengkung lebih modern */
+  background: #ffffff;
+  padding: 24px;                  /* Ruang dalam sedikit lebih lega */
   box-sizing: border-box;
   
-  /* Agar geseran berhenti pas di kartu */
+  /* Efek Bayangan Semu (Soft Shadow) */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  
+  /* Transisi halus saat di-hover */
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   scroll-snap-align: start; 
+  overflow: hidden;
 }
+
+/* Efek Interaktif Modern Saat Kursor Mendekat */
+.project-item:hover {
+  transform: translateY(-4px);    /* Kartu terangkat sedikit */
+  border-color: #1d2f46;          /* Border sedikit lebih tegas */
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05), 0 8px 8px -5px rgba(0, 0, 0, 0.03);
+}
+
+/* Judul Proyek */
 .project-item h3 {
-  font-size: 16px;
-  margin-bottom: 8px;
-  font-weight: bold;
+  font-size: 18px;                /* Sedikit lebih besar agar tegas */
+  color: #1e293b;                 /* Warna Slate gelap (bukan hitam pekat) */
+  margin-bottom: 12px;
+  font-weight: 700;               /* Lebih tebal */
 }
 
+/* Teks Deskripsi / Isi */
 .project-item p {
-  font-size: 14px;
-  line-height: 1.4;
-  margin-bottom: 8px;
+  font-size: 13.5px;
+  line-height: 1.6;               /* Jarak baris lebih renggang agar rileks dibaca */
+  color: #64748b;                 /* Warna teks abu-abu redup untuk isi informasi */
+  margin-bottom: 10px;
 }
 
+/* Style Khusus untuk Label Kategori (Tugas:, Sudah sampai:, Lanjutan:) */
+/* Catatan: Bungkus kata "Tugas:", "Lanjutan:" di HTML Anda dengan tag <strong> atau <span class="label"> */
+.project-item p strong, 
+.project-item p .label-text {
+  color: #253347;                 /* Warna label sedikit lebih gelap dari isi teks */
+  font-weight: 600;
+  display: block;                 /* Membuat label dan isi teks terpisah baris agar rapi */
+  margin-bottom: 2px;
+  font-size: 12px;
+  text-transform: uppercase;      /* Membuat label berkapital kecil yang rapi */
+  letter-spacing: 0.5px;
+}
+
+/* Bagian Bawah / Keterangan Tambahan */
 .project-item span {
   display: block;
-  margin-top: 8px;
+  margin-top: auto;               /* Memaksa elemen ini menempel ke bawah */
   font-size: 12px;
-  color: #555;
+  color: #94a3b8;
+  font-weight: 500;
 }
 
 .project-logo-row {
@@ -518,6 +738,7 @@ body {
   color: #fff;
   font-weight: bold;
   font-size: 15px;
+  
 }
 
 .project-keterangan-row {
@@ -2155,7 +2376,7 @@ input, select {
 /* ... tambahkan kelas lainnya dengan prefix #page-pengaturan agar tidak bentrok */
         .container { max-width: 800px; margin: 0 auto; }
         .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        h1 { color: #2c3e50; margin-bottom: 25px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h1 { color: #2c3e50; margin-bottom: 25px; border-bottom: 2px solid #eee; padding-bottom: 28px; }
         h3 { color: #34495e; margin: 20px 0 15px 0; font-size: 1.1rem; }
         .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; }
         input, select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 200px; }

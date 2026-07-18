@@ -51,6 +51,36 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+
+// ==========================================================================
+// LOGIKA NAVIGASI GESER CAROUSEL RINGKASAN PROYEK
+// ==========================================================================
+document.addEventListener("DOMContentLoaded", function () {
+  const track = document.getElementById("dashboardTrack");
+  const btnPrev = document.getElementById("btnPrev");
+  const btnNext = document.getElementById("btnNext");
+
+  // Jika elemen tidak ditemukan di halaman ini, script tidak akan dipaksa jalan (menghindari error)
+  if (!track || !btnPrev || !btnNext) return;
+
+  // Menghitung jarak geser dinamis berdasarkan lebar 1 kotak proyek + gap CSS (16px)
+  const getScrollAmount = () => {
+    const firstItem = track.querySelector(".project-item");
+    return firstItem ? firstItem.clientWidth + 16 : 356; 
+  };
+
+  // Fungsi klik tombol Kanan (Maju)
+  btnNext.addEventListener("click", () => {
+    track.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
+  });
+
+  // Fungsi klik tombol Kiri (Mundur)
+  btnPrev.addEventListener("click", () => {
+    track.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
+  });
+});
+
+
 // ==========================================
 // KONTROL BUKA/TUTUP (HANYA DARI TOMBOL HAMBURGER)
 // ==========================================
@@ -61,83 +91,145 @@ if (menuToggleBtn && sidebarEl) {
     sidebarEl.classList.toggle('collapsed');
   });
 }
+// ==========================================================================
+// INTEGRASI FITUR: MODAL DETAIL PROYEK & FUNGSI TAMBAH PROYEK
+// ==========================================================================
 
-// ===========================
-// TAMBAH PROYEK
-// ===========================
-const btnTambahProyek = document.getElementById('btnTambahProyek');
-const modalProyek = document.getElementById('modalProyek');
-const btnBatalProyek = document.getElementById('btnBatalProyek');
-const btnSimpanProyek = document.getElementById('btnSimpanProyek');
-const projectGrid = document.getElementById('projectGrid');
+document.addEventListener('DOMContentLoaded', () => {
+  const modalDetail = document.getElementById('projectModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalBody = document.getElementById('modalBody');
+  const closeModalBtn = document.querySelector('.close-modal-btn');
+  const track = document.getElementById('dashboardTrack');
 
-if (btnTambahProyek && modalProyek) {
-  btnTambahProyek.addEventListener('click', () => {
-    modalProyek.classList.add('active');
-  });
-}
+  // 🟢 A. FITUR KLIK UNTUK MELIHAT KEJELASAN DATA PROYEK
+  if (track && modalDetail) {
+    track.addEventListener('click', (e) => {
+      // Cari kartu proyek (.project-item) terdekat dari area yang diklik
+      const item = e.target.closest('.project-item');
+      if (!item) return;
 
-if (btnBatalProyek && modalProyek) {
-  btnBatalProyek.addEventListener('click', () => {
-    modalProyek.classList.remove('active');
-  });
-}
+      // Tarik judul, badge status, dan isi data tersembunyi (.dash-keterangan) dari kartu
+      const title = item.querySelector('.project-header h3').innerText;
+      const badgeHtml = item.querySelector('.project-header .badge').outerHTML;
+      const paragraphs = item.querySelectorAll('.dash-keterangan p');
+      
+      // Susun ulang untuk disuntikkan ke dalam modal
+      let detailsHtml = `<div style="margin-bottom: 16px;">${badgeHtml}</div>`;
+      paragraphs.forEach(p => {
+        detailsHtml += `<p>${p.innerHTML}</p>`;
+      });
 
-if (btnSimpanProyek && projectGrid) {
-  btnSimpanProyek.addEventListener('click', () => {
-    const inputNama = document.getElementById('inputNamaProyek');
-    const inputDesk = document.getElementById('inputDeskProyek');
-    const inputDeadline = document.getElementById('inputDeadlineProyek');
-    const inputStatus = document.getElementById('inputStatusProyek');
-
-    if (!inputNama || !inputDeadline || !inputStatus) return;
-
-    const nama = inputNama.value.trim();
-    const desk = inputDesk ? inputDesk.value.trim() : '';
-    const deadline = inputDeadline.value;
-    const status = inputStatus.value;
-
-    if (!nama || !deadline) {
-      alert('Nama proyek dan deadline wajib diisi!');
-      return;
-    }
-
-    const statusMap = {
-      pending: { label: 'Belum Mulai', badge: 'badge-pending', progress: 0 },
-      progress: { label: 'Berjalan', badge: 'badge-progress', progress: 50 },
-      done: { label: 'Selesai', badge: 'badge-done', progress: 100 }
-    };
-    const s = statusMap[status];
-
-    const deadlineFormatted = new Date(deadline).toLocaleDateString('id-ID', {
-      day: 'numeric', month: 'long', year: 'numeric'
+      // Buka modal dengan data lengkap
+      modalTitle.innerText = `Detail Kelengkapan: ${title}`;
+      modalBody.innerHTML = detailsHtml;
+      modalDetail.classList.add('active');
     });
+  }
 
-    const card = document.createElement('div');
-    card.classList.add('project-card');
-    card.innerHTML = `
-      <div class="project-header">
-        <h3>${nama}</h3>
-        <span class="badge ${s.badge}">${s.label}</span>
-      </div>
-      <p class="project-desc">${desk}</p>
-      <div class="progress-bar">
-        <div class="progress-fill" style="width: ${s.progress}%;"></div>
-      </div>
-      <div class="project-footer">
-        <span>${s.progress}% selesai</span>
-        <span>Deadline: ${deadlineFormatted}</span>
-      </div>
-    `;
+  // Tombol X untuk tutup detail modal
+  if (closeModalBtn && modalDetail) {
+    closeModalBtn.addEventListener('click', () => {
+      modalDetail.classList.remove('active');
+    });
+  }
 
-    projectGrid.appendChild(card);
+  // Klik luar kotak putih untuk menutup modal detail
+  if (modalDetail) {
+    modalDetail.addEventListener('click', (e) => {
+      if (e.target === modalDetail) {
+        modalDetail.classList.remove('active');
+      }
+    });
+  }
 
-    inputNama.value = '';
-    if (inputDesk) inputDesk.value = '';
-    inputDeadline.value = '';
-    modalProyek.classList.remove('active');
-  });
-}
+
+  // 🟢 B. LOGIKA TAMBAH PROYEK BARU (DENGAN STRUKTUR CAROUSEL ASLI)
+  const btnTambahProyek = document.getElementById('btnTambahProyek');
+  const modalProyek = document.getElementById('modalProyek');
+  const btnBatalProyek = document.getElementById('btnBatalProyek');
+  const btnSimpanProyek = document.getElementById('btnSimpanProyek');
+  const projectGrid = document.getElementById('dashboardTrack'); 
+
+  if (btnTambahProyek && modalProyek) {
+    btnTambahProyek.addEventListener('click', () => {
+      modalProyek.classList.add('active');
+    });
+  }
+
+  if (btnBatalProyek && modalProyek) {
+    btnBatalProyek.addEventListener('click', () => {
+      modalProyek.classList.remove('active');
+    });
+  }
+
+  if (btnSimpanProyek && projectGrid) {
+    btnSimpanProyek.addEventListener('click', () => {
+      const inputNama = document.getElementById('inputNamaProyek');
+      const inputDesk = document.getElementById('inputDeskProyek');
+      const inputDeadline = document.getElementById('inputDeadlineProyek');
+      const inputStatus = document.getElementById('inputStatusProyek');
+
+      if (!inputNama || !inputDeadline || !inputStatus) return;
+
+      const nama = inputNama.value.trim();
+      const desk = inputDesk ? inputDesk.value.trim() : '';
+      const deadline = inputDeadline.value;
+      const status = inputStatus.value;
+
+      if (!nama || !deadline) {
+        alert('Nama proyek dan deadline wajib diisi!');
+        return;
+      }
+
+      const statusMap = {
+        pending: { label: 'Belum Mulai', badge: 'badge-pending', progress: 0 },
+        progress: { label: 'Berjalan', badge: 'badge-progress', progress: 50 },
+        done: { label: 'Selesai', badge: 'badge-done', progress: 100 }
+      };
+      const s = statusMap[status];
+
+      const deadlineFormatted = new Date(deadline).toLocaleDateString('id-ID', {
+        day: 'numeric', month: 'long', year: 'numeric'
+      });
+
+      // Menambahkan proyek baru mengikuti layout asli dashboard Anda
+      const card = document.createElement('div');
+      card.classList.add('project-item'); 
+      card.innerHTML = `
+        <div class="project-logo-row">
+          <div class="project-logo-emblem" style="background: #ffffff">
+            <img src="emblem/1.jpg" alt="Logo" style="width: 400px; height: auto;">
+          </div>
+        </div>
+        <div class="project-keterangan-row">
+          <div class="project-header">
+            <h3>${nama}</h3>
+            <span class="badge ${s.badge}">${s.label}</span>
+          </div>
+          <div class="dash-keterangan">
+            <p><span class="ket-label">Tugas:</span> ${desk}</p>
+            <p><span class="ket-label">Deadline:</span> ${deadlineFormatted}</p>
+          </div>
+          <div class="project-progress-below">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${s.progress}%;"></div>
+            </div>
+            <span class="progress-percent">${s.progress}%</span>
+          </div>
+        </div>
+      `;
+
+      projectGrid.appendChild(card);
+
+      // Reset data form input
+      inputNama.value = '';
+      if (inputDesk) inputDesk.value = '';
+      inputDeadline.value = '';
+      modalProyek.classList.remove('active');
+    });
+  }
+});
 
 
 // ======================================================

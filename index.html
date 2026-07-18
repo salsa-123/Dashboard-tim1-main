@@ -33,7 +33,6 @@
 
     <!-- 🟢 LOGO & NAMA APLIKASI (Terpisah rapi agar tidak ikut rusak/terdorong teks) -->
     <div class="brand-logo-wrapper">
-      <span class="brand-mark">T1</span>
       <span class="brand-name">Team Work</span>
     </div>
   </div>
@@ -59,18 +58,27 @@
     </a>
   </div>
 </aside>
-         <!-- HALAMAN: DASHBOARD -->
+        <!-- HALAMAN: DASHBOARD -->
 <section class="page active" id="page-dashboard">
   <div class="panel">
     <h2>Ringkasan Proyek</h2>
-    <div class="carousel-wrapper">
-      <!-- Tombol panah dihapus -->
+    
+    <!-- Ditambahkan style inline position: relative agar posisi tombol panah melayang dengan pas -->
+    <div class="carousel-wrapper" style="position: relative;">
+      
+      <!-- 🟢 TOMBOL PANAH NAVIGASI -->
+      <button class="carousel-btn prev-btn" id="btnPrev" aria-label="Sebelumnya">&#10094;</button>
+      <button class="carousel-btn next-btn" id="btnNext" aria-label="Selanjutnya">&#10095;</button>
+      
+      <!-- Jalur Grid Konten Proyek -->
       <div class="project-grid" id="dashboardTrack">
+        
+        <!-- PROYEK 1: Dashboard Tim 1 -->
         <div class="project-item">
           <div class="project-logo-row">
-            <div class="project-logo-emblem" style="background: #5b4fe9">
-  <img src="emblem/6.jpg" alt="Logo" style="width: 400px; height: auto;">
-</div>
+            <div class="project-logo-emblem" style="background: #ffffff">
+              <img src="emblem/6.jpg" alt="Logo" style="width: 400px; height: auto;">
+            </div>
           </div>
           <div class="project-keterangan-row">
             <div class="project-header">
@@ -78,15 +86,9 @@
               <span class="badge badge-progress">Berjalan</span>
             </div>
             <div class="dash-keterangan">
-              <p>
-                <span class="ket-label">Tugas:</span>Membangun dashboard internal untuk manajemen tugas tim.
-              </p>
-              <p>
-                <span class="ket-label">Sudah sampai:</span>Sidebar, halaman Tugas, dan halaman Anggota Tim sudah selesai dibuat.
-              </p>
-              <p>
-                <span class="ket-label">Lanjutan:</span>Integrasi halaman Laporan dan menyambungkan form Pengaturan.
-              </p>
+              <p><span class="ket-label">Tugas:</span> Membangun dashboard internal untuk manajemen tugas tim.</p>
+              <p><span class="ket-label">Sudah sampai:</span> Sidebar, halaman Tugas, dan halaman Anggota Tim sudah selesai dibuat.</p>
+              <p><span class="ket-label">Lanjutan:</span> Integrasi halaman Laporan dan menyambungkan form Pengaturan.</p>
             </div>
             <div class="project-progress-below">
               <div class="progress-bar">
@@ -97,11 +99,12 @@
           </div>
         </div>
 
+        <!-- PROYEK 2: Redesign Logo Tim -->
         <div class="project-item">
           <div class="project-logo-row">
-            <div class="project-logo-emblem" style="background: #5b4fe9">
-  <img src="emblem/1.jpg" alt="Logo" style="width: 400px; height: auto;">
-</div>
+            <div class="project-logo-emblem" style="background: #ffffff">
+              <img src="emblem/1.jpg" alt="Logo" style="width: 400px; height: auto;">
+            </div>
           </div>
           <div class="project-keterangan-row">
             <div class="project-header">
@@ -109,15 +112,9 @@
               <span class="badge badge-done">Selesai</span>
             </div>
             <div class="dash-keterangan">
-              <p>
-                <span class="ket-label">Tugas:</span>Membuat ulang identitas visual logo Tim 1.
-              </p>
-              <p>
-                <span class="ket-label">Sudah sampai:</span>Semua alternatif logo selesai dan versi final sudah disetujui.
-              </p>
-              <p>
-                <span class="ket-label">Lanjutan:</span>Tidak ada, proyek sudah tuntas.
-              </p>
+              <p><span class="ket-label">Tugas:</span> Membuat ulang identitas visual logo Tim 1.</p>
+              <p><span class="ket-label">Sudah sampai:</span> Semua alternatif logo selesai dan versi final sudah disetujui.</p>
+              <p><span class="ket-label">Lanjutan:</span> Tidak ada, proyek sudah tuntas.</p>
             </div>
             <div class="project-progress-below">
               <div class="progress-bar">
@@ -128,11 +125,12 @@
           </div>
         </div>
 
+        <!-- PROYEK 3: Integrasi Database -->
         <div class="project-item">
           <div class="project-logo-row">
-            <div class="project-logo-emblem" style="background: #5b4fe9">
-  <img src="emblem/2.jpg" alt="Logo" style="width: 400px; height: auto;">
-</div>
+            <div class="project-logo-emblem" style="background: #ffffff">
+              <img src="emblem/2.jpg" alt="Logo" style="width: 400px; height: auto;">
+            </div>
           </div>
           <div class="project-keterangan-row">
             <div class="project-header">
@@ -140,15 +138,9 @@
               <span class="badge badge-pending">Belum Mulai</span>
             </div>
             <div class="dash-keterangan">
-              <p>
-                <span class="ket-label">Tugas:</span>Menghubungkan dashboard dengan database tugas.
-              </p>
-              <p>
-                <span class="ket-label">Sudah sampai:</span>Belum ada progres, masih tahap perencanaan.
-              </p>
-              <p>
-                <span class="ket-label">Lanjutan:</span>Menentukan struktur tabel database dan metode koneksi.
-              </p>
+              <p><span class="ket-label">Tugas:</span> Menghubungkan dashboard dengan database tugas.</p>
+              <p><span class="ket-label">Sudah sampai:</span> Belum ada progres, masih tahap perencanaan.</p>
+              <p><span class="ket-label">Lanjutan:</span> Menentukan struktur tabel database dan metode koneksi.</p>
             </div>
             <div class="project-progress-below">
               <div class="progress-bar">
@@ -159,11 +151,12 @@
           </div>
         </div>
 
+        <!-- PROYEK 4: Aplikasi Mobile Tim -->
         <div class="project-item">
           <div class="project-logo-row">
-            <div class="project-logo-emblem" style="background: #5b4fe9">
-  <img src="emblem/3.jpg" alt="Logo" style="width: 400px; height: auto;">
-</div>
+            <div class="project-logo-emblem" style="background: #ffffff">
+              <img src="emblem/3.jpg" alt="Logo" style="width: 400px; height: auto;">
+            </div>
           </div>
           <div class="project-keterangan-row">
             <div class="project-header">
@@ -171,15 +164,9 @@
               <span class="badge badge-progress">Berjalan</span>
             </div>
             <div class="dash-keterangan">
-              <p>
-                <span class="ket-label">Tugas:</span>Membangun aplikasi mobile pendamping dashboard.
-              </p>
-              <p>
-                <span class="ket-label">Sudah sampai:</span>Wireframe dan desain UI sudah disetujui.
-              </p>
-              <p>
-                <span class="ket-label">Lanjutan:</span>Mulai development fitur login dan notifikasi.
-              </p>
+              <p><span class="ket-label">Tugas:</span> Membangun aplikasi mobile pendamping dashboard.</p>
+              <p><span class="ket-label">Sudah sampai:</span> Wireframe dan desain UI sudah disetujui.</p>
+              <p><span class="ket-label">Lanjutan:</span> Mulai development fitur login dan notifikasi.</p>
             </div>
             <div class="project-progress-below">
               <div class="progress-bar">
@@ -190,11 +177,12 @@
           </div>
         </div>
 
+        <!-- PROYEK 5: Optimasi Server -->
         <div class="project-item">
           <div class="project-logo-row">
-           <div class="project-logo-emblem" style="background: #5b4fe9">
-  <img src="emblem/4.jpg" alt="Logo" style="width: 400px; height: auto;">
-</div>
+            <div class="project-logo-emblem" style="background: #ffffff">
+              <img src="emblem/4.jpg" alt="Logo" style="width: 400px; height: auto;">
+            </div>
           </div>
           <div class="project-keterangan-row">
             <div class="project-header">
@@ -202,15 +190,9 @@
               <span class="badge badge-progress">Berjalan</span>
             </div>
             <div class="dash-keterangan">
-              <p>
-                <span class="ket-label">Tugas:</span>Meningkatkan performa dan kecepatan server backend.
-              </p>
-              <p>
-                <span class="ket-label">Sudah sampai:</span>Migrasi database dan caching sudah berjalan.
-              </p>
-              <p>
-                <span class="ket-label">Lanjutan:</span>Load testing dan monitoring performa.
-              </p>
+              <p><span class="ket-label">Tugas:</span> Meningkatkan performa dan kecepatan server backend.</p>
+              <p><span class="ket-label">Sudah sampai:</span> Migrasi database dan caching sudah berjalan.</p>
+              <p><span class="ket-label">Lanjutan:</span> Load testing dan monitoring performa.</p>
             </div>
             <div class="project-progress-below">
               <div class="progress-bar">
@@ -218,14 +200,15 @@
               </div>
               <span class="progress-percent">80%</span>
             </div>
-          </div> 
+          </div>
         </div>
 
+        <!-- PROYEK 6: Dokumentasi Sistem -->
         <div class="project-item">
           <div class="project-logo-row">
-            <div class="project-logo-emblem" style="background: #5b4fe9">
-  <img src="emblem/5.jpg" alt="Logo" style="width: 400px; height: auto;">
-</div>
+            <div class="project-logo-emblem" style="background: #ffffff">
+              <img src="emblem/5.jpg" alt="Logo" style="width: 400px; height: auto;">
+            </div>
           </div>
           <div class="project-keterangan-row">
             <div class="project-header">
@@ -233,15 +216,9 @@
               <span class="badge badge-pending">Belum Mulai</span>
             </div>
             <div class="dash-keterangan">
-              <p>
-                <span class="ket-label">Tugas:</span>Menyusun dokumentasi teknis seluruh modul sistem.
-              </p>
-              <p>
-                <span class="ket-label">Sudah sampai:</span>Belum ada progres, masih tahap perencanaan.
-              </p>
-              <p>
-                <span class="ket-label">Lanjutan:</span>Menentukan format dan struktur dokumentasi.
-              </p>
+              <p><span class="ket-label">Tugas:</span> Menyusun dokumentasi teknis seluruh modul sistem.</p>
+              <p><span class="ket-label">Sudah sampai:</span> Belum ada progres, masih tahap perencanaan.</p>
+              <p><span class="ket-label">Lanjutan:</span> Menentukan format dan struktur dokumentasi.</p>
             </div>
             <div class="project-progress-below">
               <div class="progress-bar">
@@ -251,14 +228,24 @@
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
 </section>
 
-
-
-
+<!-- TEPAT DI BAWAH </section> DASHBOARD ANDA -->
+<div id="projectModal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modalTitle">Detail Kelengkapan Proyek</h2>
+      <button class="close-modal-btn" aria-label="Tutup">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <!-- Konten otomatis terisi melalui JavaScript -->
+    </div>
+  </div>
+</div>
 
 <!-- ================= HALAMAN : Tugas ================= -->
 <section class="page" id="page-tugas">
@@ -636,19 +623,7 @@
 
                         dashboard-ui.pdf
 
-                        <!-- Modal Formulir -->
-<div id="modal-laporan" class="modal-overlay">
-    <div class="modal-content">
-        <h3>Buat Laporan Baru</h3>
-        <input type="text" id="judulLaporan" placeholder="Judul Laporan" class="modal-input">
-        <textarea id="isiLaporan" placeholder="Isi Laporan" class="modal-textarea"></textarea>
-        
-        <div class="modal-actions">
-            <button class="btn-primary" onclick="simpanLaporan()">Simpan</button>
-            <button class="btn-delete" onclick="tutupModal()">Batal</button>
-        </div>
-    </div>
-</div>
+                
                     </div>
 
                 </div>
@@ -826,12 +801,8 @@
           placeholder="Contoh: Desain halaman Login"
         />
 
-        <label>Penanggung Jawab</label>
-        <input
-          type="text"
-          id="inputPenanggungTugas"
-          placeholder="Nama penanggung jawab"
-        />
+
+
 
         <label>Deadline</label>
         <input type="date" id="inputDeadlineTugas" />
@@ -848,6 +819,24 @@
           <button class="btn-primary" id="btnSimpanTugas">Simpan</button>
         </div>
       </div>
+    </div>
+
+    <!-- MODAL BUAT LAPORAN -->
+    <div id="modal-laporan" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Buat Laporan Baru</h3>
+            <input type="text" id="judulLaporan" placeholder="Judul Laporan" class="modal-input">
+            <input type="text" id="penulisLaporan" placeholder="Nama Penulis" class="modal-input">
+            <textarea id="isiLaporan" placeholder="Isi Laporan" class="modal-textarea"></textarea>
+
+            <label style="display:block; margin-top:10px; font-size:0.9em; font-weight:600;">Lampirkan File</label>
+            <input type="file" id="fileLaporan" class="modal-input" accept=".pdf,.doc,.docx,.jpg,.png">
+
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="simpanLaporan()">Simpan</button>
+                <button class="btn-delete" onclick="tutupModalLaporan()">Batal</button>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>

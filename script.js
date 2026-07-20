@@ -80,24 +80,70 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalBody = document.getElementById('modalBody');
   const closeModalBtn = document.querySelector('.close-modal-btn');
   const track = document.getElementById('dashboardTrack');
+  
+  // ==========================================
+  // KODE KHUSUS UTK PANAH (MANDIRI & TERISOLASI)
+  // ==========================================
+  const tombolKiriTerisolasi = document.querySelector('.prev-btn') || document.querySelector('.arrow-left');
+  const tombolKananTerisolasi = document.querySelector('.next-btn') || document.querySelector('.arrow-right');
+  const trackUtama = document.getElementById('dashboardTrack');
 
-  // 🟢 A. FITUR KLIK UNTUK MELIHAT KEJELASAN DATA PROYEK
+  if (tombolKiriTerisolasi && trackUtama) {
+    tombolKiriTerisolasi.onclick = function(e) {
+      e.preventDefault();
+      trackUtama.scrollBy({ left: -340, behavior: 'smooth' });
+    };
+  }
+
+  if (tombolKananTerisolasi && trackUtama) {
+    tombolKananTerisolasi.onclick = function(e) {
+      e.preventDefault();
+      trackUtama.scrollBy({ left: 340, behavior: 'smooth' });
+    };
+  }
+
+  
+  // ==========================================
+  // KODE UTK MODAL DETAIL PROYEK (DIBUTUHKAN KEMBALI BUNGKUS TRACK)
+  // ==========================================
   if (track && modalDetail) {
     track.addEventListener('click', (e) => {
-      // Cari kartu proyek (.project-item) terdekat dari area yang diklik
+      
+      // 3. JIKA YANG DIKLIK ADALAH KARTU PROYEK (BUKAN PANAH)
       const item = e.target.closest('.project-item');
       if (!item) return;
 
-      // Tarik judul, badge status, dan isi data tersembunyi (.dash-keterangan) dari kartu
+      // Tarik judul dan isi data tersembunyi (.dash-keterangan) dari kartu
       const title = item.querySelector('.project-header h3').innerText;
-      const badgeHtml = item.querySelector('.project-header .badge').outerHTML;
-      const paragraphs = item.querySelectorAll('.dash-keterangan p');
       
-      // Susun ulang untuk disuntikkan ke dalam modal
-      let detailsHtml = `<div style="margin-bottom: 16px;">${badgeHtml}</div>`;
+      // Ambil element badge asli dari kartu
+      const originalBadge = item.querySelector('.project-header .badge');
+      const badgeText = originalBadge ? originalBadge.innerText : 'Berjalan';
+      
+      // Sesuaikan class badge agar menggunakan style baru
+      let badgeClass = 'badge-berjalan';
+      if (badgeText.includes('Belum')) badgeClass = 'badge-pending';
+      if (badgeText.includes('Selesai')) badgeClass = 'badge-done';
+
+      // Ambil data Tugas & Deadline dari paragraph bawaan kartu
+      const paragraphs = item.querySelectorAll('.dash-keterangan p');
+      let tugasText = '';
       paragraphs.forEach(p => {
-        detailsHtml += `<p>${p.innerHTML}</p>`;
+        if (p.innerText.includes('Tugas:')) {
+          tugasText = p.innerHTML.replace(/<\/?span[^>]*>/g, "").replace('Tugas:', '').trim();
+        }
       });
+
+      const sudahSampaiText = item.dataset.sudahSampai || "Sidebar, halaman Tugas, dan halaman Anggota Tim sudah selesai dibuat.";
+      const lanjutanText = item.dataset.lanjutan || "Integrasi halaman Laporan dan menyambungkan form Pengaturan.";
+      
+      // Susun ulang struktur HTML agar rapi
+      let detailsHtml = `
+        <span class="badge ${badgeClass}">${badgeText}</span>
+        <p><strong>Tugas:</strong> ${tugasText || 'Membangun dashboard internal untuk manajemen tugas tim.'}</p>
+        <p><strong>Sudah sampai:</strong> ${sudahSampaiText}</p>
+        <p><strong>Lanjutan:</strong> ${lanjutanText}</p>
+      `;
 
       // Buka modal dengan data lengkap
       modalTitle.innerText = `Detail Kelengkapan: ${title}`;
@@ -106,9 +152,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+
   // Tombol X untuk tutup detail modal
   if (closeModalBtn && modalDetail) {
     closeModalBtn.addEventListener('click', () => {
+      modalDetail.classList.remove('active');
+    });
+  }
+
+  // 🔵 Tambahan: Tombol "Tutup" di bagian footer modal bawah
+  const btnTutupFooter = document.querySelector('.btn-tutup-footer');
+  if (btnTutupFooter && modalDetail) {
+    btnTutupFooter.addEventListener('click', () => {
       modalDetail.classList.remove('active');
     });
   }
@@ -121,6 +176,41 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+});
+
+// ==========================================
+// FITUR PENCARIAN PROYEK AMAN (TERISOLASI)
+// ==========================================
+(function() {
+  const searchInput = document.getElementById('searchProject');
+  const track = document.getElementById('dashboardTrack');
+
+  if (searchInput && track) {
+    searchInput.addEventListener('input', function(e) {
+      // Ambil kata kunci pencarian (huruf kecil & hapus spasi samping)
+      const keyword = e.target.value.toLowerCase().trim();
+      
+      // Ambil semua kartu proyek langsung di dalam track
+      const projectItems = track.querySelectorAll('.project-item');
+      
+      projectItems.forEach(item => {
+        // Cari tag judul <h3> di dalam kartu proyek tersebut
+        const titleElement = item.querySelector('.project-header h3');
+        
+        if (titleElement) {
+          const projectTitle = titleElement.innerText.toLowerCase();
+          
+          // Filter: Jika judul mengandung keyword, tampilkan. Jika tidak, sembunyikan.
+          if (projectTitle.includes(keyword)) {
+            item.style.display = ''; // Mengembalikan ke display bawaan (flex/block)
+          } else {
+            item.style.display = 'none'; // Disembunyikan secara total
+          }
+        }
+      });
+    });
+  }
+})();
 
 
   // 🟢 B. LOGIKA TAMBAH PROYEK BARU (DENGAN STRUKTUR CAROUSEL ASLI)
@@ -208,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
       modalProyek.classList.remove('active');
     });
   }
-});
+
 
 
 // ======================================================

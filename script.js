@@ -50,15 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-// ==========================================
-// KONTROL BUKA/TUTUP (HANYA DARI TOMBOL HAMBURGER)
-// ==========================================
-
-  // Fungsi klik tombol Kiri (Mundur)
-  btnPrev.addEventListener("click", () => {
-    track.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
-  });
-
 
 // ==========================================
 // KONTROL BUKA/TUTUP (HANYA DARI TOMBOL HAMBURGER)
@@ -730,32 +721,73 @@ searchInput.addEventListener("keyup",function(){
 
 
 /* ============================================
-   EDIT
+   LAPORAN AKTIF (index yang sedang ditampilkan)
 ============================================ */
+let laporanAktifIndex = 0;
 
-const btnEdit = document.querySelector(".btn-edit");
+// Update tampilkanLaporan supaya menyimpan index yang sedang aktif
+function tampilkanLaporan(index){
 
-btnEdit.addEventListener("click",()=>{
+    laporanAktifIndex = index; // <-- TAMBAHAN INI
 
-    alert("Fitur Edit akan dikembangkan.");
+    const data = laporanData[index];
 
-});
+    detailTitle.textContent = data.judul;
+    detailPenulis.textContent = data.penulis;
+    detailTanggal.textContent = data.tanggal;
+    detailPrioritas.textContent = data.prioritas;
+    detailIsi.textContent = data.isi;
 
+    detailFile.innerHTML = `
+        <i class="fa-solid fa-paperclip"></i>
+        ${data.file}
+    `;
+
+    detailBadge.textContent =
+        data.status.charAt(0).toUpperCase() +
+        data.status.slice(1);
+
+    detailBadge.className = "badge " + data.status;
+}
 
 /* ============================================
-   HAPUS
+   EDIT LAPORAN
 ============================================ */
+let modeEditLaporan = false;
 
+const btnEdit = document.querySelector(".btn-edit");
+btnEdit.addEventListener("click", () => {
+    const data = laporanData[laporanAktifIndex];
+    modeEditLaporan = true;
+
+    document.getElementById('judulLaporan').value = data.judul;
+    document.getElementById('penulisLaporan').value = data.penulis;
+    document.getElementById('prioritasLaporan').value = data.prioritas;
+    document.getElementById('statusLaporan').value = data.status;
+    document.getElementById('isiLaporan').value = data.isi;
+
+    bukaFormLaporan();
+});
+
+/* ============================================
+   HAPUS LAPORAN
+============================================ */
 const btnDelete = document.querySelector(".btn-delete");
+btnDelete.addEventListener("click", () => {
+    if (confirm("Apakah Anda yakin ingin menghapus laporan ini?")) {
+        laporanData.splice(laporanAktifIndex, 1);
 
-btnDelete.addEventListener("click",()=>{
-
-    if(confirm("Apakah Anda yakin ingin menghapus laporan ini?")){
+        if (laporanData.length > 0) {
+            renderLaporanList();
+            tampilkanLaporan(0);
+        } else {
+            document.querySelector('.laporan-detail').innerHTML =
+                '<p style="padding:20px;">Tidak ada laporan tersisa.</p>';
+            document.querySelector('.laporan-list').innerHTML = '';
+        }
 
         alert("Laporan berhasil dihapus.");
-
     }
-
 });
 
 
@@ -776,6 +808,60 @@ if (btnLogout) {
       alert('Anda telah logout. Sampai jumpa lagi!');
     }
   });
+}
+
+
+function simpanLaporan() {
+    const judul = document.getElementById('judulLaporan').value.trim();
+    const penulis = document.getElementById('penulisLaporan').value.trim();
+    const prioritas = document.getElementById('prioritasLaporan').value;
+    const status = document.getElementById('statusLaporan').value;
+    const isi = document.getElementById('isiLaporan').value.trim();
+
+    // TAMBAHAN: ambil nama file yang dilampirkan
+    const fileInput = document.getElementById('fileLaporan');
+    const namaFile = fileInput.files.length > 0 ? fileInput.files[0].name : '-';
+
+    if (!judul || !penulis || !isi) {
+        alert('Judul, penulis, dan isi laporan wajib diisi!');
+        return;
+    }
+
+    const tanggalSekarang = new Date().toLocaleDateString('id-ID', {
+        day: 'numeric', month: 'long', year: 'numeric'
+    });
+
+    const laporanBaru = {
+        judul: judul,
+        tanggal: tanggalSekarang,
+        penulis: penulis,
+        prioritas: prioritas,
+        status: status,
+        file: namaFile, // <-- diganti dari '-' jadi nama file asli
+        isi: isi
+    };
+
+    laporanData.unshift(laporanBaru);
+    renderLaporanList();
+    tampilkanLaporan(0);
+
+    tutupModalLaporan();
+    alert('Laporan berhasil dibuat!');
+}
+
+function tutupModalLaporan() {
+    const modal = document.getElementById('modal-laporan');
+    if (modal) modal.classList.remove('active');
+
+    document.getElementById('judulLaporan').value = '';
+    document.getElementById('penulisLaporan').value = '';
+    document.getElementById('isiLaporan').value = '';
+    document.getElementById('prioritasLaporan').value = 'Rendah';
+    document.getElementById('statusLaporan').value = 'pending';
+
+    // TAMBAHAN: reset file upload
+    document.getElementById('fileLaporan').value = '';
+    document.getElementById('fileLaporanNama').textContent = 'Klik untuk lampirkan file';
 }
 
 
@@ -904,19 +990,20 @@ function simpanSemuaPerubahan() {
   console.log('Pengaturan tersimpan:', pengaturan);
 }
 
-// Buka / tutup modal ubah password
+// Cukup gunakan ini satu kali saja
 function bukaModal() {
   const modal = document.getElementById('modal-password');
   if (modal) modal.style.display = 'flex';
 }
+
 function tutupModal() {
   const modal = document.getElementById('modal-password');
-  if (modal) modal.style.display = 'none';
+  if (modal) {
+    modal.style.display = 'none';
+    // Hanya tampilkan alert jika benar-benar menyimpan
+  }
 }
 
-function bukaFormLaporan() {
-  alert('Formulir Buat Laporan akan segera muncul!');
-}
 
 // Semua event listener didaftarkan setelah DOM siap, dan semua dicek null dulu
 document.addEventListener('DOMContentLoaded', function () {
@@ -961,59 +1048,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // ===========================
-// MODAL BUAT LAPORAN
-// ===========================
-function bukaFormLaporan() {
-    const modal = document.getElementById('modal-laporan');
-    if (modal) modal.classList.add('active');
-}
-
-function tutupModalLaporan() {
-    const modal = document.getElementById('modal-laporan');
-    if (modal) modal.classList.remove('active');
-
-    document.getElementById('judulLaporan').value = '';
-    document.getElementById('penulisLaporan').value = '';
-    document.getElementById('isiLaporan').value = '';
-    document.getElementById('prioritasLaporan').value = 'Rendah';
-    document.getElementById('statusLaporan').value = 'pending';
-}
-
-function simpanLaporan() {
-    const judul = document.getElementById('judulLaporan').value.trim();
-    const penulis = document.getElementById('penulisLaporan').value.trim();
-    const prioritas = document.getElementById('prioritasLaporan').value;
-    const status = document.getElementById('statusLaporan').value;
-    const isi = document.getElementById('isiLaporan').value.trim();
-
-    if (!judul || !penulis || !isi) {
-        alert('Judul, penulis, dan isi laporan wajib diisi!');
-        return;
-    }
-
-    const tanggalSekarang = new Date().toLocaleDateString('id-ID', {
-        day: 'numeric', month: 'long', year: 'numeric'
-    });
-
-    const laporanBaru = {
-        judul: judul,
-        tanggal: tanggalSekarang,
-        penulis: penulis,
-        prioritas: prioritas,
-        status: status,
-        file: '-',
-        isi: isi
-    };
-
-    laporanData.unshift(laporanBaru);
-    renderLaporanList();
-    tampilkanLaporan(0);
-
-    tutupModalLaporan();
-    alert('Laporan berhasil dibuat!');
-}
-
-// ===========================
 // RENDER DAFTAR LAPORAN (dinamis dari array laporanData)
 // ===========================
 function renderLaporanList() {
@@ -1046,4 +1080,33 @@ function renderLaporanList() {
         container.appendChild(item);
     });
 }
+
+
+function cariLaporan() {
+    const keyword = document.getElementById('searchLaporan').value.toLowerCase().trim();
+    const items = document.querySelectorAll('.laporan-item');
+
+    items.forEach(item => {
+        const judul = item.querySelector('.laporan-info h4').textContent.toLowerCase();
+        
+        if (judul.includes(keyword)) {
+            item.style.display = '';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+
+
+// Update nama file yang tampil saat user memilih file
+document.getElementById('fileLaporan').addEventListener('change', function () {
+    const namaFile = this.files.length > 0 ? this.files[0].name : 'Klik untuk lampirkan file';
+    document.getElementById('fileLaporanNama').textContent = namaFile;
+});
     
+function bukaFormLaporan() {
+    const modal = document.getElementById('modal-laporan');
+    if (modal) {
+        modal.classList.add('active');
+    }
+}

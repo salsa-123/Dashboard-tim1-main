@@ -918,20 +918,7 @@ if (btnSimpanByClass) {
 }
 
 
-/*tombol password */
-    const tombolUbah = document.querySelector('.btn-secondary'); // Sesuaikan class tombol Anda
-    const modal = document.getElementById('modal-password');
 
-    // Menampilkan modal saat tombol diklik
-    tombolUbah.onclick = function() {
-        modal.style.display = 'flex';
-    };
-
-    // Fungsi untuk menutup modal
-    function tutupModal() {
-        modal.style.display = 'none';
-        alert('Password berhasil diubah!');
-    }
 
 
 
@@ -993,17 +980,39 @@ function simpanSemuaPerubahan() {
 // Cukup gunakan ini satu kali saja
 function bukaModal() {
   const modal = document.getElementById('modal-password');
-  if (modal) modal.style.display = 'flex';
+  if (modal) modal.classList.add('active');
 }
 
 function tutupModal() {
   const modal = document.getElementById('modal-password');
-  if (modal) {
-    modal.style.display = 'none';
-    // Hanya tampilkan alert jika benar-benar menyimpan
-  }
+  if (modal) modal.classList.remove('active');
 }
 
+function simpanPasswordBaru() {
+  const modal = document.getElementById('modal-password');
+  if (!modal) return;
+
+  const inputs = modal.querySelectorAll('input[type="password"]');
+  const passLama = inputs[0].value.trim();
+  const passBaru = inputs[1].value.trim();
+
+  if (!passLama || !passBaru) {
+    alert('Password lama dan password baru wajib diisi!');
+    return;
+  }
+
+  // Kosongkan input setelah disimpan
+  inputs[0].value = '';
+  inputs[1].value = '';
+
+  tutupModal();
+  alert('Password berhasil diubah!');
+}
+
+const btnUbahPassword = document.getElementById('btnUbahPassword');
+if (btnUbahPassword) {
+  btnUbahPassword.addEventListener('click', bukaModal);
+}
 
 // Semua event listener didaftarkan setelah DOM siap, dan semua dicek null dulu
 document.addEventListener('DOMContentLoaded', function () {

@@ -707,7 +707,7 @@
 
             <h3>Keamanan</h3>
             <div class="setting-row"><span>Autentikasi 2FA</span><select><option>Aktif</option><option>Nonaktif</option></select></div>
-            <div class="setting-row"><span>Password</span><button class="btn btn-secondary">Ubah Password</button></div>
+            <div class="setting-row"><span>Password</span><button class="btn btn-secondary" id="btnUbahPassword">Ubah Password</button></div>
 
             <h3>Tampilan</h3>
 <div class="setting-row">
@@ -752,15 +752,7 @@
 
             <div style="margin-top: 30px; text-align: right;">
                 <button class="btn" onclick="simpanSemuaPerubahan()">Simpan Semua Perubahan</button>
-                <!-- Jendela Modal untuk Ubah Password -->
-<div id="modal-password" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center;">
-    <div style="background:white; padding:30px; border-radius:8px; width:400px;">
-        <button class="btn btn-secondary" onclick="bukaModal()">Ubah Password</button>
-        <input type="password" placeholder="Password Lama" style="width:100%; margin-bottom:10px;">
-        <input type="password" placeholder="Password Baru" style="width:100%; margin-bottom:10px;">
-        <button onclick="tutupModal()" class="btn">Simpan</button>
-    </div>
-</div>
+              
             </div>
         </div>
     </div>
@@ -820,6 +812,19 @@
       </div>
     </div>
 
+<!-- MODAL UBAH PASSWORD -->
+    <div id="modal-password" class="modal-overlay">
+      <div class="modal-box">
+        <h3>Ubah Password</h3>
+        <input type="password" placeholder="Password Lama" style="width:100%; margin-bottom:10px;">
+        <input type="password" placeholder="Password Baru" style="width:100%; margin-bottom:10px;">
+        <div class="modal-actions">
+          <button onclick="tutupModal()" class="btn-secondary">Batal</button>
+          <button onclick="simpanPasswordBaru()" class="btn-primary">Simpan</button>
+        </div>
+      </div>
+    </div>
+
     <!-- MODAL TAMBAH TUGAS -->
     <div class="modal-overlay" id="modalTugas">
       <div class="modal-box">
@@ -851,24 +856,7 @@
       </div>
     </div>
 
-    <!-- MODAL BUAT LAPORAN -->
-    <div id="modal-laporan" class="modal-overlay">
-        <div class="modal-content">
-            <h3>Buat Laporan Baru</h3>
-            <input type="text" id="judulLaporan" placeholder="Judul Laporan" class="modal-input">
-            <input type="text" id="penulisLaporan" placeholder="Nama Penulis" class="modal-input">
-            <textarea id="isiLaporan" placeholder="Isi Laporan" class="modal-textarea"></textarea>
-
-            <label style="display:block; margin-top:10px; font-size:0.9em; font-weight:600;">Lampirkan File</label>
-            <input type="file" id="fileLaporan" class="modal-input" accept=".pdf,.doc,.docx,.jpg,.png">
-
-            <div class="modal-actions">
-                <button class="btn-primary" onclick="simpanLaporan()">Simpan</button>
-                <button class="btn-delete" onclick="tutupModalLaporan()">Batal</button>
-            </div>
-        </div>
-    </div>
-
+  
     <script src="script.js"></script>
 
   </body>

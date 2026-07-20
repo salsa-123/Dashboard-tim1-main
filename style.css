@@ -320,6 +320,11 @@ body {
   transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.sidebar ~ .modal-overlay,
+.sidebar.collapsed ~ .modal-overlay {
+  margin-left: 0 !important;
+}
+
 .sidebar.collapsed ~ * {
   margin-left: 70px;
 }
@@ -3856,6 +3861,8 @@ body.dark-mode .icon-btn.delete:hover {
 
 /* ---------- Jaring pengaman: semua border di halaman ini ---------- */
 body.dark-mode #page-tugas * {
+  border-color: #2d3543 !important;
+}
 
 
   /* ===========================

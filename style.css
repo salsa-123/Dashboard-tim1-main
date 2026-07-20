@@ -187,7 +187,6 @@ body {
   opacity: 0;
   display: none;
 }
-
 /* NAVIGASI & MENU */
 .sidebar-nav {
   display: flex;
@@ -204,9 +203,14 @@ body {
   color: var(--sidebar-text, #94a3b8);
   text-decoration: none;
   border-radius: 8px;
-  font-size: 14px;
   transition: all 0.15s ease;
   white-space: nowrap; 
+
+  /* 🟢 PERUBAHAN FONT DI SINI */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;            /* Teks menu bawaan sedikit lebih tebal agar jelas */
+  letter-spacing: -0.01em;     /* Merapatkan sedikit huruf agar terlihat premium/clean */
 }
 
 .nav-item:hover {
@@ -217,9 +221,11 @@ body {
 .nav-item.active {
   background: rgba(34, 197, 94, 0.15);
   color: var(--accent, #5b4fe9);
-  font-weight: 600;
+  
+  /* 🟢 PERUBAHAN DI SINI */
+  font-weight: 600;            /* Menu aktif dibuat semi-bold agar kontras */
+  letter-spacing: -0.015em;    /* Sedikit penyesuaian kerapatan saat teks menebal */
 }
-
 
 .nav-icon {
   font-size: 16px;
@@ -232,6 +238,65 @@ body {
   font-size: 0; 
   justify-content: center;
   padding: 10px 0;
+}
+
+/* Container untuk memisahkan Judul (Kiri) dan Search (Kanan) */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+/* Reset margin bawaan judul agar sejajar rapi */
+.section-header h2 {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* Kotak Pembungkus Input & Ikon */
+/* 1. Jadikan container sebagai patokan koordinat input & ikon */
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* 2. Presisikan ukuran dan posisi ikon SVG agar tepat di tengah */
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%); /* Trik andalan agar vertikal center sempurna */
+  width: 16px;  /* Ukuran ikon proporsional */
+  height: 16px; /* Ukuran ikon proporsional */
+  pointer-events: none;
+  z-index: 2;   /* Memastikan ikon berada di atas background input */
+}
+
+/* 3. Pastikan input memiliki padding kiri yang cukup agar teks tidak tertabrak */
+#searchProject {
+  width: 240px;
+  padding: 8px 12px 8px 36px; /* 36px di kiri memberikan ruang untuk ikon */
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #f8fafc;
+  color: #334155;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+#searchProject:focus {
+  border-color: #5b4fe9;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(91, 79, 233, 0.1);
+  width: 280px;
 }
 
 /* FOOTER SIDEBAR */
@@ -374,24 +439,32 @@ body {
   transform: translateY(-50%);
   width: 44px;
   height: 44px;
-  background-color: #ffffff; /* 🔄 DIUBAH: Putih bersih agar menyatu dengan tema baru */
-  color: #111827;            /* 🔄 DIUBAH: Warna panah menjadi hitam pekat/gelap agar kontras */
-  border: 1px solid #e5e7eb; /* Garis tepi tipis abu-abu terang */
-  border-radius: 50%;        /* Bulat sempurna */
+  background-color: #ffffff; 
+  color: #111827;            
+  border: 1px solid #e5e7eb; 
+  border-radius: 50%;        
   font-size: 18px;
-  cursor: pointer;
+  cursor: pointer !important; /* 🌟 MEMASTIKAN KURSOR BERUBAH JADI TANGAN */
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Dibuat sedikit lebih halus bayangannya */
+  z-index: 999 !important;    /* 🌟 DIUBAH: Naikkan lapisan agar melayang di paling atas */
+  pointer-events: auto !important; /* 🌟 TAMBAHAN: Memaksa tombol agar bisa menerima klik */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); 
   transition: all 0.2s ease;
 }
 
-/* Tambahkan efek ini agar interaksinya terasa hidup saat didekati kursor */
+/* 🌟 TAMBAHAN: Matikan deteksi klik pada ikon/panah di dalam tombol agar tidak membingungkan JS */
+.carousel-btn * {
+  pointer-events: none !important;
+}
+
+/* 4. Efek Interaktif Saat Tombol Panah Disorot Kursor (Hover) - Sudah Disatukan */
 .carousel-btn:hover {
-  background-color: #f3f4f6; /* Berubah abu-abu super terang saat di-hover */
-  transform: translateY(-50%) scale(1.05); /* Sedikit membesar lembut */
+  background-color: #5b4fe9; /* Berubah menjadi Ungu senada dengan tema warna logo */
+  color: #ffffff;            /* Warna panah berubah jadi putih */
+  border-color: #5b4fe9;
+  transform: translateY(-50%) scale(1.08); /* Tombol sedikit membesar lembut */
 }
 
 /* Posisi Spesifik Panah Kiri */
@@ -404,24 +477,16 @@ body {
   right: -22px; /* Melayang sedikit keluar di sisi kanan */
 }
 
-/* 4. Efek Interaktif Saat Tombol Panah Disorot Kursor (Hover) */
-.carousel-btn:hover {
-  background-color: #5b4fe9; /* Berubah menjadi Ungu senada dengan tema warna logo */
-  color: #ffffff;            /* Warna panah berubah jadi putih */
-  border-color: #5b4fe9;
-  transform: translateY(-50%) scale(1.08); /* Tombol sedikit membesar lembut */
-}
-
 /* 5. Pengaturan Responsif untuk Layar HP / Mobile */
 @media (max-width: 768px) {
   .project-item {
-    flex: 0 0 280px; /* Di layar HP, kotak proyek otomatis mengecil sedikit agar pas */
+    flex: 0 0 280px; 
   }
   .prev-btn {
-    left: 4px;  /* Di layar kecil, posisi digeser ke dalam agar tidak keluar layar */
+    left: 4px;  
   }
   .next-btn {
-    right: 4px; /* Di layar kecil, posisi digeser ke dalam agar tidak keluar layar */
+    right: 4px; 
   }
 }
 
@@ -459,6 +524,7 @@ body {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; /* Opsional: Agar font lebih modern */
 }
 
 /* Aktifkan efek modal muncul */
@@ -467,60 +533,120 @@ body {
   pointer-events: auto;
 }
 
-/* Kotak Konten Putih Tengah */
+/* Kotak Konten Putih Tengah (Diperbarui sudut & overflow) */
 .modal-content {
   background: #ffffff;
   width: 90%;
-  max-width: 500px;
-  border-radius: 16px;
-  padding: 24px;
+  max-width: 480px;
+  border-radius: 24px; /* Sudut lebih melengkung lembut sesuai gambar */
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
   transform: scale(0.9);
   transition: transform 0.25s ease;
+  overflow: hidden; /* Mencegah warna header bocor keluar border-radius */
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-overlay.active .modal-content {
   transform: scale(1);
 }
 
-/* Header Modal (Judul & Close) */
+/* Pilihan 2: Biru Gradasi Modern */
 .modal-header {
+  background: linear-gradient(135deg, #1e40af, #3b82f6) !important;
+  padding: 24px 32px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #f3f4f6;
-  padding-bottom: 12px;
-  margin-bottom: 16px;
+  align-items: flex-start;
+  /* 🔵 TAMBAHAN: Paksa sudut kiri dan kanan atas header ikut melengkung 24px */
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
 }
 
 .modal-header h2 {
-  font-size: 18px;
-  color: #1e293b;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff; /* Teks putih kontras */
   margin: 0;
+  line-height: 1.4;
+  padding-right: 20px;
 }
 
+/* Tombol Silang (x) di Header */
 .close-modal-btn {
   background: none;
   border: none;
   font-size: 24px;
-  color: #9ca3af;
+  color: rgba(255, 255, 255, 0.7); /* Putih transparan */
   cursor: pointer;
   line-height: 1;
+  padding: 0;
+  transition: color 0.2s;
 }
 
 .close-modal-btn:hover {
-  color: #ef4444;
+  color: #ffffff; /* Putih terang saat dihover */
 }
 
-/* 🟢 3. Menampilkan kembali teks keterangan dengan rapi khusus saat di dalam modal */
+/* 🟢 4. Bagian Isi / Body (Dengan penyesuaian jarak & gap) */
+.modal-body {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Memberi jarak otomatis antar paragraf */
+}
+
+/* Menampilkan kembali teks keterangan dengan rapi */
 .modal-body .dash-keterangan,
 .modal-body p {
   display: block !important;
-  margin: 0 0 12px 0;
+  margin: 0;
   font-size: 14px;
   line-height: 1.6;
-  color: #475569;
+  color: #4a4a4a;
 }
+
+.modal-body strong {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+/* 🔵 Tambahan Badge Status "Berjalan" */
+.badge-berjalan {
+  align-self: flex-start;
+  background-color: #2b5cb8;
+  color: #ffffff;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+/* 🟢 5. Tambahan untuk Bagian Tombol Bawah (Footer) */
+.modal-footer {
+  padding: 0 32px 32px 32px;
+  display: flex;
+  justify-content: flex-end; /* Membawa tombol ke kanan bawah */
+}
+
+.btn-tutup-footer {
+  background-color: #1e40af;
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-tutup-footer:hover {
+  background-color: #1d4ed8;
+}
+
+
 
 /* STAT CARDS */
 .stat-grid {

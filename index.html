@@ -6,6 +6,9 @@
     <title>Dashboard Tim 1</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   </head>
   <body>
     <div class="app">
@@ -61,7 +64,16 @@
         <!-- HALAMAN: DASHBOARD -->
 <section class="page active" id="page-dashboard">
   <div class="panel">
-    <h2>Ringkasan Proyek</h2>
+    <div class="section-header">
+  <h2>Ringkasan Proyek</h2>
+  <div class="search-container">
+    <!-- Ikon diganti dengan SVG murni -->
+    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#94a3b8">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+    <input type="text" id="searchProject" placeholder="Cari proyek...">
+  </div>
+</div>
     
     <!-- Ditambahkan style inline position: relative agar posisi tombol panah melayang dengan pas -->
     <div class="carousel-wrapper" style="position: relative;">
@@ -237,13 +249,25 @@
 <!-- TEPAT DI BAWAH </section> DASHBOARD ANDA -->
 <div id="projectModal" class="modal-overlay">
   <div class="modal-content">
+    
+    <!-- Bagian Header (Hijau) -->
     <div class="modal-header">
-      <h2 id="modalTitle">Detail Kelengkapan Proyek</h2>
+      <h2 id="modalTitle">Detail Kelengkapan: Dashboard Tim 1</h2>
       <button class="close-modal-btn" aria-label="Tutup">&times;</button>
     </div>
+    
+    <!-- Bagian Konten/Isi -->
     <div class="modal-body" id="modalBody">
-      <!-- Konten otomatis terisi melalui JavaScript -->
+      <!-- Konten otomatis terisi melalui JavaScript, contoh struktur: -->
+      <!-- <span class="badge badge-berjalan">Berjalan</span> -->
+      <!-- <p><strong>Tugas:</strong> Membangun dashboard internal...</p> -->
     </div>
+    
+    <!-- Tambahan Bagian Footer untuk Tombol Tutup di Kanan Bawah -->
+    <div class="modal-footer">
+      <button class="btn-tutup-footer">Tutup</button>
+    </div>
+
   </div>
 </div>
 

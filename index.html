@@ -416,7 +416,9 @@
 
                     <input
                         type="text"
+                        id="searchLaporan"
                         placeholder="Cari laporan..."
+                        oninput="cariLaporan()"
                     >
 
                 </div>
@@ -547,19 +549,16 @@
 
                         <div class="detail-action">
 
-                            <button class="btn-edit">
+                            <button class="btn-edit" onclick="editLaporan()">
 
-                                <i class="fa-solid fa-pen"></i>
-
-                                Edit
+                                <i class="fa-solid fa-pen"></i> Edit
 
                             </button>
 
-                            <button class="btn-delete">
+                            <button class="btn-delete" onclick="hapusLaporan()">
 
-                                <i class="fa-solid fa-trash"></i>
+                                <i class="fa-solid fa-trash"></i> Hapus
 
-                                Hapus
 
                             </button>
 
@@ -655,6 +654,13 @@
         </select>
 
         <textarea id="isiLaporan" placeholder="Isi Laporan" class="modal-textarea"></textarea>
+
+        <!-- TAMBAHAN: Upload Lampiran -->
+        <label for="fileLaporan" class="file-upload-box">
+            <i class="fa-solid fa-paperclip"></i>
+            <span id="fileLaporanNama">Klik untuk lampirkan file</span>
+        </label>
+        <input type="file" id="fileLaporan" style="display:none;">
 
         <div class="modal-actions">
             <button class="btn-primary" onclick="simpanLaporan()">Simpan</button>

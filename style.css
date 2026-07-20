@@ -3356,3 +3356,416 @@ body.dark-mode .ket-label,
 body.dark-mode .project-item span {
   color: var(--text-muted);
 }
+
+/* =====================================================
+   PERBAIKAN DESAIN — HALAMAN PENGATURAN (DARK MODE)
+===================================================== */
+
+/* Setiap section (Akun, Keamanan, dst) jadi kartu terpisah */
+body.dark-mode #page-pengaturan .settings-section,
+body.dark-mode #page-pengaturan .setting-section {
+  background: #1e2530 !important;
+  border: 1px solid #2d3543 !important;
+  border-radius: 14px !important;
+  padding: 20px 24px !important;
+  margin-bottom: 20px !important;
+}
+
+/* Judul section (Akun, Keamanan, Tampilan, dst) dibuat lebih menonjol */
+body.dark-mode #page-pengaturan .settings-section h3,
+body.dark-mode #page-pengaturan .setting-section h3,
+body.dark-mode #page-pengaturan h3 {
+  color: #818cf8 !important;
+  font-size: 13px !important;
+  text-transform: uppercase !important;
+  letter-spacing: .5px !important;
+  margin-bottom: 14px !important;
+  padding-bottom: 10px !important;
+  border-bottom: 1px solid #2d3543 !important;
+}
+
+/* Baris di dalam section (Nama Lengkap, Email, dst) */
+body.dark-mode #page-pengaturan .settings-row,
+body.dark-mode #page-pengaturan .setting-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 12px 0 !important;
+  border-bottom: 1px solid #262f3d !important;
+}
+
+body.dark-mode #page-pengaturan .settings-row:last-child,
+body.dark-mode #page-pengaturan .setting-row:last-child {
+  border-bottom: none !important;
+}
+
+/* Label kiri (Nama Lengkap, Email, dst) dibuat sedikit redup supaya
+   fokus mata tetap ke value di kanan */
+body.dark-mode #page-pengaturan .settings-row label,
+body.dark-mode #page-pengaturan .setting-row label,
+body.dark-mode #page-pengaturan .settings-row span:first-child {
+  color: #9ca3af !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+
+/* Kotak input/value di kanan - dipertegas bordernya + rounded */
+body.dark-mode #page-pengaturan input,
+body.dark-mode #page-pengaturan select {
+  background: #262f3d !important;
+  color: #f1f5f9 !important;
+  border: 1px solid #384152 !important;
+  border-radius: 8px !important;
+  padding: 8px 14px !important;
+  font-size: 13.5px !important;
+  min-width: 180px !important;
+  transition: border-color .2s, box-shadow .2s !important;
+}
+
+/* Efek fokus supaya jelas kotak mana yang sedang aktif diedit */
+body.dark-mode #page-pengaturan input:focus,
+body.dark-mode #page-pengaturan select:focus {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, .25) !important;   /* <-- INI YANG DITAMBAHKAN */
+  outline: none !important;                                     /* <-- INI YANG DITAMBAHKAN */
+}                                                                /* <-- INI YANG DITAMBAHKAN (kurung penutup yang hilang) */
+
+/* =====================================================
+   FIX FINAL — HALAMAN TUGAS DARK MODE (SATU-SATUNYA VERSI)
+===================================================== */
+
+body.dark-mode .tugas-stat-grid,
+body.dark-mode .tugas-toolbar,
+body.dark-mode .table-wrapper,
+body.dark-mode .tugas-stat-card,
+body.dark-mode #tabelTugas,
+body.dark-mode #tabelTugas thead,
+body.dark-mode #tabelTugas thead tr,
+body.dark-mode #tabelTugas thead th,
+body.dark-mode .task-table,
+body.dark-mode .task-table thead,
+body.dark-mode .task-table thead tr,
+body.dark-mode .task-table thead th,
+body.dark-mode .task-table tbody,
+body.dark-mode .task-table tbody tr,
+body.dark-mode .task-table tbody td {
+  background: #1e2530 !important;
+  color: #e5e7eb !important;
+  border-color: #2d3543 !important;
+}
+
+body.dark-mode .tugas-toolbar {
+  background: #14181f !important;
+}
+
+body.dark-mode .tugas-search-box input,
+body.dark-mode .tugas-filter-select,
+body.dark-mode .modal-content select.modal-input {
+  background: #262f3d !important;
+  color: #e5e7eb !important;
+  border: 1px solid #2d3543 !important;
+}
+
+body.dark-mode .tugas-search-box input::placeholder {
+  color: #6b7280 !important;
+}
+
+body.dark-mode .tugas-search-box i,
+body.dark-mode .th-sort i {
+  color: #6b7280 !important;
+}
+
+body.dark-mode .tugas-stat-label {
+  color: #9ca3af !important;
+}
+
+body.dark-mode .tugas-stat-value {
+  color: #e5e7eb !important;
+}
+
+body.dark-mode .task-table tbody tr:hover {
+  background: #262f3d !important;
+}
+
+/* Jaring pengaman terakhir: paksa SEMUA border putih/terang jadi gelap
+   di dalam area tugas, apapun class-nya */
+body.dark-mode #page-tugas * {
+  border-color: #2d3543 !important;
+}
+
+
+/* =====================================================
+   HALAMAN PENGATURAN — REDESIGN (SATU KODE, OTOMATIS
+   MENYESUAIKAN LIGHT/DARK MODE)
+===================================================== */
+
+/* Nilai default untuk Light Mode */
+#page-pengaturan {
+  --pg-bg: #f8fafc;
+  --pg-card: #ffffff;
+  --pg-border: #edf2f7;
+  --pg-text: #374151;
+  --pg-label: #6b7280;
+  --pg-accent: #4f46e5;
+  --pg-accent-soft: #eef2ff;
+}
+
+/* Nilai untuk Dark Mode — otomatis aktif kalau body punya class dark-mode */
+body.dark-mode #page-pengaturan {
+  --pg-bg: #14181f;
+  --pg-card: #1a212c;
+  --pg-border: #232b38;
+  --pg-text: #e2e8f0;
+  --pg-label: #cbd5e1;
+  --pg-accent: #a5b4fc;
+  --pg-accent-soft: rgba(99, 102, 241, .15);
+}
+
+/* ---------- Semua style di bawah ini PAKAI VARIABEL DI ATAS,
+   jadi otomatis berubah warna sesuai tema tanpa perlu ditulis 2x ---------- */
+
+#page-pengaturan {
+  background: var(--pg-bg);
+  padding: 32px;
+}
+
+#page-pengaturan h2 {
+  color: var(--pg-text);
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--pg-border);
+}
+
+#page-pengaturan h3 {
+  color: var(--pg-accent);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 36px 0 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--pg-border);
+}
+
+#page-pengaturan h3::before {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  background: var(--pg-accent-soft);
+}
+
+#page-pengaturan h3:nth-of-type(1)::before { content: "👤"; }
+#page-pengaturan h3:nth-of-type(2)::before { content: "🔒"; }
+#page-pengaturan h3:nth-of-type(3)::before { content: "🎨"; }
+#page-pengaturan h3:nth-of-type(4)::before { content: "🔔"; }
+#page-pengaturan h3:nth-of-type(5)::before { content: "👥"; }
+#page-pengaturan h3:nth-of-type(6)::before { content: "💾"; }
+
+#page-pengaturan h3 ~ div {
+  background: var(--pg-card);
+  border: 1px solid var(--pg-border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 8px;
+  transition: all .2s ease;
+}
+
+#page-pengaturan h3 ~ div:hover {
+  border-color: var(--pg-accent);
+  transform: translateX(2px);
+}
+
+#page-pengaturan label {
+  color: var(--pg-label);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+#page-pengaturan input,
+#page-pengaturan select {
+  background: var(--pg-card);
+  color: var(--pg-text);
+  border: 1px solid var(--pg-border);
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-size: 13.5px;
+  min-width: 200px;
+  transition: all .2s;
+}
+
+#page-pengaturan input:hover,
+#page-pengaturan select:hover {
+  border-color: var(--pg-accent);
+}
+
+#page-pengaturan input:focus,
+#page-pengaturan select:focus {
+  border-color: var(--pg-accent);
+  box-shadow: 0 0 0 4px var(--pg-accent-soft);
+  outline: none;
+}
+
+#page-pengaturan button {
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 9px 18px;
+  transition: all .2s;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, .2);
+}
+
+#page-pengaturan button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, .35);
+}
+
+
+/* =====================================================
+   HALAMAN TUGAS — DARK MODE FINAL (SATU-SATUNYA VERSI)
+===================================================== */
+
+/* ---------- Kartu Statistik (Total, Selesai, dst) ---------- */
+body.dark-mode .tugas-stat-card {
+  background: #1a212c !important;
+  border: 1px solid #232b38 !important;
+}
+
+body.dark-mode .tugas-stat-label {
+  color: #9ca3af !important;
+}
+
+body.dark-mode .tugas-stat-value {
+  color: #f1f5f9 !important;
+}
+
+/* Kotak ikon di kartu statistik — background redup + ikon warna terang */
+body.dark-mode .tugas-stat-icon {
+  background: rgba(255, 255, 255, .06) !important;
+}
+body.dark-mode .tugas-stat-icon.total  { background: rgba(99, 102, 241, .18) !important; color: #a5b4fc !important; }
+body.dark-mode .tugas-stat-icon.selesai { background: rgba(34, 197, 94, .18) !important; color: #4ade80 !important; }
+body.dark-mode .tugas-stat-icon.proses  { background: rgba(245, 158, 11, .18) !important; color: #fbbf24 !important; }
+body.dark-mode .tugas-stat-icon.belum   { background: rgba(59, 130, 246, .18) !important; color: #60a5fa !important; }
+
+/* ---------- Search & Filter ---------- */
+body.dark-mode .tugas-toolbar {
+  background: #14181f !important;
+}
+body.dark-mode .tugas-search-box input,
+body.dark-mode .tugas-filter-select {
+  background: #1a212c !important;
+  color: #e5e7eb !important;
+  border: 1px solid #232b38 !important;
+}
+body.dark-mode .tugas-search-box input::placeholder {
+  color: #6b7280 !important;
+}
+body.dark-mode .tugas-search-box i {
+  color: #6b7280 !important;
+}
+
+/* ---------- Tabel ---------- */
+body.dark-mode .table-wrapper,
+body.dark-mode #tabelTugas,
+body.dark-mode #tabelTugas thead th,
+body.dark-mode .task-table tbody td {
+  background: #1a212c !important;
+  color: #e5e7eb !important;
+  border-color: #232b38 !important;
+}
+body.dark-mode .task-table tbody tr:hover {
+  background: #232b38 !important;
+}
+body.dark-mode .th-sort i {
+  color: #6b7280 !important;
+}
+
+/* ---------- Badge Status (INI YANG PALING PENTING) ---------- */
+/* Base: semua badge/status dipaksa punya warna & background,
+   supaya tidak ada lagi yang "putih kosong tanpa teks" */
+body.dark-mode .status {
+  background: rgba(255, 255, 255, .08) !important;
+  color: #e5e7eb !important;
+  border: none !important;
+}
+
+body.dark-mode .status.selesai {
+  background: rgba(34, 197, 94, .18) !important;
+  color: #4ade80 !important;
+}
+body.dark-mode .status.proses {
+  background: rgba(245, 158, 11, .18) !important;
+  color: #fbbf24 !important;
+}
+body.dark-mode .status.belum {
+  background: rgba(59, 130, 246, .18) !important;
+  color: #60a5fa !important;
+}
+
+/* ---------- Tombol Edit / Hapus ---------- */
+body.dark-mode .icon-btn {
+  background: #262f3d !important;
+  color: #e5e7eb !important;
+  border: 1px solid #384152 !important;
+}
+body.dark-mode .icon-btn:hover {
+  background: #384152 !important;
+}
+body.dark-mode .icon-btn.delete {
+  color: #f87171 !important;
+}
+body.dark-mode .icon-btn.delete:hover {
+  background: rgba(239, 68, 68, .15) !important;
+}
+
+/* ---------- Jaring pengaman: semua border di halaman ini ---------- */
+body.dark-mode #page-tugas * {
+
+
+  /* ===========================
+   tambah file laporan
+=========================== */
+.file-upload-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px dashed #dbe3ef;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin: 10px 0;
+    font-size: 14px;
+    color: #6b7280;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.file-upload-box:hover {
+    border-color: #4f46e5;
+    background: #f8fafc;
+    color: #4f46e5;
+}
+
+.file-upload-box i {
+    color: #4f46e5;
+}
+
+/* Versi dark mode */
+body.dark-mode .file-upload-box {
+    border-color: #2d3543;
+    color: #9ca3af;
+}
+body.dark-mode .file-upload-box:hover {
+    border-color: #818cf8;
+    background: #1a212c;
+    color: #a5b4fc;
+}

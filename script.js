@@ -130,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupClick('cardBerjalan', 'Berjalan');
   setupClick('cardBelum', 'Belum Mulai');
 });
+});
 
 // ==========================================
 // FITUR PENCARIAN PROYEK AMAN (TERISOLASI)
@@ -227,7 +228,61 @@ function renomorTugas() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', updateStatTugas);
+// ======================================================
+// KONEKSI KE BACKEND API (DATABASE)
+// ======================================================
+const API_URL = 'http://localhost:3000/api/tugas';
+
+function buatBadgeHTML(statusKey) {
+  const found = Object.values(statusMapTugas).find(s => s.key === statusKey);
+  return `<span class="status ${found.key}"><i class="fa-solid ${found.icon}"></i> ${found.label}</span>`;
+}
+
+// Ambil semua data tugas dari database dan tampilkan di tabel
+async function muatTugasDariDatabase() {
+  const taskTableBodyEl = document.getElementById('taskTableBody');
+  if (!taskTableBodyEl) return;
+
+  try {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+
+    taskTableBodyEl.innerHTML = ''; // kosongkan tabel dulu
+
+    data.forEach((tugas) => {
+      const deadlineFormatted = new Date(tugas.deadline).toLocaleDateString('id-ID', {
+        day: 'numeric', month: 'short', year: 'numeric'
+      });
+      const statusKeyMap = { 'Selesai': 'selesai', 'Sedang Berjalan': 'proses', 'Belum Mulai': 'belum' };
+      const statusKey = statusKeyMap[tugas.status] || 'belum';
+
+      const row = document.createElement('tr');
+      row.setAttribute('data-status', statusKey);
+      row.setAttribute('data-id', tugas.id); // simpan id database di baris ini
+      row.innerHTML = `
+        <td></td>
+        <td>${tugas.nama_tugas}</td>
+        <td>${deadlineFormatted}</td>
+        <td>${buatBadgeHTML(statusKey)}</td>
+        <td>
+          <div class="action-cell">
+            <button class="icon-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
+            <button class="icon-btn delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </td>
+      `;
+      taskTableBodyEl.appendChild(row);
+    });
+
+    renomorTugas();
+    updateStatTugas();
+  } catch (error) {
+    console.error('Gagal ambil data tugas:', error);
+    alert('Gagal terhubung ke server. Pastikan backend (node server.js) sedang jalan.');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', muatTugasDariDatabase);
 
 // =====================================================================
 // LANJUTAN HALAMAN TUGASTAMBAH / EDIT TUGAS (modal sama, mode berbeda)
@@ -269,13 +324,11 @@ if (btnBatalTugas && modalTugas) {
   });
 }
 
-function buatBadgeHTML(statusKey) {
-  const found = Object.values(statusMapTugas).find(s => s.key === statusKey);
-  return `<span class="status ${found.key}"><i class="fa-solid ${found.icon}"></i> ${found.label}</span>`;
-}
-
+// ==================================================================
+// SIMPAN TUGAS (TAMBAH / EDIT) — TERHUBUNG KE DATABASE
+// ==================================================================
 if (btnSimpanTugas && taskTableBody) {
-  btnSimpanTugas.addEventListener('click', () => {
+  btnSimpanTugas.addEventListener('click', async () => {
     const nama = inputNamaTugas.value.trim();
 
     const deadline = inputDeadlineTugas.value;
@@ -286,58 +339,56 @@ if (btnSimpanTugas && taskTableBody) {
       return;
     }
 
-    const s = statusMapTugas[status];
-    const deadlineFormatted = new Date(deadline).toLocaleDateString('id-ID', {
-      day: 'numeric', month: 'short', year: 'numeric'
-    });
+    const statusLabelMap = { pending: 'Belum Mulai', progress: 'Sedang Berjalan', done: 'Selesai' };
+    const statusLabel = statusLabelMap[status];
 
+    try {
+      if (editingRow) {
+        // MODE EDIT: kirim ke database lewat PUT
+        const id = editingRow.getAttribute('data-id');
+        await fetch(`${API_URL}/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: statusLabel })
+        });
+      } else {
+        // MODE TAMBAH: kirim ke database lewat POST
+        await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nama_tugas: nama, deadline: deadline, status: statusLabel })
+        });
+      }
 
-    if (editingRow) {
-      // MODE EDIT: perbarui baris yang sudah ada
-      editingRow.setAttribute('data-status', s.key);
-      editingRow.children[1].textContent = nama;
-      editingRow.children[2].textContent = deadlineFormatted;
-      editingRow.children[3].innerHTML = buatBadgeHTML(s.key);
-    } else {
-      // MODE TAMBAH: buat baris baru
-      const row = document.createElement('tr');
-      row.setAttribute('data-status', s.key);
-      row.innerHTML = `
-        <td></td>
-        <td>${nama}</td>
-        
-        <td>${deadlineFormatted}</td>
-        <td>${buatBadgeHTML(s.key)}</td>
-        <td>
-          <div class="action-cell">
-            <button class="icon-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
-            <button class="icon-btn delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-          </div>
-        </td>
-      `;
-      taskTableBody.appendChild(row);
+      modalTugas.classList.remove('active');
+      resetModalTugas();
+      await muatTugasDariDatabase(); // refresh tabel dari database
+    } catch (error) {
+      console.error('Gagal simpan tugas:', error);
+      alert('Gagal menyimpan ke server. Pastikan backend sedang jalan.');
     }
-
- modalTugas.classList.remove('active');
-    resetModalTugas();
-    renomorTugas();
-    updateStatTugas();
   });
 }
 
 // ==================================================================
-// LANJUTAN HALAMAN TUGAS: klik tombol Edit / Hapus di tabel
+// LANJUTAN HALAMAN TUGAS: klik tombol Edit / Hapus di tabel — TERHUBUNG KE DATABASE
 // ==================================================================
 if (taskTableBody) {
-  taskTableBody.addEventListener('click', (e) => {
+  taskTableBody.addEventListener('click', async (e) => {
     const btnHapus = e.target.closest('.icon-btn.delete');
     const btnEdit = e.target.closest('.icon-btn:not(.delete)');
 
     if (btnHapus) {
       if (confirm('Yakin ingin menghapus tugas ini?')) {
-        btnHapus.closest('tr').remove();
-        renomorTugas();
-        updateStatTugas();
+        const row = btnHapus.closest('tr');
+        const id = row.getAttribute('data-id');
+        try {
+          await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+          await muatTugasDariDatabase();
+        } catch (error) {
+          console.error('Gagal hapus tugas:', error);
+          alert('Gagal menghapus di server.');
+        }
       }
       return;
     }
@@ -531,36 +582,6 @@ const detailFile = document.querySelector(".detail-file");
 const searchInput = document.querySelector(".search-box input");
 
 
-/* ============================================
-   UBAH DETAIL
-============================================ */
-
-function tampilkanLaporan(index){
-
-    const data = laporanData[index];
-
-    detailTitle.textContent = data.judul;
-
-    detailPenulis.textContent = data.penulis;
-
-    detailTanggal.textContent = data.tanggal;
-
-    detailPrioritas.textContent = data.prioritas;
-
-    detailIsi.textContent = data.isi;
-
-    detailFile.innerHTML = `
-        <i class="fa-solid fa-paperclip"></i>
-        ${data.file}
-    `;
-
-    detailBadge.textContent =
-        data.status.charAt(0).toUpperCase() +
-        data.status.slice(1);
-
-    detailBadge.className = "badge " + data.status;
-
-}
 
 
 
@@ -992,4 +1013,4 @@ function bukaFormLaporan() {
     if (modal) {
         modal.classList.add('active');
     }
-  }});
+}

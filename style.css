@@ -3510,11 +3510,10 @@ body.dark-mode #page-tugas * {
 
 
 /* =====================================================
-   HALAMAN PENGATURAN — REDESIGN (SATU KODE, OTOMATIS
+   HALAMAN PENGATURAN — REDESIGN (TANPA IKON, OTOMATIS
    MENYESUAIKAN LIGHT/DARK MODE)
 ===================================================== */
 
-/* Nilai default untuk Light Mode */
 #page-pengaturan {
   --pg-bg: #f8fafc;
   --pg-card: #ffffff;
@@ -3525,7 +3524,6 @@ body.dark-mode #page-tugas * {
   --pg-accent-soft: #eef2ff;
 }
 
-/* Nilai untuk Dark Mode — otomatis aktif kalau body punya class dark-mode */
 body.dark-mode #page-pengaturan {
   --pg-bg: #14181f;
   --pg-card: #1a212c;
@@ -3535,9 +3533,6 @@ body.dark-mode #page-pengaturan {
   --pg-accent: #a5b4fc;
   --pg-accent-soft: rgba(99, 102, 241, .15);
 }
-
-/* ---------- Semua style di bawah ini PAKAI VARIABEL DI ATAS,
-   jadi otomatis berubah warna sesuai tema tanpa perlu ditulis 2x ---------- */
 
 #page-pengaturan {
   background: var(--pg-bg);
@@ -3560,31 +3555,9 @@ body.dark-mode #page-pengaturan {
   text-transform: uppercase;
   letter-spacing: 1px;
   margin: 36px 0 12px 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid var(--pg-border);
 }
-
-#page-pengaturan h3::before {
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  background: var(--pg-accent-soft);
-}
-
-#page-pengaturan h3:nth-of-type(1)::before { content: "👤"; }
-#page-pengaturan h3:nth-of-type(2)::before { content: "🔒"; }
-#page-pengaturan h3:nth-of-type(3)::before { content: "🎨"; }
-#page-pengaturan h3:nth-of-type(4)::before { content: "🔔"; }
-#page-pengaturan h3:nth-of-type(5)::before { content: "👥"; }
-#page-pengaturan h3:nth-of-type(6)::before { content: "💾"; }
 
 #page-pengaturan h3 ~ div {
   background: var(--pg-card);

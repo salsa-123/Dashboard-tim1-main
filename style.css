@@ -309,7 +309,6 @@ body {
 .logout-item {
   color: #f87171;
 }
-
 /* 3. AREA KONTEN UTAMA DASHBOARD */
 .sidebar ~ * {
   flex: 1;
@@ -410,6 +409,58 @@ body {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+
+/* ==========================================================================
+   PENAMBAHAN 1: STATS CARDS (TEKS RATA TENGAH)
+   ========================================================================== */
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;     /* Mengetengahkan horizontal */
+  justify-content: center;  /* Mengetengahkan vertikal */
+  text-align: center;       /* Mengetengahkan teks */
+}
+
+.stat-card span {
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.stat-card h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 4px 0 0 0;
+}
+
+
+/* ==========================================================================
+   PENAMBAHAN 2: KOTAK PEMBUNGKUS LUAR AREA PROYEK
+   ========================================================================== */
+.carousel-wrapper {
+  position: relative;
+  background-color: #f8fafc; /* Kotak luar membungkus proyek */
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px 16px;
+  margin-top: 12px;
+}
+
+
 /* ==========================================================================
    KUSTOMISASI CAROUSEL / SLIDER RINGKASAN PROYEK
    ========================================================================== */
@@ -431,10 +482,38 @@ body {
   display: none; /* Browser Chrome, Safari, dan Opera */
 }
 
-/* 2. Menentukan Ukuran Kotak Proyek agar Tidak Mengempis/Gepeng */
+/* 2. Menentukan Ukuran Kotak Proyek agar Dibuat Kecil & Terpisah Kolomnya */
 .project-item {
-  flex: 0 0 340px; /* Setiap kotak proyek akan mengunci lebar di 340px */
+  flex: 0 0 280px; /* Ukuran diperkecil dari 340px jadi 280px */
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Jarak antara kolom logo dan kolom keterangan di luar */
+}
+
+/* PENAMBAHAN 3: KOLOM LOGO + JUDUL (KOLOM DALAM) */
+.project-card-top {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.project-logo-emblem img {
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+/* PENAMBAHAN 4: KOLOM KETERANGAN (KOLOM LUAR DI BAWAH LOGO & JUDUL) */
+.project-card-bottom {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
 }
 
 /* 3. Desain Tombol Panah Kanan & Kiri */
@@ -485,7 +564,7 @@ body {
 /* 5. Pengaturan Responsif untuk Layar HP / Mobile */
 @media (max-width: 768px) {
   .project-item {
-    flex: 0 0 280px; 
+    flex: 0 0 250px; 
   }
   .prev-btn {
     left: 4px;  
@@ -494,164 +573,49 @@ body {
     right: 4px; 
   }
 }
+.btn-view {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 14px;
+  background-color: #f8f9fa; /* Warna terang agar tidak mencolok */
+  border: 1px solid #dee2e6;
+  color: #495057;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
 
+.btn-view:hover {
+  background-color: #007bff; /* Biru saat di-hover */
+  color: white;
+  border-color: #007bff;
+}
 /* ==========================================================================
    KUSTOMISASI MODAL DETAIL PROYEK & PENYEMBUNYIAN KOLOM KETERANGAN
    ========================================================================== */
-
-/* 🟢 1. Menyembunyikan teks keterangan panjang di halaman dashboard utama */
-.project-item .dash-keterangan {
-  display: none !important;
-}
-
-/* Memastikan kartu proyek interaktif saat diarahkan kursor */
-.project-item {
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.project-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-}
-
-/* 🟢 2. Base Style untuk Lapisan Gelap Modal (Overlay) */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 99999 !important; /* Di atas segalanya */
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; /* Opsional: Agar font lebih modern */
-}
-
-/* Aktifkan efek modal muncul */
-.modal-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Kotak Konten Putih Tengah (Diperbarui sudut & overflow) */
-.modal-content {
-  background: #ffffff;
-  width: 90%;
-  max-width: 480px;
-  border-radius: 24px; /* Sudut lebih melengkung lembut sesuai gambar */
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-  transform: scale(0.9);
-  transition: transform 0.25s ease;
-  overflow: hidden; /* Mencegah warna header bocor keluar border-radius */
+.dash-keterangan {
+  padding: 12px 6px;
   display: flex;
   flex-direction: column;
+  gap: 6px;
 }
 
-.modal-overlay.active .modal-content {
-  transform: scale(1);
-}
-
-/* Pilihan 2: Biru Gradasi Modern */
-.modal-header {
-  background: linear-gradient(135deg, #1e40af, #3b82f6) !important;
-  padding: 24px 32px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  /* 🔵 TAMBAHAN: Paksa sudut kiri dan kanan atas header ikut melengkung 24px */
-  border-top-left-radius: 24px !important;
-  border-top-right-radius: 24px !important;
-}
-
-.modal-header h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #ffffff; /* Teks putih kontras */
-  margin: 0;
+.dash-keterangan p {
+  font-size: 12px;
+  color: #475569;
   line-height: 1.4;
-  padding-right: 20px;
-}
-
-/* Tombol Silang (x) di Header */
-.close-modal-btn {
-  background: none;
-  border: none;
-  font-size: 24px;
-  color: rgba(255, 255, 255, 0.7); /* Putih transparan */
-  cursor: pointer;
-  line-height: 1;
-  padding: 0;
-  transition: color 0.2s;
-}
-
-.close-modal-btn:hover {
-  color: #ffffff; /* Putih terang saat dihover */
-}
-
-/* 🟢 4. Bagian Isi / Body (Dengan penyesuaian jarak & gap) */
-.modal-body {
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px; /* Memberi jarak otomatis antar paragraf */
-}
-
-/* Menampilkan kembali teks keterangan dengan rapi */
-.modal-body .dash-keterangan,
-.modal-body p {
-  display: block !important;
   margin: 0;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #4a4a4a;
 }
 
-.modal-body strong {
-  color: #1a1a1a;
+.ket-label {
   font-weight: 600;
+  color: #0f172a;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
 }
-
-/* 🔵 Tambahan Badge Status "Berjalan" */
-.badge-berjalan {
-  align-self: flex-start;
-  background-color: #2b5cb8;
-  color: #ffffff;
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  margin-bottom: 8px;
-}
-
-/* 🟢 5. Tambahan untuk Bagian Tombol Bawah (Footer) */
-.modal-footer {
-  padding: 0 32px 32px 32px;
-  display: flex;
-  justify-content: flex-end; /* Membawa tombol ke kanan bawah */
-}
-
-.btn-tutup-footer {
-  background-color: #1e40af;
-  color: #ffffff;
-  border: none;
-  padding: 10px 24px;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.btn-tutup-footer:hover {
-  background-color: #1d4ed8;
-}
-
-
 
 /* STAT CARDS */
 .stat-grid {
@@ -662,10 +626,34 @@ body {
 }
 
 .stat-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px;
+  background: #ffffff;
+  padding: 16px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;   /* Menyusun label di atas, angka di bawah */
+  align-items: center;        /* Mengetengahkan secara horizontal */
+  justify-content: center;    /* Mengetengahkan secara vertikal */
+  text-align: center;
+  gap: 6px;                   /* Jarak rapi antara tulisan & angka */
+}
+
+.stat-card span {
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;             /* Warna teks abu-abu jelas */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  order: 1;                   /* Memastikan label selalu di paling ATAS */
+}
+
+.stat-card h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  line-height: 1;
+  order: 2;                   /* Memastikan angka selalu di BAWAH label */
 }
 
 .stat-label {
@@ -828,35 +816,38 @@ body {
 }
 
 /* Style Khusus untuk Label Kategori (Tugas:, Sudah sampai:, Lanjutan:) */
-/* Catatan: Bungkus kata "Tugas:", "Lanjutan:" di HTML Anda dengan tag <strong> atau <span class="label"> */
-.project-item p strong, 
-.project-item p .label-text {
-  color: #253347;                 /* Warna label sedikit lebih gelap dari isi teks */
-  font-weight: 600;
-  display: block;                 /* Membuat label dan isi teks terpisah baris agar rapi */
-  margin-bottom: 2px;
-  font-size: 12px;
-  text-transform: uppercase;      /* Membuat label berkapital kecil yang rapi */
-  letter-spacing: 0.5px;
-}
-
-/* Bagian Bawah / Keterangan Tambahan */
-.project-item span {
-  display: block;
-  margin-top: auto;               /* Memaksa elemen ini menempel ke bawah */
-  font-size: 12px;
-  color: #94a3b8;
-  font-weight: 500;
-}
-
-.project-logo-row {
-  padding: 0;
-  aspect-ratio: 1 / 1;
+/* CONTAINER UTAMA ITEM PROYEK */
+.project-item {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f7f7f7;
-  overflow: hidden;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+/* KETERANGAN DI TENGAH */
+.dash-keterangan {
+  padding: 12px 10px;
+  flex-grow: 1; /* Mengisi area kosong di tengah */
+}
+
+.dash-keterangan p {
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0 0 6px 0;
+}
+
+.ket-label {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* KOTAK BAWAH KHUSUS PROGRESS BAR */
+.project-card-bottom {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 14px;
 }
 
 .project-logo-emblem {
@@ -1157,113 +1148,6 @@ body {
 
 .delete:hover{
     background:#ef4444;
-}
-
-
-/* Modal Tambah Proyek */
-.project-grid-v2{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
-  gap:16px;
-  margin-top:20px;
-}
-
-.project-card-v2{
-  background:#fafafa;
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:16px;
-  border-top:3px solid transparent;
-}
-.project-card-v2.status-berjalan{border-top-color:#3b82f6;}
-.project-card-v2.status-selesai{border-top-color:var(--accent);}
-.project-card-v2.status-pending{border-top-color:#9ca3af;}
-
-.project-card-head{
-  display:flex; align-items:flex-start; justify-content:space-between;
-  gap:8px; margin-bottom:8px;
-}
-.project-card-head h3{font-size:14.5px; margin:0; color:var(--text-main);}
-
-.badge-status{
-  font-size:11px; font-weight:600; padding:4px 10px;
-  border-radius:20px; white-space:nowrap; flex-shrink:0;
-}
-.badge-berjalan{background:#dbeafe; color:#1d4ed8;}
-.badge-selesai{background:#dcfce7; color:#166534;}
-.badge-pending{background:#f1f5f9; color:#64748b;}
-
-.project-desc{font-size:12.5px; color:var(--text-muted); margin-bottom:14px; line-height:1.5;}
-
-.progress-bar-v2{
-  background:#e5e7eb; border-radius:6px; height:7px; overflow:hidden; margin-bottom:10px;
-}
-.progress-fill-v2{height:100%; border-radius:6px;}
-.fill-berjalan{background:#3b82f6;}
-.fill-selesai{background:var(--accent);}
-.fill-pending{background:#cbd5e1;}
-
-.project-footer-v2{
-  display:flex; align-items:center; justify-content:space-between;
-  font-size:11.5px; color:var(--text-muted);
-}
-.project-pct{font-weight:600; color:var(--text-main);}
-.project-deadline{display:flex; align-items:center; gap:5px;}
-
-.panel-head{gap:16px; flex-wrap:wrap;}
-
-.modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.4);
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-.modal-overlay.active {
-    display: flex;
-}
-
-.modal-box {
-    background: white;
-    padding: 24px;
-    border-radius: 8px;
-    width: 320px;
-}
-
-.modal-box label {
-    display: block;
-    margin-top: 10px;
-    font-size: 0.9em;
-    font-weight: 600;
-}
-
-.modal-box input,
-.modal-box select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 4px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: 16px;
-}
-
-.btn-secondary {
-    background: #e2e3e5;
-    color: #333;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
 }
 
 

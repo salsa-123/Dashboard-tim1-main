@@ -93,80 +93,42 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  
-  // ==========================================
-  // KODE UTK MODAL DETAIL PROYEK (DIBUTUHKAN KEMBALI BUNGKUS TRACK)
-  // ==========================================
-  if (track && modalDetail) {
-    track.addEventListener('click', (e) => {
-      
-      // 3. JIKA YANG DIKLIK ADALAH KARTU PROYEK (BUKAN PANAH)
-      const item = e.target.closest('.project-item');
-      if (!item) return;
+document.addEventListener('DOMContentLoaded', () => {
+  console.log("JavaScript Berhasil Dimuat!"); // CEK DI CONSOLE F12
 
-      // Tarik judul dan isi data tersembunyi (.dash-keterangan) dari kartu
-      const title = item.querySelector('.project-header h3').innerText;
-      
-      // Ambil element badge asli dari kartu
-      const originalBadge = item.querySelector('.project-header .badge');
-      const badgeText = originalBadge ? originalBadge.innerText : 'Berjalan';
-      
-      // Sesuaikan class badge agar menggunakan style baru
-      let badgeClass = 'badge-berjalan';
-      if (badgeText.includes('Belum')) badgeClass = 'badge-pending';
-      if (badgeText.includes('Selesai')) badgeClass = 'badge-done';
+  const projectCards = document.querySelectorAll('.project-item');
+  const total = projectCards.length;
 
-      // Ambil data Tugas & Deadline dari paragraph bawaan kartu
-      const paragraphs = item.querySelectorAll('.dash-keterangan p');
-      let tugasText = '';
-      paragraphs.forEach(p => {
-        if (p.innerText.includes('Tugas:')) {
-          tugasText = p.innerHTML.replace(/<\/?span[^>]*>/g, "").replace('Tugas:', '').trim();
-        }
-      });
-
-      const sudahSampaiText = item.dataset.sudahSampai || "Sidebar, halaman Tugas, dan halaman Anggota Tim sudah selesai dibuat.";
-      const lanjutanText = item.dataset.lanjutan || "Integrasi halaman Laporan dan menyambungkan form Pengaturan.";
-      
-      // Susun ulang struktur HTML agar rapi
-      let detailsHtml = `
-        <span class="badge ${badgeClass}">${badgeText}</span>
-        <p><strong>Tugas:</strong> ${tugasText || 'Membangun dashboard internal untuk manajemen tugas tim.'}</p>
-        <p><strong>Sudah sampai:</strong> ${sudahSampaiText}</p>
-        <p><strong>Lanjutan:</strong> ${lanjutanText}</p>
-      `;
-
-      // Buka modal dengan data lengkap
-      modalTitle.innerText = `Detail Kelengkapan: ${title}`;
-      modalBody.innerHTML = detailsHtml;
-      modalDetail.classList.add('active');
-    });
+  // Update Angka
+  const elTotal = document.getElementById('statTotalproyek');
+  if (elTotal) {
+    elTotal.textContent = total;
+    console.log("Angka Total Berhasil Diupdate!");
+  } else {
+    console.error("ID 'statTotalproyek' tidak ditemukan di HTML!");
   }
 
+  // Fungsi Filter
+  const setupClick = (id, status) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.onclick = () => {
+        console.log("Filter dijalankan untuk:", status);
+        projectCards.forEach(card => {
+          const badge = card.querySelector('.badge');
+          const badgeText = badge ? badge.textContent.trim() : '';
+          card.style.display = (status === 'Semua' || badgeText === status) ? '' : 'none';
+        });
+      };
+    } else {
+      console.warn("ID tidak ditemukan untuk filter:", id);
+    }
+  };
 
-  // Tombol X untuk tutup detail modal
-  if (closeModalBtn && modalDetail) {
-    closeModalBtn.addEventListener('click', () => {
-      modalDetail.classList.remove('active');
-    });
-  }
-
-  // 🔵 Tambahan: Tombol "Tutup" di bagian footer modal bawah
-  const btnTutupFooter = document.querySelector('.btn-tutup-footer');
-  if (btnTutupFooter && modalDetail) {
-    btnTutupFooter.addEventListener('click', () => {
-      modalDetail.classList.remove('active');
-    });
-  }
-
-  // Klik luar kotak putih untuk menutup modal detail
-  if (modalDetail) {
-    modalDetail.addEventListener('click', (e) => {
-      if (e.target === modalDetail) {
-        modalDetail.classList.remove('active');
-      }
-    });
-  }
+  setupClick('cardTotal', 'Semua');
+  setupClick('cardSelesai', 'Selesai');
+  setupClick('cardBerjalan', 'Berjalan');
+  setupClick('cardBelum', 'Belum Mulai');
 });
 
 // ==========================================
@@ -202,94 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 })();
-
-
-  // 🟢 B. LOGIKA TAMBAH PROYEK BARU (DENGAN STRUKTUR CAROUSEL ASLI)
-  const btnTambahProyek = document.getElementById('btnTambahProyek');
-  const modalProyek = document.getElementById('modalProyek');
-  const btnBatalProyek = document.getElementById('btnBatalProyek');
-  const btnSimpanProyek = document.getElementById('btnSimpanProyek');
-  const projectGrid = document.getElementById('dashboardTrack'); 
-
-  if (btnTambahProyek && modalProyek) {
-    btnTambahProyek.addEventListener('click', () => {
-      modalProyek.classList.add('active');
-    });
-  }
-
-  if (btnBatalProyek && modalProyek) {
-    btnBatalProyek.addEventListener('click', () => {
-      modalProyek.classList.remove('active');
-    });
-  }
-
-  if (btnSimpanProyek && projectGrid) {
-    btnSimpanProyek.addEventListener('click', () => {
-      const inputNama = document.getElementById('inputNamaProyek');
-      const inputDesk = document.getElementById('inputDeskProyek');
-      const inputDeadline = document.getElementById('inputDeadlineProyek');
-      const inputStatus = document.getElementById('inputStatusProyek');
-
-      if (!inputNama || !inputDeadline || !inputStatus) return;
-
-      const nama = inputNama.value.trim();
-      const desk = inputDesk ? inputDesk.value.trim() : '';
-      const deadline = inputDeadline.value;
-      const status = inputStatus.value;
-
-      if (!nama || !deadline) {
-        alert('Nama proyek dan deadline wajib diisi!');
-        return;
-      }
-
-      const statusMap = {
-        pending: { label: 'Belum Mulai', badge: 'badge-pending', progress: 0 },
-        progress: { label: 'Berjalan', badge: 'badge-progress', progress: 50 },
-        done: { label: 'Selesai', badge: 'badge-done', progress: 100 }
-      };
-      const s = statusMap[status];
-
-      const deadlineFormatted = new Date(deadline).toLocaleDateString('id-ID', {
-        day: 'numeric', month: 'long', year: 'numeric'
-      });
-
-      // Menambahkan proyek baru mengikuti layout asli dashboard Anda
-      const card = document.createElement('div');
-      card.classList.add('project-item'); 
-      card.innerHTML = `
-        <div class="project-logo-row">
-          <div class="project-logo-emblem" style="background: #ffffff">
-            <img src="emblem/1.jpg" alt="Logo" style="width: 400px; height: auto;">
-          </div>
-        </div>
-        <div class="project-keterangan-row">
-          <div class="project-header">
-            <h3>${nama}</h3>
-            <span class="badge ${s.badge}">${s.label}</span>
-          </div>
-          <div class="dash-keterangan">
-            <p><span class="ket-label">Tugas:</span> ${desk}</p>
-            <p><span class="ket-label">Deadline:</span> ${deadlineFormatted}</p>
-          </div>
-          <div class="project-progress-below">
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: ${s.progress}%;"></div>
-            </div>
-            <span class="progress-percent">${s.progress}%</span>
-          </div>
-        </div>
-      `;
-
-      projectGrid.appendChild(card);
-
-      // Reset data form input
-      inputNama.value = '';
-      if (inputDesk) inputDesk.value = '';
-      inputDeadline.value = '';
-      modalProyek.classList.remove('active');
-    });
-  }
-
 
 
 // ======================================================
@@ -1118,4 +992,4 @@ function bukaFormLaporan() {
     if (modal) {
         modal.classList.add('active');
     }
-}
+  }});

@@ -3759,3 +3759,92 @@ body.dark-mode .file-upload-box:hover {
     background: #1a212c;
     color: #a5b4fc;
 }
+
+/* ================= MODAL ================= */
+
+.modal-overlay{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.5);
+    justify-content:center;
+    align-items:center;
+    z-index:99999;
+}
+
+.modal-overlay.active{
+    display:flex !important;
+}
+
+.modal-box{
+    width:500px;
+    max-width:95%;
+    background:#fff;
+    border-radius:16px;
+    padding:24px;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+/* ================= MODAL TUGAS ================= */
+
+.modal-box{
+    width:550px;
+    max-width:95%;
+    background:#fff;
+    border-radius:18px;
+    padding:30px;
+    box-shadow:0 20px 50px rgba(0,0,0,.15);
+}
+
+.modal-box h3{
+    font-size:28px;
+    margin-bottom:25px;
+    color:#23395d;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:18px;
+}
+
+.form-group label{
+    font-weight:600;
+    margin-bottom:8px;
+    color:#34495e;
+}
+
+.form-group input,
+.form-group select{
+    width:100%;
+    height:48px;
+    padding:0 15px;
+    border:1px solid #d9e2ec;
+    border-radius:10px;
+    font-size:15px;
+    box-sizing:border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus{
+    border-color:#2f67ff;
+    outline:none;
+}
+
+.modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+    margin-top:25px;
+}
+
+.modal-actions button{
+    min-width:120px;
+    height:45px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}

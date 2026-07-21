@@ -41,19 +41,31 @@
   </div>
 
   <nav class="sidebar-nav">
-    <a href="#Home" class="nav-item active" data-page="dashboard">
-      <span class="nav-icon">▦</span> Dashboard
-    </a>
-    <a href="#tugas" class="nav-item" data-page="tugas">
-      <span class="nav-icon">✓</span> Tugas
-    </a>
-    <a href="#laporan" class="nav-item" data-page="laporan">
-      <span class="nav-icon">▤</span> Laporan
-    </a>
-    <a href="#pengaturan" class="nav-item" data-page="pengaturan">
-      <span class="nav-icon">⚙</span> Pengaturan
-    </a>
-  </nav>
+  <!-- Dashboard -->
+  <a href="#Home" class="nav-item active" data-page="dashboard">
+    <span class="nav-icon"><i class="fa-solid fa-gauge"></i></span> Dashboard
+  </a>
+
+  <!-- Proyek -->
+  <a href="#proyek" class="nav-item" data-page="proyek">
+    <span class="nav-icon"><i class="fa-solid fa-folder-open"></i></span> Proyek
+  </a>
+
+  <!-- Tugas -->
+  <a href="#tugas" class="nav-item" data-page="tugas">
+    <span class="nav-icon"><i class="fa-solid fa-list-check"></i></span> Tugas
+  </a>
+
+  <!-- Laporan -->
+  <a href="#laporan" class="nav-item" data-page="laporan">
+    <span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span> Laporan
+  </a>
+
+  <!-- Pengaturan -->
+  <a href="#pengaturan" class="nav-item" data-page="pengaturan">
+    <span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Pengaturan
+  </a>
+</nav>
   
   <div class="sidebar-footer">
     <a href="#" class="nav-item logout-item" id="btnLogout">
@@ -61,216 +73,216 @@
     </a>
   </div>
 </aside>
-        <!-- HALAMAN: DASHBOARD -->
+<!-- HALAMAN: DASHBOARD -->
 <section class="page active" id="page-dashboard">
   <div class="panel">
-    <div class="section-header">
-  <h2>Ringkasan Proyek</h2>
-  <div class="search-container">
-    <!-- Ikon diganti dengan SVG murni -->
-    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#94a3b8">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-    </svg>
-    <input type="text" id="searchProject" placeholder="Cari proyek...">
+
+    <!-- 1. HEADER RINGKASAN PROYEK & PENCARIAN (BERADA DI PALING ATAS) -->
+    <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 600; color: #0f172a;">Ringkasan Proyek</h2>
+      <div class="search-container">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#94a3b8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input type="text" id="searchProject" placeholder="Cari proyek...">
+      </div>
+    </div>
+
+    <div class="tugas-stat-grid">
+  <!-- KARTU TOTAL -->
+  <div class="tugas-stat-card" id="cardTotal" style="cursor: pointer;">
+    <div class="tugas-stat-icon total"><i class="fa-solid fa-list-check"></i></div>
+    <div>
+      <span class="tugas-stat-label">Total proyek</span>
+      <span class="tugas-stat-value" id="statTotalproyek">6</span>
+    </div>
+  </div>
+
+  <!-- KARTU SELESAI -->
+  <div class="tugas-stat-card" id="cardSelesai" style="cursor: pointer;">
+    <div class="tugas-stat-icon selesai"><i class="fa-solid fa-check"></i></div>
+    <div>
+      <span class="tugas-stat-label">Selesai</span>
+      <span class="tugas-stat-value" id="statSelesai">1</span>
+    </div>
+  </div>
+
+  <!-- KARTU SEDANG BERJALAN -->
+  <div class="tugas-stat-card" id="cardBerjalan" style="cursor: pointer;">
+    <div class="tugas-stat-icon proses"><i class="fa-solid fa-spinner"></i></div>
+    <div>
+      <span class="tugas-stat-label">Sedang Berjalan</span>
+      <span class="tugas-stat-value" id="statBerjalan">3</span>
+    </div>
+  </div>
+
+  <!-- KARTU BELUM MULAI -->
+  <div class="tugas-stat-card" id="cardBelum" style="cursor: pointer;">
+    <div class="tugas-stat-icon belum"><i class="fa-solid fa-circle"></i></div>
+    <div>
+      <span class="tugas-stat-label">Belum Mulai</span>
+      <span class="tugas-stat-value" id="statBelummulai">2</span>
+    </div>
   </div>
 </div>
+
     
-    <!-- Ditambahkan style inline position: relative agar posisi tombol panah melayang dengan pas -->
+    <!-- 3. KONTEN CAROUSEL PROYEK (DIBUNGKUS KOTAK OUTSIDE) -->
     <div class="carousel-wrapper" style="position: relative;">
       
-      <!-- 🟢 TOMBOL PANAH NAVIGASI -->
+      <!-- TOMBOL PANAH NAVIGASI -->
       <button class="carousel-btn prev-btn" id="btnPrev" aria-label="Sebelumnya">&#10094;</button>
       <button class="carousel-btn next-btn" id="btnNext" aria-label="Selanjutnya">&#10095;</button>
       
-      <!-- Jalur Grid Konten Proyek -->
+      <!-- JALUR GRID PROYEK -->
       <div class="project-grid" id="dashboardTrack">
         
-        <!-- PROYEK 1: Dashboard Tim 1 -->
-        <div class="project-item">
-          <div class="project-logo-row">
-            <div class="project-logo-emblem" style="background: #ffffff">
-              <img src="emblem/6.jpg" alt="Logo" style="width: 400px; height: auto;">
-            </div>
-          </div>
-          <div class="project-keterangan-row">
-            <div class="project-header">
-              <h3>Dashboard Tim 1</h3>
-              <span class="badge badge-progress">Berjalan</span>
-            </div>
-            <div class="dash-keterangan">
-              <p><span class="ket-label">Tugas:</span> Membangun dashboard internal untuk manajemen tugas tim.</p>
-              <p><span class="ket-label">Sudah sampai:</span> Sidebar, halaman Tugas, dan halaman Anggota Tim sudah selesai dibuat.</p>
-              <p><span class="ket-label">Lanjutan:</span> Integrasi halaman Laporan dan menyambungkan form Pengaturan.</p>
-            </div>
-            <div class="project-progress-below">
-              <div class="progress-bar">
-                <div class="progress-fill" style="width: 60%"></div>
-              </div>
-              <span class="progress-percent">60%</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- PROYEK 2: Redesign Logo Tim -->
-        <div class="project-item">
-          <div class="project-logo-row">
-            <div class="project-logo-emblem" style="background: #ffffff">
-              <img src="emblem/1.jpg" alt="Logo" style="width: 400px; height: auto;">
-            </div>
-          </div>
-          <div class="project-keterangan-row">
-            <div class="project-header">
-              <h3>Redesign Logo Tim</h3>
-              <span class="badge badge-done">Selesai</span>
-            </div>
-            <div class="dash-keterangan">
-              <p><span class="ket-label">Tugas:</span> Membuat ulang identitas visual logo Tim 1.</p>
-              <p><span class="ket-label">Sudah sampai:</span> Semua alternatif logo selesai dan versi final sudah disetujui.</p>
-              <p><span class="ket-label">Lanjutan:</span> Tidak ada, proyek sudah tuntas.</p>
-            </div>
-            <div class="project-progress-below">
-              <div class="progress-bar">
-                <div class="progress-fill" style="width: 100%"></div>
-              </div>
-              <span class="progress-percent">100%</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- PROYEK 3: Integrasi Database -->
-        <div class="project-item">
-          <div class="project-logo-row">
-            <div class="project-logo-emblem" style="background: #ffffff">
-              <img src="emblem/2.jpg" alt="Logo" style="width: 400px; height: auto;">
-            </div>
-          </div>
-          <div class="project-keterangan-row">
-            <div class="project-header">
-              <h3>Integrasi Database</h3>
-              <span class="badge badge-pending">Belum Mulai</span>
-            </div>
-            <div class="dash-keterangan">
-              <p><span class="ket-label">Tugas:</span> Menghubungkan dashboard dengan database tugas.</p>
-              <p><span class="ket-label">Sudah sampai:</span> Belum ada progres, masih tahap perencanaan.</p>
-              <p><span class="ket-label">Lanjutan:</span> Menentukan struktur tabel database dan metode koneksi.</p>
-            </div>
-            <div class="project-progress-below">
-              <div class="progress-bar">
-                <div class="progress-fill" style="width: 0%"></div>
-              </div>
-              <span class="progress-percent">0%</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- PROYEK 4: Aplikasi Mobile Tim -->
-        <div class="project-item">
-          <div class="project-logo-row">
-            <div class="project-logo-emblem" style="background: #ffffff">
-              <img src="emblem/3.jpg" alt="Logo" style="width: 400px; height: auto;">
-            </div>
-          </div>
-          <div class="project-keterangan-row">
-            <div class="project-header">
-              <h3>Aplikasi Mobile Tim</h3>
-              <span class="badge badge-progress">Berjalan</span>
-            </div>
-            <div class="dash-keterangan">
-              <p><span class="ket-label">Tugas:</span> Membangun aplikasi mobile pendamping dashboard.</p>
-              <p><span class="ket-label">Sudah sampai:</span> Wireframe dan desain UI sudah disetujui.</p>
-              <p><span class="ket-label">Lanjutan:</span> Mulai development fitur login dan notifikasi.</p>
-            </div>
-            <div class="project-progress-below">
-              <div class="progress-bar">
-                <div class="progress-fill" style="width: 35%"></div>
-              </div>
-              <span class="progress-percent">35%</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- PROYEK 5: Optimasi Server -->
-        <div class="project-item">
-          <div class="project-logo-row">
-            <div class="project-logo-emblem" style="background: #ffffff">
-              <img src="emblem/4.jpg" alt="Logo" style="width: 400px; height: auto;">
-            </div>
-          </div>
-          <div class="project-keterangan-row">
-            <div class="project-header">
-              <h3>Optimasi Server</h3>
-              <span class="badge badge-progress">Berjalan</span>
-            </div>
-            <div class="dash-keterangan">
-              <p><span class="ket-label">Tugas:</span> Meningkatkan performa dan kecepatan server backend.</p>
-              <p><span class="ket-label">Sudah sampai:</span> Migrasi database dan caching sudah berjalan.</p>
-              <p><span class="ket-label">Lanjutan:</span> Load testing dan monitoring performa.</p>
-            </div>
-            <div class="project-progress-below">
-              <div class="progress-bar">
-                <div class="progress-fill" style="width: 80%"></div>
-              </div>
-              <span class="progress-percent">80%</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- PROYEK 6: Dokumentasi Sistem -->
-        <div class="project-item">
-          <div class="project-logo-row">
-            <div class="project-logo-emblem" style="background: #ffffff">
-              <img src="emblem/5.jpg" alt="Logo" style="width: 400px; height: auto;">
-            </div>
-          </div>
-          <div class="project-keterangan-row">
-            <div class="project-header">
-              <h3>Dokumentasi Sistem</h3>
-              <span class="badge badge-pending">Belum Mulai</span>
-            </div>
-            <div class="dash-keterangan">
-              <p><span class="ket-label">Tugas:</span> Menyusun dokumentasi teknis seluruh modul sistem.</p>
-              <p><span class="ket-label">Sudah sampai:</span> Belum ada progres, masih tahap perencanaan.</p>
-              <p><span class="ket-label">Lanjutan:</span> Menentukan format dan struktur dokumentasi.</p>
-            </div>
-            <div class="project-progress-below">
-              <div class="progress-bar">
-                <div class="progress-fill" style="width: 0%"></div>
-              </div>
-              <span class="progress-percent">0%</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
+    <!-- PROYEK 1 -->
+<div class="project-item">
+  <div class="project-card-top">
+    <div class="project-logo-emblem"><img src="emblem/6.jpg" alt="Logo"></div>
+    <div class="project-header">
+      <h3>Dashboard Tim 1</h3>
+      <span class="badge badge-progress">Berjalan</span>
     </div>
   </div>
-</section>
-
-<!-- TEPAT DI BAWAH </section> DASHBOARD ANDA -->
-<div id="projectModal" class="modal-overlay">
-  <div class="modal-content">
-    
-    <!-- Bagian Header (Hijau) -->
-    <div class="modal-header">
-      <h2 id="modalTitle">Detail Kelengkapan: Dashboard Tim 1</h2>
-      <button class="close-modal-btn" aria-label="Tutup">&times;</button>
+  <div class="dash-keterangan">
+    <p><span class="ket-label">Tugas:</span> Membangun dashboard internal untuk manajemen tugas tim.</p>
+    <p><span class="ket-label">Sudah sampai:</span> Sidebar, halaman Tugas, dan halaman Anggota Tim sudah selesai dibuat.</p>
+    <p><span class="ket-label">Lanjutan:</span> Integrasi halaman Laporan dan menyambungkan form Pengaturan.</p>
+  </div>
+  <div class="project-card-bottom">
+    <div class="project-progress-below">
+      <div class="progress-bar"><div class="progress-fill" style="width: 60%"></div></div>
+      <span class="progress-percent">60%</span>
     </div>
-    
-    <!-- Bagian Konten/Isi -->
-    <div class="modal-body" id="modalBody">
-      <!-- Konten otomatis terisi melalui JavaScript, contoh struktur: -->
-      <!-- <span class="badge badge-berjalan">Berjalan</span> -->
-      <!-- <p><strong>Tugas:</strong> Membangun dashboard internal...</p> -->
-    </div>
-    
-    <!-- Tambahan Bagian Footer untuk Tombol Tutup di Kanan Bawah -->
-    <div class="modal-footer">
-      <button class="btn-tutup-footer">Tutup</button>
-    </div>
-
+    <!-- Contoh di dalam project-item -->
+<button class="btn-view" onclick="tampilkanDetailProyek('Dashboard Tim 1')">View</button>
   </div>
 </div>
 
+<!-- PROYEK 2 -->
+<div class="project-item">
+  <div class="project-card-top">
+    <div class="project-logo-emblem"><img src="emblem/1.jpg" alt="Logo"></div>
+    <div class="project-header">
+      <h3>Redesign Logo Tim</h3>
+      <span class="badge badge-done">Selesai</span>
+    </div>
+  </div>
+  <div class="dash-keterangan">
+    <p><span class="ket-label">Tugas:</span> Membuat ulang identitas visual logo Tim 1.</p>
+    <p><span class="ket-label">Sudah sampai:</span> Semua alternatif logo selesai dan versi final sudah disetujui.</p>
+    <p><span class="ket-label">Lanjutan:</span> Tidak ada, proyek sudah tuntas.</p>
+  </div>
+  <div class="project-card-bottom">
+    <div class="project-progress-below">
+      <div class="progress-bar"><div class="progress-fill" style="width: 100%"></div></div>
+      <span class="progress-percent">100%</span>
+    </div>
+    <!-- Contoh di dalam project-item -->
+<button class="btn-view" onclick="tampilkanDetailProyek('Dashboard Tim 1')">View</button>
+  </div>
+</div>
+
+<!-- PROYEK 3 -->
+<div class="project-item">
+  <div class="project-card-top">
+    <div class="project-logo-emblem"><img src="emblem/2.jpg" alt="Logo"></div>
+    <div class="project-header">
+      <h3>Integrasi Database</h3>
+      <span class="badge badge-pending">Belum Mulai</span>
+    </div>
+  </div>
+  <div class="dash-keterangan">
+    <p><span class="ket-label">Tugas:</span> Menghubungkan dashboard dengan database tugas.</p>
+    <p><span class="ket-label">Sudah sampai:</span> Belum ada progres, masih tahap perencanaan.</p>
+    <p><span class="ket-label">Lanjutan:</span> Menentukan struktur tabel database dan metode koneksi.</p>
+  </div>
+  <div class="project-card-bottom">
+    <div class="project-progress-below">
+      <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+      <span class="progress-percent">0%</span>
+    </div>
+  <!-- Contoh di dalam project-item -->
+<button class="btn-view" onclick="tampilkanDetailProyek('Dashboard Tim 1')">View</button>
+  </div>
+</div>
+
+<!-- PROYEK 4 -->
+<div class="project-item">
+  <div class="project-card-top">
+    <div class="project-logo-emblem"><img src="emblem/3.jpg" alt="Logo"></div>
+    <div class="project-header">
+      <h3>Aplikasi Mobile Tim</h3>
+      <span class="badge badge-progress">Berjalan</span>
+    </div>
+  </div>
+  <div class="dash-keterangan">
+    <p><span class="ket-label">Tugas:</span> Membangun aplikasi mobile pendamping dashboard.</p>
+    <p><span class="ket-label">Sudah sampai:</span> Wireframe dan desain UI sudah disetujui.</p>
+    <p><span class="ket-label">Lanjutan:</span> Mulai development fitur login dan notifikasi.</p>
+  </div>
+  <div class="project-card-bottom">
+    <div class="project-progress-below">
+      <div class="progress-bar"><div class="progress-fill" style="width: 35%"></div></div>
+      <span class="progress-percent">35%</span>
+    </div>
+   <!-- Contoh di dalam project-item -->
+<button class="btn-view" onclick="tampilkanDetailProyek('Dashboard Tim 1')">View</button>
+  </div>
+</div>
+
+<!-- PROYEK 5 -->
+<div class="project-item">
+  <div class="project-card-top">
+    <div class="project-logo-emblem"><img src="emblem/4.jpg" alt="Logo"></div>
+    <div class="project-header">
+      <h3>Optimasi Server</h3>
+      <span class="badge badge-progress">Berjalan</span>
+    </div>
+  </div>
+  <div class="dash-keterangan">
+    <p><span class="ket-label">Tugas:</span> Meningkatkan performa dan kecepatan server backend.</p>
+    <p><span class="ket-label">Sudah sampai:</span> Migrasi database dan caching sudah berjalan.</p>
+    <p><span class="ket-label">Lanjutan:</span> Load testing dan monitoring performa.</p>
+  </div>
+  <div class="project-card-bottom">
+    <div class="project-progress-below">
+      <div class="progress-bar"><div class="progress-fill" style="width: 80%"></div></div>
+      <span class="progress-percent">80%</span>
+    </div>
+    <a href="detail-proyek.html?id=optimasi-server" class="btn-view">View</a>
+  </div>
+</div>
+
+<!-- PROYEK 6 -->
+<div class="project-item">
+  <div class="project-card-top">
+    <div class="project-logo-emblem"><img src="emblem/5.jpg" alt="Logo"></div>
+    <div class="project-header">
+      <h3>Dokumentasi Sistem</h3>
+      <span class="badge badge-pending">Belum Mulai</span>
+    </div>
+  </div>
+  <div class="dash-keterangan">
+    <p><span class="ket-label">Tugas:</span> Menyusun dokumentasi teknis seluruh modul sistem.</p>
+    <p><span class="ket-label">Sudah sampai:</span> Belum ada progres, masih tahap perencanaan.</p>
+    <p><span class="ket-label">Lanjutan:</span> Menentukan format dan struktur dokumentasi.</p>
+  </div>
+  <div class="project-card-bottom">
+    <div class="project-progress-below">
+      <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+      <span class="progress-percent">0%</span>
+    </div>
+    <!-- Contoh di dalam project-item -->
+<button class="btn-view" onclick="tampilkanDetailProyek('Dashboard Tim 1')">View</button>
+  </div>
+</div>
+
+</div>
+</div>
+</section>
 <!-- ================= HALAMAN : Tugas ================= -->
 <section class="page" id="page-tugas">
   <div class="panel tugas-panel">

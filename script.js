@@ -72,6 +72,38 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeModalBtn = document.querySelector('.close-modal-btn');
   const track = document.getElementById('dashboardTrack');
   
+  
+  //===============================================================
+  // proyek modal 
+  //=================================================================
+
+  // Fungsi untuk membuka halaman detail
+function tampilkanDetailProyek(btn) {
+    // 1. Sembunyikan Dashboard, Tampilkan Detail Full Screen
+    const dashboard = document.getElementById('container-dashboard');
+    if (dashboard) dashboard.style.display = 'none';
+
+    const detailView = document.getElementById('full-detail-view');
+    if (detailView) detailView.style.display = 'block';
+
+    // 2. Isi konten detail dengan data dari atribut tombol
+    document.getElementById('detail-nama').innerText = btn.dataset.nama;
+    document.getElementById('detail-status').innerText = btn.dataset.status;
+    document.getElementById('detail-pj').innerText = btn.dataset.pj;
+    document.getElementById('detail-deadline').innerText = btn.dataset.deadline;
+    document.getElementById('detail-tugas').innerText = btn.dataset.tugas;
+    document.getElementById('detail-lanjutan').innerText = btn.dataset.lanjutan;
+    document.getElementById('detail-logo').src = btn.dataset.logo;
+}
+
+// Fungsi untuk tombol kembali ke dashboard
+function tutupDetail() {
+    // Sembunyikan detail, tampilkan kembali dashboard
+    document.getElementById('full-detail-view').style.display = 'none';
+    
+    const dashboard = document.getElementById('container-dashboard');
+    if (dashboard) dashboard.style.display = 'block';
+}
   // ==========================================
   // KODE KHUSUS UTK PANAH (MANDIRI & TERISOLASI)
   // ==========================================

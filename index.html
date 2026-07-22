@@ -284,6 +284,171 @@
 </div>
 </section>
 
+
+<!----------proyek------------>
+
+<section class="page" id="page-proyek">
+  <div class="panel">
+    <h3>Daftar Seluruh Proyek</h3>
+    <table class="project-table">
+      <thead>
+        <tr>
+          <th>Nama Proyek</th>
+          <th>Status</th>
+          <th>PJ</th>
+          <th>Deadline</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+     <tbody>
+  <!-- PROYEK 1 -->
+  <!-- BARIS PERTAMA (Dashboard Tim 1) -->
+<tr>
+    <td>Dashboard Tim 1</td>
+    <td><span class="badge status-berjalan">Berjalan</span></td>
+    <td>Budi Santoso</td>
+    <td>22 Juli 2026</td>
+    <!-- Tombol yang benar posisinya -->
+    <td>
+        <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
+            data-nama="Dashboard Tim 1" 
+            data-status="Berjalan" 
+            data-pj="Budi Santoso" 
+            data-deadline="22 Juli 2026" 
+            data-logo="emblem/logo1.jpg" 
+            data-tugas="Mengembangkan dashboard utama tim." 
+            data-lanjutan="Finishing tampilan UI.">View</button>
+    </td>
+</tr>
+  <!-- PROYEK 2 -->
+<tr>
+    <td>Redesign Logo Tim</td>
+    <td><span class="badge status-selesai">Selesai</span></td>
+    <td>Citra Dewi</td>
+    <td>20 Juli 2026</td>
+    <td>
+        <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
+            data-nama="Redesign Logo Tim" 
+            data-status="Selesai" 
+            data-pj="Citra Dewi" 
+            data-deadline="20 Juli 2026" 
+            data-logo="emblem/1.jpg" 
+            data-tugas="Membuat ulang identitas visual logo Tim 1." 
+            data-lanjutan="Tidak ada, proyek sudah tuntas.">View</button>
+    </td>
+</tr>
+
+<!-- PROYEK 3 -->
+<tr>
+    <td>Integrasi Database</td>
+    <td><span class="badge status-belum">Belum Mulai</span></td>
+    <td>Andi Wijaya</td>
+    <td>30 Juli 2026</td>
+    <td>
+        <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
+            data-nama="Integrasi Database" 
+            data-status="Belum Mulai" 
+            data-pj="Andi Wijaya" 
+            data-deadline="30 Juli 2026" 
+            data-logo="emblem/2.jpg" 
+            data-tugas="Menghubungkan dashboard dengan database tugas." 
+            data-lanjutan="Menentukan struktur tabel database dan metode koneksi.">View</button>
+    </td>
+</tr>
+
+<!-- PROYEK 4 -->
+<tr>
+    <td>Aplikasi Mobile Tim</td>
+    <td><span class="badge status-berjalan">Berjalan</span></td>
+    <td>Diana Putri</td>
+    <td>28 Juli 2026</td>
+    <td>
+        <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
+            data-nama="Aplikasi Mobile Tim" 
+            data-status="Berjalan" 
+            data-pj="Diana Putri" 
+            data-deadline="28 Juli 2026" 
+            data-logo="emblem/3.jpg" 
+            data-tugas="Membangun aplikasi mobile pendamping dashboard." 
+            data-lanjutan="Mulai development fitur login dan notifikasi.">View</button>
+    </td>
+</tr>
+
+<!-- PROYEK 5 -->
+<tr>
+    <td>Optimasi Server</td>
+    <td><span class="badge status-berjalan">Berjalan</span></td>
+    <td>Eko Prasetyo</td>
+    <td>5 Agustus 2026</td>
+    <td>
+        <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
+            data-nama="Optimasi Server" 
+            data-status="Berjalan" 
+            data-pj="Eko Prasetyo" 
+            data-deadline="5 Agustus 2026" 
+            data-logo="emblem/4.jpg" 
+            data-tugas="Meningkatkan performa dan kecepatan server backend." 
+            data-lanjutan="Load testing dan monitoring performa.">View</button>
+    </td>
+</tr>
+
+<!-- PROYEK 6 -->
+<tr>
+    <td>Dokumentasi Sistem</td>
+    <td><span class="badge status-belum">Belum Mulai</span></td>
+    <td>Fajar Hidayat</td>
+    <td>15 Agustus 2026</td>
+    <td>
+        <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
+            data-nama="Dokumentasi Sistem" 
+            data-status="Belum Mulai" 
+            data-pj="Fajar Hidayat" 
+            data-deadline="15 Agustus 2026" 
+            data-logo="emblem/5.jpg" 
+            data-tugas="Menyusun dokumentasi teknis seluruh modul sistem." 
+            data-lanjutan="Menentukan format dan struktur dokumentasi.">View</button>
+    </td>
+</tr>
+</tbody>
+    </table>
+  </div>
+</section>
+
+<!-- TAMPILAN DETAIL FULL PAGE -->
+<div id="full-detail-view" class="full-page-detail" style="display: none;">
+    <div class="header-nav">
+        <button onclick="tutupDetail()" class="btn-back">← Kembali</button>
+        <h2>Proyek Detail</h2>
+    </div>
+
+    <div class="main-layout">
+        <!-- Sidebar Kiri: Logo, Status, Nama -->
+        <aside class="detail-sidebar">
+            <img id="detail-logo" src="" alt="Logo Proyek" class="logo-box">
+            <span id="detail-status" class="badge"></span>
+            <h3 id="detail-nama">Nama Proyek</h3>
+        </aside>
+
+        <!-- Main Kanan: Header Info & Deskripsi -->
+        <main class="detail-content">
+            <div class="detail-header-info">
+                <div>
+                    <p><strong>Penanggung Jawab:</strong> <span id="detail-pj">-</span></p>
+                    <p><strong>Deadline:</strong> <span id="detail-deadline">-</span></p>
+                </div>
+                <button class="btn-edit">Edit Proyek</button>
+            </div>
+
+            <div class="detail-box-tugas">
+                <h4>Detail Penjelasan Tugas</h4>
+                <p id="detail-tugas"></p>
+                <h4>Lanjutan:</h4>
+                <p id="detail-lanjutan"></p>
+            </div>
+        </main>
+    </div>
+</div>
 <!-- ================= HALAMAN : Tugas ================= -->
 <section class="page" id="page-tugas">
   <div class="panel tugas-panel">

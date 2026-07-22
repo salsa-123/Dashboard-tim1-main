@@ -941,7 +941,29 @@ body {
   display: none;
 }
 
+.btn-tambah {
+    background-color: #2563eb;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
 
+.btn-tambah:hover {
+    background-color: #1d4ed8; 
+}
+
+.btn-tambah:active {
+    transform: scale(0.98);
+}
 /*  proyek*/
 
 /* 1. Container Panel */

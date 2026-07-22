@@ -648,25 +648,34 @@ async function simpanLaporan() {
   };
 
   try {
+    let response;
     if (modeEditLaporan) {
-      await fetch(`${API_URL_LAPORAN}/${modeEditLaporan}`, {
+      response = await fetch(`${API_URL_LAPORAN}/${modeEditLaporan}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bodyLaporan)
       });
     } else {
-      await fetch(API_URL_LAPORAN, {
+      response = await fetch(API_URL_LAPORAN, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bodyLaporan)
       });
     }
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      alert('Gagal menyimpan: ' + (errorData.error || 'Terjadi kesalahan di server'));
+      console.error('Detail error server:', errorData);
+      return;
+    }
+
     tutupModalLaporan();
     await muatLaporanDariDatabase();
     alert('Laporan berhasil disimpan!');
   } catch (error) {
     console.error('Gagal simpan laporan:', error);
-    alert('Gagal menyimpan laporan ke server.');
+    alert('Gagal menyimpan laporan ke server. Cek apakah backend sedang jalan.');
   }
 }
 

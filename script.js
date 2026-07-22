@@ -490,294 +490,210 @@ document.querySelectorAll('#tabelTugas .th-sort').forEach(th => {
 });
 
 /* ============================================
-   HALAMAN LAPORAN
+   HALAMAN LAPORAN (TERHUBUNG KE DATABASE)
 ============================================ */
 
-// Data laporan
-const laporanData = [
+const API_URL_LAPORAN = 'http://localhost:3000/api/laporan';
 
-    {
-        judul: "Dashboard UI",
-        tanggal: "16 Juli 2026",
-        penulis: "Puja Shinta",
-        prioritas: "Tinggi",
-        status: "selesai",
-        file: "dashboard-ui.pdf",
-        isi: "Dashboard proyek berhasil diperbarui dengan tampilan baru yang lebih modern. Sidebar, halaman tugas, dan halaman pengaturan telah selesai dikembangkan. Tahap selanjutnya adalah pengembangan halaman laporan."
-    },
-
-    {
-        judul: "Backend API",
-        tanggal: "15 Juli 2026",
-        penulis: "Andi",
-        prioritas: "Sedang",
-        status: "review",
-        file: "backend-api.pdf",
-        isi: "Backend API login dan autentikasi berhasil dibuat. Saat ini masih dalam proses review sebelum digabungkan ke branch utama."
-    },
-
-    {
-        judul: "Testing Sistem",
-        tanggal: "14 Juli 2026",
-        penulis: "Sinta",
-        prioritas: "Rendah",
-        status: "pending",
-        file: "testing.pdf",
-        isi: "Proses pengujian sistem masih berlangsung. Beberapa bug ditemukan dan sedang diperbaiki."
-    },
-
-    {
-        judul: "Database",
-        tanggal: "13 Juli 2026",
-        penulis: "Budi",
-        prioritas: "Sedang",
-        status: "selesai",
-        file: "database.pdf",
-        isi: "Perancangan database selesai. Seluruh tabel sudah saling terhubung dan siap digunakan."
-    },
-
-    {
-        judul: "Landing Page",
-        tanggal: "12 Juli 2026",
-        penulis: "Rina",
-        prioritas: "Tinggi",
-        status: "review",
-        file: "landing-page.pdf",
-        isi: "Landing page selesai dibuat dan sedang dilakukan revisi berdasarkan masukan dari pembimbing."
-    },
-
-    {
-        judul: "Login System",
-        tanggal: "11 Juli 2026",
-        penulis: "Dimas",
-        prioritas: "Sedang",
-        status: "pending",
-        file: "login.pdf",
-        isi: "Fitur login masih memerlukan validasi tambahan serta peningkatan keamanan."
-    }
-
-];
-
-
-/* ============================================
-   ELEMENT
-============================================ */
-
-const laporanItems = document.querySelectorAll(".laporan-item");
+let laporanData = [];
+let laporanAktifIndex = 0;
+let modeEditLaporan = null;
 
 const detailTitle = document.querySelector(".detail-header h3");
-
 const detailBadge = document.querySelector(".detail-header .badge");
-
 const detailPenulis = document.querySelectorAll(".detail-info p")[0];
-
 const detailTanggal = document.querySelectorAll(".detail-info p")[1];
-
 const detailPrioritas = document.querySelectorAll(".detail-info p")[2];
-
 const detailIsi = document.querySelector(".detail-content p");
-
 const detailFile = document.querySelector(".detail-file");
 
-const searchInput = document.querySelector(".search-box input");
-
-
-
-
-
-
-
-
-/* ============================================
-   SEARCH
-============================================ */
-
-searchInput.addEventListener("keyup",function(){
-
-    const keyword = this.value.toLowerCase();
-
-    laporanItems.forEach((item,index)=>{
-
-        const judul = laporanData[index].judul.toLowerCase();
-
-        if(judul.includes(keyword)){
-
-            item.style.display="flex";
-
-        }else{
-
-            item.style.display="none";
-
-        }
-
-    });
-
-});
-
-
-/* ============================================
-   LAPORAN AKTIF (index yang sedang ditampilkan)
-============================================ */
-let laporanAktifIndex = 0;
-
-// Update tampilkanLaporan supaya menyimpan index yang sedang aktif
-function tampilkanLaporan(index){
-
-    laporanAktifIndex = index; // <-- TAMBAHAN INI
-
-    const data = laporanData[index];
-
-    detailTitle.textContent = data.judul;
-    detailPenulis.textContent = data.penulis;
-    detailTanggal.textContent = data.tanggal;
-    detailPrioritas.textContent = data.prioritas;
-    detailIsi.textContent = data.isi;
-
-    detailFile.innerHTML = `
-        <i class="fa-solid fa-paperclip"></i>
-        ${data.file}
-    `;
-
-    detailBadge.textContent =
-        data.status.charAt(0).toUpperCase() +
-        data.status.slice(1);
-
-    detailBadge.className = "badge " + data.status;
+async function muatLaporanDariDatabase() {
+  try {
+    const response = await fetch(API_URL_LAPORAN);
+    laporanData = await response.json();
+    renderLaporanList();
+    if (laporanData.length > 0) {
+      tampilkanLaporan(0);
+    } else {
+      const detailEl = document.querySelector('.laporan-detail');
+      if (detailEl) detailEl.innerHTML = '<p style="padding:20px;">Belum ada laporan.</p>';
+    }
+  } catch (error) {
+    console.error('Gagal ambil data laporan:', error);
+    alert('Gagal terhubung ke server. Pastikan backend (node server.js) sedang jalan.');
+  }
 }
 
-/* ============================================
-   EDIT LAPORAN
-============================================ */
-let modeEditLaporan = false;
+function renderLaporanList() {
+  const container = document.querySelector('.laporan-list');
+  if (!container) return;
+  container.innerHTML = '';
 
-const btnEdit = document.querySelector(".btn-edit");
-btnEdit.addEventListener("click", () => {
-    const data = laporanData[laporanAktifIndex];
-    modeEditLaporan = true;
+  laporanData.forEach((data, index) => {
+    const item = document.createElement('div');
+    item.classList.add('laporan-item');
+    if (index === laporanAktifIndex) item.classList.add('active');
 
-    document.getElementById('judulLaporan').value = data.judul;
-    document.getElementById('penulisLaporan').value = data.penulis;
-    document.getElementById('prioritasLaporan').value = data.prioritas;
-    document.getElementById('statusLaporan').value = data.status;
-    document.getElementById('isiLaporan').value = data.isi;
+    item.innerHTML = `
+      <div class="laporan-icon ${data.status}">
+        <i class="fa-solid fa-file"></i>
+      </div>
+      <div class="laporan-info">
+        <h4>${data.judul}</h4>
+        <span>${formatTanggalLaporan(data.tanggal)}</span>
+      </div>
+    `;
 
-    bukaFormLaporan();
-});
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.laporan-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      tampilkanLaporan(index);
+    });
 
-/* ============================================
-   HAPUS LAPORAN
-============================================ */
-const btnDelete = document.querySelector(".btn-delete");
-btnDelete.addEventListener("click", () => {
-    if (confirm("Apakah Anda yakin ingin menghapus laporan ini?")) {
-        laporanData.splice(laporanAktifIndex, 1);
-
-        if (laporanData.length > 0) {
-            renderLaporanList();
-            tampilkanLaporan(0);
-        } else {
-            document.querySelector('.laporan-detail').innerHTML =
-                '<p style="padding:20px;">Tidak ada laporan tersisa.</p>';
-            document.querySelector('.laporan-list').innerHTML = '';
-        }
-
-        alert("Laporan berhasil dihapus.");
-    }
-});
-
-
-/* ============================================
-   LOAD PERTAMA
-============================================ */
-renderLaporanList();
-tampilkanLaporan(0);
-
-// ===========================
-// LOGOUT
-// ===========================
-const btnLogout = document.getElementById('btnLogout');
-if (btnLogout) {
-  btnLogout.addEventListener('click', function (e) {
-    e.preventDefault();
-    if (confirm('Yakin ingin logout?')) {
-      alert('Anda telah logout. Sampai jumpa lagi!');
-    }
+    container.appendChild(item);
   });
 }
 
+function tampilkanLaporan(index) {
+  laporanAktifIndex = index;
+  const data = laporanData[index];
+  if (!data) return;
 
-function simpanLaporan() {
-    const judul = document.getElementById('judulLaporan').value.trim();
-    const penulis = document.getElementById('penulisLaporan').value.trim();
-    const prioritas = document.getElementById('prioritasLaporan').value;
-    const status = document.getElementById('statusLaporan').value;
-    const isi = document.getElementById('isiLaporan').value.trim();
+  detailTitle.textContent = data.judul;
+  detailPenulis.textContent = data.penulis;
+  detailTanggal.textContent = formatTanggalLaporan(data.tanggal);
+  detailPrioritas.textContent = data.prioritas;
+  detailIsi.textContent = data.isi;
 
-    // TAMBAHAN: ambil nama file yang dilampirkan
-    const fileInput = document.getElementById('fileLaporan');
-    const namaFile = fileInput.files.length > 0 ? fileInput.files[0].name : '-';
+  detailFile.innerHTML = `<i class="fa-solid fa-paperclip"></i> ${data.file || '-'}`;
+  detailBadge.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+  detailBadge.className = "badge " + data.status;
+}
 
-    if (!judul || !penulis || !isi) {
-        alert('Judul, penulis, dan isi laporan wajib diisi!');
-        return;
+function formatTanggalLaporan(tanggalISO) {
+  const d = new Date(tanggalISO);
+  return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function cariLaporan() {
+  const keyword = document.getElementById('searchLaporan').value.toLowerCase().trim();
+  const items = document.querySelectorAll('.laporan-item');
+  items.forEach((item, index) => {
+    const judul = laporanData[index].judul.toLowerCase();
+    item.style.display = judul.includes(keyword) ? '' : 'none';
+  });
+}
+
+function bukaFormLaporan() {
+  modeEditLaporan = null;
+  document.getElementById('judulLaporan').value = '';
+  document.getElementById('penulisLaporan').value = '';
+  document.getElementById('prioritasLaporan').value = 'Rendah';
+  document.getElementById('statusLaporan').value = 'pending';
+  document.getElementById('isiLaporan').value = '';
+  document.getElementById('modal-laporan').classList.add('active');
+}
+
+function editLaporan() {
+  const data = laporanData[laporanAktifIndex];
+  if (!data) return;
+  modeEditLaporan = data.id;
+
+  document.getElementById('judulLaporan').value = data.judul;
+  document.getElementById('penulisLaporan').value = data.penulis;
+  document.getElementById('prioritasLaporan').value = data.prioritas;
+  document.getElementById('statusLaporan').value = data.status;
+  document.getElementById('isiLaporan').value = data.isi;
+  document.getElementById('modal-laporan').classList.add('active');
+}
+
+async function hapusLaporan() {
+  const data = laporanData[laporanAktifIndex];
+  if (!data) return;
+  if (!confirm('Apakah Anda yakin ingin menghapus laporan ini?')) return;
+
+  try {
+    await fetch(`${API_URL_LAPORAN}/${data.id}`, { method: 'DELETE' });
+    alert('Laporan berhasil dihapus.');
+    await muatLaporanDariDatabase();
+  } catch (error) {
+    console.error('Gagal hapus laporan:', error);
+    alert('Gagal menghapus laporan di server.');
+  }
+}
+
+async function simpanLaporan() {
+  const judul = document.getElementById('judulLaporan').value.trim();
+  const penulis = document.getElementById('penulisLaporan').value.trim();
+  const prioritas = document.getElementById('prioritasLaporan').value;
+  const status = document.getElementById('statusLaporan').value;
+  const isi = document.getElementById('isiLaporan').value.trim();
+  const fileInput = document.getElementById('fileLaporan');
+  const namaFile = fileInput.files.length > 0 ? fileInput.files[0].name : '-';
+
+  if (!judul || !penulis || !isi) {
+    alert('Judul, penulis, dan isi laporan wajib diisi!');
+    return;
+  }
+
+  const tanggalSekarang = new Date().toISOString().split('T')[0];
+  const dataLamaTanggal = modeEditLaporan ? laporanData[laporanAktifIndex].tanggal.split('T')[0] : tanggalSekarang;
+  const dataLamaFile = modeEditLaporan ? laporanData[laporanAktifIndex].file : '-';
+
+  const bodyLaporan = {
+    judul, penulis,
+    tanggal: dataLamaTanggal,
+    prioritas, status, isi,
+    file: namaFile !== '-' ? namaFile : dataLamaFile
+  };
+
+  try {
+    if (modeEditLaporan) {
+      await fetch(`${API_URL_LAPORAN}/${modeEditLaporan}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bodyLaporan)
+      });
+    } else {
+      await fetch(API_URL_LAPORAN, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bodyLaporan)
+      });
     }
-
-    const tanggalSekarang = new Date().toLocaleDateString('id-ID', {
-        day: 'numeric', month: 'long', year: 'numeric'
-    });
-
-    const laporanBaru = {
-        judul: judul,
-        tanggal: tanggalSekarang,
-        penulis: penulis,
-        prioritas: prioritas,
-        status: status,
-        file: namaFile, // <-- diganti dari '-' jadi nama file asli
-        isi: isi
-    };
-
-    laporanData.unshift(laporanBaru);
-    renderLaporanList();
-    tampilkanLaporan(0);
-
     tutupModalLaporan();
-    alert('Laporan berhasil dibuat!');
+    await muatLaporanDariDatabase();
+    alert('Laporan berhasil disimpan!');
+  } catch (error) {
+    console.error('Gagal simpan laporan:', error);
+    alert('Gagal menyimpan laporan ke server.');
+  }
 }
 
 function tutupModalLaporan() {
-    const modal = document.getElementById('modal-laporan');
-    if (modal) modal.classList.remove('active');
+  const modal = document.getElementById('modal-laporan');
+  if (modal) modal.classList.remove('active');
 
-    document.getElementById('judulLaporan').value = '';
-    document.getElementById('penulisLaporan').value = '';
-    document.getElementById('isiLaporan').value = '';
-    document.getElementById('prioritasLaporan').value = 'Rendah';
-    document.getElementById('statusLaporan').value = 'pending';
+  document.getElementById('judulLaporan').value = '';
+  document.getElementById('penulisLaporan').value = '';
+  document.getElementById('isiLaporan').value = '';
+  document.getElementById('prioritasLaporan').value = 'Rendah';
+  document.getElementById('statusLaporan').value = 'pending';
 
-    // TAMBAHAN: reset file upload
-    document.getElementById('fileLaporan').value = '';
-    document.getElementById('fileLaporanNama').textContent = 'Klik untuk lampirkan file';
+  const fileEl = document.getElementById('fileLaporan');
+  if (fileEl) fileEl.value = '';
+  const fileNamaEl = document.getElementById('fileLaporanNama');
+  if (fileNamaEl) fileNamaEl.textContent = 'Klik untuk lampirkan file';
 }
 
+document.addEventListener('DOMContentLoaded', muatLaporanDariDatabase);
 
-// ===========================
-// DARK MODE
-// ===========================
-const themeSelect = document.getElementById('themeSelect');
-if (themeSelect) {
-  themeSelect.addEventListener('change', function () {
-    if (this.value === 'dark') {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
+const fileLaporanInput = document.getElementById('fileLaporan');
+if (fileLaporanInput) {
+  fileLaporanInput.addEventListener('change', function () {
+    const namaFile = this.files.length > 0 ? this.files[0].name : 'Klik untuk lampirkan file';
+    document.getElementById('fileLaporanNama').textContent = namaFile;
   });
-
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme) {
-    document.body.classList.add(savedTheme);
-    themeSelect.value = savedTheme === 'dark-mode' ? 'dark' : 'light';
-  }
 }
 
 
@@ -971,7 +887,7 @@ function renderLaporanList() {
             </div>
             <div class="laporan-info">
                 <h4>${data.judul}</h4>
-                <span>${data.tanggal}</span>
+                <span>${formatTanggalLaporan(data.tanggal)}</span>
             </div>
         `;
 

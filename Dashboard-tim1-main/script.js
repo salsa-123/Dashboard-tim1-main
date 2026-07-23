@@ -973,11 +973,23 @@ function bukaFormLaporan() {
 }
 
 
-// Ambil elemen tombol dan modal
-const btnTambah = document.querySelector('.btn-tambah-tugas'); // Sesuaikan class-nya
-const modal = document.getElementById('modal-tambah'); // ID modal kamu
+// TEST DRIVE: Tempel di baris paling bawah
+window.addEventListener('load', function() {
+    console.log("Script dimuat dengan aman.");
 
-// Tambahkan aksi klik
-btnTambah.addEventListener('click', () => {
-    modal.style.display = 'block'; // Menampilkan modal
+    // Tes Tombol Tambah
+    const btnTambah = document.getElementById('btn-tambah-proyek');
+    if (btnTambah) {
+        btnTambah.onclick = function() {
+            alert("Tombol Tambah Proyek Berhasil!");
+        };
+    }
+
+    // Tes Tombol View (menggunakan Event Delegation)
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('btn-view')) {
+            alert("Tombol View Berhasil!");
+            console.log("Tombol View diklik:", e.target);
+        }
+    });
 });

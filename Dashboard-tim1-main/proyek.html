@@ -83,10 +83,12 @@
       <thead>
 
         <!-- Tombol Tambah Proyek -->
-        <button class="btn-tambah" onclick="bukaFormTambah()">
-            <span class="icon">+</span> Tambah Proyek
-        </button>
-    </div>
+        <!-- Kontainer Header Tombol -->
+<div class="header-tambah-proyek" style="margin-bottom: 20px;">
+    <button id="btn-tambah-proyek" class="btn-tambah">
+        + Tambah Proyek
+    </button>
+</div>
         <tr>
           <th>Nama Proyek</th>
           <th>Status</th>
@@ -98,13 +100,11 @@
       <tbody>
      <tbody>
   <!-- PROYEK 1 -->
-  <!-- BARIS PERTAMA (Dashboard Tim 1) -->
 <tr>
     <td>Dashboard Tim 1</td>
     <td><span class="badge status-berjalan">Berjalan</span></td>
     <td>Budi Santoso</td>
     <td>22 Juli 2026</td>
-    <!-- Tombol yang benar posisinya -->
     <td>
         <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
             data-nama="Dashboard Tim 1" 
@@ -116,7 +116,8 @@
             data-lanjutan="Finishing tampilan UI.">View</button>
     </td>
 </tr>
-  <!-- PROYEK 2 -->
+
+<!-- PROYEK 2 -->
 <tr>
     <td>Redesign Logo Tim</td>
     <td><span class="badge status-selesai">Selesai</span></td>

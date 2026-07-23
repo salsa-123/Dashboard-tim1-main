@@ -3979,3 +3979,25 @@ body.dark-mode .file-upload-box:hover {
     border-radius:10px;
     cursor:pointer;
 }
+
+
+
+.header-tambah-proyek {
+    display: flex;
+    justify-content: flex-start; /* Atau flex-end jika ingin di kanan */
+    margin-bottom: 15px;
+}
+
+.btn-tambah {
+    background-color: #007bff; /* Warna biru */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-tambah:hover {
+    background-color: #0056b3;
+}

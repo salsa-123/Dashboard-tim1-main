@@ -41,15 +41,29 @@ app.post('/api/tugas', (req, res) => {
 });
 
 app.put('/api/tugas/:id', (req, res) => {
-  const { status } = req.body;
-  db.query(
-    'UPDATE tugas SET status = ? WHERE id = ?',
-    [status, req.params.id],
-    (err) => {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json({ message: 'Tugas berhasil diupdate' });
-    }
-  );
+
+    console.log("BODY:", req.body);
+    console.log("ID:", req.params.id);
+
+    const { nama_tugas, deadline, status } = req.body;
+
+    db.query(
+        `UPDATE tugas
+         SET nama_tugas=?, deadline=?, status=?
+         WHERE id=?`,
+        [nama_tugas, deadline, status, req.params.id],
+        (err, result) => {
+
+            if (err) {
+                console.log(err);
+                return res.status(500).json({ error: err.message });
+            }
+
+            console.log(result);
+
+            res.json({ message: "berhasil" });
+        }
+    );
 });
 
 app.delete('/api/tugas/:id', (req, res) => {

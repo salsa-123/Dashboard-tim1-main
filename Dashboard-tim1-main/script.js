@@ -971,3 +971,13 @@ function bukaFormLaporan() {
         modal.classList.add('active');
     }
 }
+
+
+// Ambil elemen tombol dan modal
+const btnTambah = document.querySelector('.btn-tambah-tugas'); // Sesuaikan class-nya
+const modal = document.getElementById('modal-tambah'); // ID modal kamu
+
+// Tambahkan aksi klik
+btnTambah.addEventListener('click', () => {
+    modal.style.display = 'block'; // Menampilkan modal
+});

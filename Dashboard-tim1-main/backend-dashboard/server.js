@@ -117,6 +117,18 @@ app.delete('/api/laporan/:id', (req, res) => {
   });
 });
 
+async function kirimDataTugas(data) {
+    const response = await fetch('/api/tugas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+    if (response.ok) {
+        alert('Tugas berhasil ditambah!');
+        location.reload(); // Refresh halaman untuk melihat data baru
+    }
+}
+
 app.listen(3000, () => {
   console.log('Server jalan di http://localhost:3000');
 });

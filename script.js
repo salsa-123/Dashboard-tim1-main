@@ -381,7 +381,10 @@ if (btnSimpanTugas && taskTableBody) {
         await fetch(`${API_URL}/${id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ status: statusLabel })
+          body: JSON.stringify({ 
+      nama_tugas: nama, 
+      deadline: deadline, 
+      status: statusLabel })
         });
       } else {
         // MODE TAMBAH: kirim ke database lewat POST

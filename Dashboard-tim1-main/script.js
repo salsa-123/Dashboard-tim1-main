@@ -1,14 +1,30 @@
-// ==========================================================================
-// NAVIGASI SIDEBAR, BUKA-TUTUP, & HALAMAN (VERSI FULL INTEGRATED)
-// ==========================================================================
+/* =====================================================================
+   SCRIPT DASHBOARD — VERSI RAPI
+   Semua kode ASLI dipertahankan (tidak ada yang dihapus), hanya
+   dikelompokkan ulang per halaman + dirapikan indentasinya, supaya
+   lebih gampang dicari. Urutan section:
+
+     1. SIDEBAR — Navigasi & Toggle
+     2. DASHBOARD & PROYEK
+     3. HALAMAN TUGAS
+     4. HALAMAN LAPORAN
+     5. HALAMAN PENGATURAN
+     6. CATATAN: fungsi laporan versi lama (duplikat, dibiarkan sesuai
+        permintaan — lihat catatan di bagian bawah)
+   ===================================================================== */
+
+
+/* =====================================================================
+   1. SIDEBAR — NAVIGASI, BUKA/TUTUP, & PINDAH HALAMAN
+   ===================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
   const navItems = document.querySelectorAll('.nav-item');
   const pages = document.querySelectorAll('.page');
   const pageTitle = document.getElementById('pageTitle');
   const sidebar = document.querySelector('.sidebar');
-  
-  // 🟢 ID disesuaikan dengan tombol kotak hijau utama
-  const brandToggle = document.getElementById('brandToggle'); 
+
+  // ID disesuaikan dengan tombol kotak hijau utama
+  const brandToggle = document.getElementById('brandToggle');
 
   // FUNGSI 1: Logika Buka-Tutup Sidebar (Toggle Collapse)
   if (brandToggle && sidebar) {
@@ -24,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     item.addEventListener('click', (e) => {
       // Abaikan jika yang diklik adalah tombol khusus seperti logout
       if (item.classList.contains('logout-item')) return;
-      
+
       e.preventDefault();
 
       const targetPage = item.getAttribute('data-page');
@@ -51,9 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// ==========================================
 // KONTROL BUKA/TUTUP (HANYA DARI TOMBOL HAMBURGER)
-// ==========================================
 const menuToggleBtn = document.querySelector('.menu-toggle');
 const sidebarEl = document.querySelector('.sidebar');
 if (menuToggleBtn && sidebarEl) {
@@ -61,24 +75,24 @@ if (menuToggleBtn && sidebarEl) {
     sidebarEl.classList.toggle('collapsed');
   });
 }
-// ==========================================================================
-// INTEGRASI FITUR: MODAL DETAIL PROYEK & FUNGSI TAMBAH PROYEK
-// ==========================================================================
 
+
+/* =====================================================================
+   2. DASHBOARD & PROYEK
+   ===================================================================== */
+
+/* ---------- 2a. Modal Detail Proyek & Tambah Proyek ---------- */
 document.addEventListener('DOMContentLoaded', () => {
   const modalDetail = document.getElementById('projectModal');
   const modalTitle = document.getElementById('modalTitle');
   const modalBody = document.getElementById('modalBody');
   const closeModalBtn = document.querySelector('.close-modal-btn');
   const track = document.getElementById('dashboardTrack');
-  
-  
-  //===============================================================
-  // proyek modal 
-  //=================================================================
+
+  // ---- Proyek modal ----
 
   // Fungsi untuk membuka halaman detail
-function tampilkanDetailProyek(btn) {
+  function tampilkanDetailProyek(btn) {
     // 1. Sembunyikan Dashboard, Tampilkan Detail Full Screen
     const dashboard = document.getElementById('container-dashboard');
     if (dashboard) dashboard.style.display = 'none';
@@ -94,98 +108,96 @@ function tampilkanDetailProyek(btn) {
     document.getElementById('detail-tugas').innerText = btn.dataset.tugas;
     document.getElementById('detail-lanjutan').innerText = btn.dataset.lanjutan;
     document.getElementById('detail-logo').src = btn.dataset.logo;
-}
+  }
 
-// Fungsi untuk tombol kembali ke dashboard
-function tutupDetail() {
+  // Fungsi untuk tombol kembali ke dashboard
+  function tutupDetail() {
     // Sembunyikan detail, tampilkan kembali dashboard
     document.getElementById('full-detail-view').style.display = 'none';
-    
+
     const dashboard = document.getElementById('container-dashboard');
     if (dashboard) dashboard.style.display = 'block';
-}
-  // ==========================================
-  // KODE KHUSUS UTK PANAH (MANDIRI & TERISOLASI)
-  // ==========================================
+  }
+
+  // ---- Kode khusus untuk tombol panah carousel (mandiri & terisolasi) ----
   const tombolKiriTerisolasi = document.querySelector('.prev-btn') || document.querySelector('.arrow-left');
   const tombolKananTerisolasi = document.querySelector('.next-btn') || document.querySelector('.arrow-right');
   const trackUtama = document.getElementById('dashboardTrack');
 
   if (tombolKiriTerisolasi && trackUtama) {
-    tombolKiriTerisolasi.onclick = function(e) {
+    tombolKiriTerisolasi.onclick = function (e) {
       e.preventDefault();
       trackUtama.scrollBy({ left: -340, behavior: 'smooth' });
     };
   }
 
   if (tombolKananTerisolasi && trackUtama) {
-    tombolKananTerisolasi.onclick = function(e) {
+    tombolKananTerisolasi.onclick = function (e) {
       e.preventDefault();
       trackUtama.scrollBy({ left: 340, behavior: 'smooth' });
     };
   }
 
-document.addEventListener('DOMContentLoaded', () => {
-  console.log("JavaScript Berhasil Dimuat!"); // CEK DI CONSOLE F12
+  // ---- Kartu statistik proyek (total/selesai/berjalan/belum) + filter ----
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log("JavaScript Berhasil Dimuat!"); // CEK DI CONSOLE F12
 
-  const projectCards = document.querySelectorAll('.project-item');
-  const total = projectCards.length;
+    const projectCards = document.querySelectorAll('.project-item');
+    const total = projectCards.length;
 
-  // Update Angka
-  const elTotal = document.getElementById('statTotalproyek');
-  if (elTotal) {
-    elTotal.textContent = total;
-    console.log("Angka Total Berhasil Diupdate!");
-  } else {
-    console.error("ID 'statTotalproyek' tidak ditemukan di HTML!");
-  }
-
-  // Fungsi Filter
-  const setupClick = (id, status) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.onclick = () => {
-        console.log("Filter dijalankan untuk:", status);
-        projectCards.forEach(card => {
-          const badge = card.querySelector('.badge');
-          const badgeText = badge ? badge.textContent.trim() : '';
-          card.style.display = (status === 'Semua' || badgeText === status) ? '' : 'none';
-        });
-      };
+    // Update Angka
+    const elTotal = document.getElementById('statTotalproyek');
+    if (elTotal) {
+      elTotal.textContent = total;
+      console.log("Angka Total Berhasil Diupdate!");
     } else {
-      console.warn("ID tidak ditemukan untuk filter:", id);
+      console.error("ID 'statTotalproyek' tidak ditemukan di HTML!");
     }
-  };
 
-  setupClick('cardTotal', 'Semua');
-  setupClick('cardSelesai', 'Selesai');
-  setupClick('cardBerjalan', 'Berjalan');
-  setupClick('cardBelum', 'Belum Mulai');
-});
+    // Fungsi Filter
+    const setupClick = (id, status) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.onclick = () => {
+          console.log("Filter dijalankan untuk:", status);
+          projectCards.forEach(card => {
+            const badge = card.querySelector('.badge');
+            const badgeText = badge ? badge.textContent.trim() : '';
+            card.style.display = (status === 'Semua' || badgeText === status) ? '' : 'none';
+          });
+        };
+      } else {
+        console.warn("ID tidak ditemukan untuk filter:", id);
+      }
+    };
+
+    setupClick('cardTotal', 'Semua');
+    setupClick('cardSelesai', 'Selesai');
+    setupClick('cardBerjalan', 'Berjalan');
+    setupClick('cardBelum', 'Belum Mulai');
+  });
 });
 
-// ==========================================
-// FITUR PENCARIAN PROYEK AMAN (TERISOLASI)
-// ==========================================
-(function() {
+/* ---------- 2b. Pencarian Proyek (aman, terisolasi) ---------- */
+(function () {
   const searchInput = document.getElementById('searchProject');
   const track = document.getElementById('dashboardTrack');
 
   if (searchInput && track) {
-    searchInput.addEventListener('input', function(e) {
+    searchInput.addEventListener('input', function (e) {
       // Ambil kata kunci pencarian (huruf kecil & hapus spasi samping)
       const keyword = e.target.value.toLowerCase().trim();
-      
+
       // Ambil semua kartu proyek langsung di dalam track
       const projectItems = track.querySelectorAll('.project-item');
-      
+
       projectItems.forEach(item => {
         // Cari tag judul <h3> di dalam kartu proyek tersebut
         const titleElement = item.querySelector('.project-header h3');
-        
+
         if (titleElement) {
           const projectTitle = titleElement.innerText.toLowerCase();
-          
+
           // Filter: Jika judul mengandung keyword, tampilkan. Jika tidak, sembunyikan.
           if (projectTitle.includes(keyword)) {
             item.style.display = ''; // Mengembalikan ke display bawaan (flex/block)
@@ -199,9 +211,11 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 
 
-// ======================================================
-// HALAMAN TUGAS: helper avatar & warna
-// ======================================================
+/* =====================================================================
+   3. HALAMAN TUGAS
+   ===================================================================== */
+
+/* ---------- 3a. Helper avatar & warna ---------- */
 const avatarColors = ['#3b82f6', '#f59e0b', '#8b5cf6', '#ef4444', '#10b981', '#ec4899'];
 
 function getInisial(nama) {
@@ -225,9 +239,7 @@ const statusMapTugas = {
 // key (belum/proses/selesai) -> value select (pending/progress/done)
 const statusKeyToValue = { belum: 'pending', proses: 'progress', selesai: 'done' };
 
-// ======================================================
-// LANJUTAN HALAMAN TUGAS: update kartu statistik
-// ======================================================
+/* ---------- 3b. Update kartu statistik tugas ---------- */
 function updateStatTugas() {
   const rows = document.querySelectorAll('#taskTableBody tr');
   let total = rows.length, selesai = 0, proses = 0, belum = 0;
@@ -250,9 +262,7 @@ function updateStatTugas() {
   if (elBelum) elBelum.textContent = belum;
 }
 
-// ======================================================
-//  LANJUTAN HALAMAN TUGAS: penomoran ulang kolom No
-// ======================================================
+/* ---------- 3c. Penomoran ulang kolom No ---------- */
 function renomorTugas() {
   const rows = document.querySelectorAll('#taskTableBody tr');
   rows.forEach((row, i) => {
@@ -260,9 +270,7 @@ function renomorTugas() {
   });
 }
 
-// ======================================================
-// KONEKSI KE BACKEND API (DATABASE)
-// ======================================================
+/* ---------- 3d. Koneksi ke backend API (database) ---------- */
 const API_URL = 'http://localhost:3000/api/tugas';
 
 function buatBadgeHTML(statusKey) {
@@ -316,9 +324,7 @@ async function muatTugasDariDatabase() {
 
 document.addEventListener('DOMContentLoaded', muatTugasDariDatabase);
 
-// =====================================================================
-// LANJUTAN HALAMAN TUGASTAMBAH / EDIT TUGAS (modal sama, mode berbeda)
-// =====================================================================
+/* ---------- 3e. Tambah / Edit Tugas (modal sama, mode berbeda) ---------- */
 const btnTambahTugas = document.getElementById('btnTambahTugas');
 const modalTugas = document.getElementById('modalTugas');
 const modalTugasTitle = document.getElementById('modalTugasTitle');
@@ -356,9 +362,7 @@ if (btnBatalTugas && modalTugas) {
   });
 }
 
-// ==================================================================
-// SIMPAN TUGAS (TAMBAH / EDIT) — TERHUBUNG KE DATABASE
-// ==================================================================
+/* ---------- 3f. Simpan Tugas (tambah/edit) — terhubung ke database ---------- */
 if (btnSimpanTugas && taskTableBody) {
   btnSimpanTugas.addEventListener('click', async () => {
     const nama = inputNamaTugas.value.trim();
@@ -381,10 +385,11 @@ if (btnSimpanTugas && taskTableBody) {
         await fetch(`${API_URL}/${id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-      nama_tugas: nama, 
-      deadline: deadline, 
-      status: statusLabel })
+          body: JSON.stringify({
+            nama_tugas: nama,
+            deadline: deadline,
+            status: statusLabel
+          })
         });
       } else {
         // MODE TAMBAH: kirim ke database lewat POST
@@ -405,9 +410,7 @@ if (btnSimpanTugas && taskTableBody) {
   });
 }
 
-// ==================================================================
-// LANJUTAN HALAMAN TUGAS: klik tombol Edit / Hapus di tabel — TERHUBUNG KE DATABASE
-// ==================================================================
+/* ---------- 3g. Klik tombol Edit / Hapus di tabel — terhubung ke database ---------- */
 if (taskTableBody) {
   taskTableBody.addEventListener('click', async (e) => {
     const btnHapus = e.target.closest('.icon-btn.delete');
@@ -457,9 +460,7 @@ if (taskTableBody) {
   });
 }
 
-// ======================================================
-// LANJUTAN HALAMAN TUGAS: search & filter status
-// ======================================================
+/* ---------- 3h. Search & filter status tugas ---------- */
 const searchTugas = document.getElementById('searchTugas');
 const filterStatusTugas = document.getElementById('filterStatusTugas');
 const tugasEmpty = document.getElementById('tugasEmpty');
@@ -491,9 +492,7 @@ function terapkanFilterTugas() {
 if (searchTugas) searchTugas.addEventListener('keyup', terapkanFilterTugas);
 if (filterStatusTugas) filterStatusTugas.addEventListener('change', terapkanFilterTugas);
 
-// ======================================================
-// LANJUTAN HALAMAN TUGAS: sorting kolom (klik header)
-// ======================================================
+/* ---------- 3i. Sorting kolom tabel tugas (klik header) ---------- */
 document.querySelectorAll('#tabelTugas .th-sort').forEach(th => {
   let ascending = true;
   th.addEventListener('click', () => {
@@ -524,10 +523,10 @@ document.querySelectorAll('#tabelTugas .th-sort').forEach(th => {
   });
 });
 
-/* ============================================
-   HALAMAN LAPORAN (TERHUBUNG KE DATABASE)
-============================================ */
 
+/* =====================================================================
+   4. HALAMAN LAPORAN (terhubung ke database)
+   ===================================================================== */
 const API_URL_LAPORAN = 'http://localhost:3000/api/laporan';
 
 let laporanData = [];
@@ -542,6 +541,7 @@ const detailPrioritas = document.querySelectorAll(".detail-info p")[2];
 const detailIsi = document.querySelector(".detail-content p");
 const detailFile = document.querySelector(".detail-file");
 
+/* ---------- 4a. Muat data laporan dari database ---------- */
 async function muatLaporanDariDatabase() {
   try {
     const response = await fetch(API_URL_LAPORAN);
@@ -559,6 +559,7 @@ async function muatLaporanDariDatabase() {
   }
 }
 
+/* ---------- 4b. Render daftar laporan (sidebar list) ---------- */
 function renderLaporanList() {
   const container = document.querySelector('.laporan-list');
   if (!container) return;
@@ -589,6 +590,7 @@ function renderLaporanList() {
   });
 }
 
+/* ---------- 4c. Tampilkan detail satu laporan ---------- */
 function tampilkanLaporan(index) {
   laporanAktifIndex = index;
   const data = laporanData[index];
@@ -610,6 +612,7 @@ function formatTanggalLaporan(tanggalISO) {
   return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
+/* ---------- 4d. Cari laporan ---------- */
 function cariLaporan() {
   const keyword = document.getElementById('searchLaporan').value.toLowerCase().trim();
   const items = document.querySelectorAll('.laporan-item');
@@ -619,6 +622,7 @@ function cariLaporan() {
   });
 }
 
+/* ---------- 4e. Buka / edit / hapus / simpan laporan (modal) ---------- */
 function bukaFormLaporan() {
   modeEditLaporan = null;
   document.getElementById('judulLaporan').value = '';
@@ -741,9 +745,11 @@ if (fileLaporanInput) {
 }
 
 
-// ===========================
-// TOMBOL SIMPAN (PENGATURAN / GENERIK)
-// ===========================
+/* =====================================================================
+   5. HALAMAN PENGATURAN
+   ===================================================================== */
+
+/* ---------- 5a. Tombol simpan (beberapa versi id/class berbeda) ---------- */
 document.addEventListener('DOMContentLoaded', function () {
   const btnSimpanPengaturan = document.getElementById('btn-simpan');
   if (btnSimpanPengaturan) {
@@ -772,14 +778,7 @@ if (btnSimpanByClass) {
   });
 }
 
-
-
-
-
-
-// =====================================================
-// PENGATURAN DASHBOARD (VERSI BERSIH, TANPA DUPLIKAT)
-// =====================================================
+/* ---------- 5b. Pengaturan dashboard (tema, notif, peran, dst) ---------- */
 const STORAGE_KEY = 'pengaturan_dashboard';
 
 // Terapkan warna tema ke kartu halaman Pengaturan saja
@@ -832,6 +831,7 @@ function simpanSemuaPerubahan() {
   console.log('Pengaturan tersimpan:', pengaturan);
 }
 
+/* ---------- 5c. Modal ubah password ---------- */
 // Cukup gunakan ini satu kali saja
 function bukaModal() {
   const modal = document.getElementById('modal-password');
@@ -869,6 +869,7 @@ if (btnUbahPassword) {
   btnUbahPassword.addEventListener('click', bukaModal);
 }
 
+/* ---------- 5d. Inisialisasi halaman pengaturan + tombol ekspor/hubungkan ---------- */
 // Semua event listener didaftarkan setelah DOM siap, dan semua dicek null dulu
 document.addEventListener('DOMContentLoaded', function () {
   muatPengaturan();
@@ -911,21 +912,31 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-// ===========================
+/* =====================================================================
+   6. CATATAN — VERSI LAMA FUNGSI LAPORAN (DUPLIKAT)
+   Blok di bawah ini adalah pengulangan/definisi ulang dari beberapa
+   fungsi di section 4 (renderLaporanList, cariLaporan, bukaFormLaporan)
+   plus satu listener 'fileLaporan' lagi. Ini SUDAH ADA di file asli
+   sebagai duplikat, dan sesuai permintaan tidak dihapus — hanya
+   dikumpulkan di sini biar jelas kelihatan kalau ini pengulangan.
+   Perlu diketahui: karena deklarasi function di bawah muncul BELAKANGAN
+   di file, versi inilah yang sebenarnya "menang" / dipakai browser saat
+   dijalankan (menimpa versi di section 4 dengan nama fungsi yang sama).
+   ===================================================================== */
+
 // RENDER DAFTAR LAPORAN (dinamis dari array laporanData)
-// ===========================
 function renderLaporanList() {
-    const container = document.querySelector('.laporan-list');
-    if (!container) return;
+  const container = document.querySelector('.laporan-list');
+  if (!container) return;
 
-    container.innerHTML = '';
+  container.innerHTML = '';
 
-    laporanData.forEach((data, index) => {
-        const item = document.createElement('div');
-        item.classList.add('laporan-item');
-        if (index === 0) item.classList.add('active');
+  laporanData.forEach((data, index) => {
+    const item = document.createElement('div');
+    item.classList.add('laporan-item');
+    if (index === 0) item.classList.add('active');
 
-        item.innerHTML = `
+    item.innerHTML = `
             <div class="laporan-icon ${data.status}">
                 <i class="fa-solid fa-file"></i>
             </div>
@@ -935,42 +946,40 @@ function renderLaporanList() {
             </div>
         `;
 
-        item.addEventListener('click', () => {
-            document.querySelectorAll('.laporan-item').forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-            tampilkanLaporan(index);
-        });
-
-        container.appendChild(item);
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.laporan-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      tampilkanLaporan(index);
     });
-}
 
+    container.appendChild(item);
+  });
+}
 
 function cariLaporan() {
-    const keyword = document.getElementById('searchLaporan').value.toLowerCase().trim();
-    const items = document.querySelectorAll('.laporan-item');
+  const keyword = document.getElementById('searchLaporan').value.toLowerCase().trim();
+  const items = document.querySelectorAll('.laporan-item');
 
-    items.forEach(item => {
-        const judul = item.querySelector('.laporan-info h4').textContent.toLowerCase();
-        
-        if (judul.includes(keyword)) {
-            item.style.display = '';
-        } else {
-            item.style.display = 'none';
-        }
-    });
+  items.forEach(item => {
+    const judul = item.querySelector('.laporan-info h4').textContent.toLowerCase();
+
+    if (judul.includes(keyword)) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
 }
-
 
 // Update nama file yang tampil saat user memilih file
 document.getElementById('fileLaporan').addEventListener('change', function () {
-    const namaFile = this.files.length > 0 ? this.files[0].name : 'Klik untuk lampirkan file';
-    document.getElementById('fileLaporanNama').textContent = namaFile;
+  const namaFile = this.files.length > 0 ? this.files[0].name : 'Klik untuk lampirkan file';
+  document.getElementById('fileLaporanNama').textContent = namaFile;
 });
-    
+
 function bukaFormLaporan() {
-    const modal = document.getElementById('modal-laporan');
-    if (modal) {
-        modal.classList.add('active');
-    }
+  const modal = document.getElementById('modal-laporan');
+  if (modal) {
+    modal.classList.add('active');
+  }
 }

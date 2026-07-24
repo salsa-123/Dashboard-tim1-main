@@ -129,6 +129,38 @@ async function kirimDataTugas(data) {
     }
 }
 
+// ======================= ENDPOINT TUGAS ======================= //
+const mysql = require("mysql2/promise"); // npm install mysql2
+
+const db = await mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",          // isi sesuai password MySQL kamu
+  database: "dashboard_tim1", // sesuaikan nama database
+});
+
+// GET semua tugas
+app.get("/api/tugas", async (req, res) => {
+  const [rows] = await db.query("SELECT * FROM tugas ORDER BY id DESC");
+  res.json(rows);
+});
+
+// POST tambah tugas
+app.post("/api/tugas", async (req, res) => {
+  const { nama_tugas, deadline, status } = req.body;
+  await db.query(
+    "INSERT INTO tugas (nama_tugas, deadline, status) VALUES (?, ?, ?)",
+    [nama_tugas, deadline, status]
+  );
+  res.status(201).json({ message: "Tugas berhasil ditambahkan" });
+});
+
+// DELETE tugas
+app.delete("/api/tugas/:id", async (req, res) => {
+  await db.query("DELETE FROM tugas WHERE id = ?", [req.params.id]);
+  res.json({ message: "Tugas berhasil dihapus" });
+});
+
 app.listen(3000, () => {
   console.log('Server jalan di http://localhost:3000');
 });

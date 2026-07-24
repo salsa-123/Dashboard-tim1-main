@@ -163,6 +163,42 @@
     </div>
 
   </div>
+
+  <!-- MODAL TAMBAH TUGAS -->
+    <div class="modal-overlay" id="modalTugas">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3>Tambah Tugas Baru</h3>
+          <button class="modal-close" id="btnCloseModal">&times;</button>
+        </div>
+
+        <form id="formTugas">
+          <div class="form-group">
+            <label for="inputNamaTugas">Nama Tugas</label>
+            <input type="text" id="inputNamaTugas" required placeholder="Contoh: Desain UI Dashboard">
+          </div>
+
+          <div class="form-group">
+            <label for="inputDeadline">Deadline</label>
+            <input type="date" id="inputDeadline" required>
+          </div>
+
+          <div class="form-group">
+            <label for="inputStatus">Status</label>
+            <select id="inputStatus" required>
+              <option value="belum">Belum Mulai</option>
+              <option value="proses">Sedang Berjalan</option>
+              <option value="selesai">Selesai</option>
+            </select>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn-secondary" id="btnBatalTugas">Batal</button>
+            <button type="submit" class="btn-primary">Simpan Tugas</button>
+          </div>
+        </form>
+      </div>
+    </div>
 </section>
 
    <script src="script.js"></script>

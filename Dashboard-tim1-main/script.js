@@ -89,26 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeModalBtn = document.querySelector('.close-modal-btn');
   const track = document.getElementById('dashboardTrack');
 
-  // ---- Proyek modal ----
-
-  // Fungsi untuk membuka halaman detail
-  function tampilkanDetailProyek(btn) {
-    // 1. Sembunyikan Dashboard, Tampilkan Detail Full Screen
-    const dashboard = document.getElementById('container-dashboard');
-    if (dashboard) dashboard.style.display = 'none';
-
-    const detailView = document.getElementById('full-detail-view');
-    if (detailView) detailView.style.display = 'block';
-
-    // 2. Isi konten detail dengan data dari atribut tombol
-    document.getElementById('detail-nama').innerText = btn.dataset.nama;
-    document.getElementById('detail-status').innerText = btn.dataset.status;
-    document.getElementById('detail-pj').innerText = btn.dataset.pj;
-    document.getElementById('detail-deadline').innerText = btn.dataset.deadline;
-    document.getElementById('detail-tugas').innerText = btn.dataset.tugas;
-    document.getElementById('detail-lanjutan').innerText = btn.dataset.lanjutan;
-    document.getElementById('detail-logo').src = btn.dataset.logo;
-  }
 
   // Fungsi untuk tombol kembali ke dashboard
   function tutupDetail() {
@@ -210,6 +190,62 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })();
 
+
+/* =====================================================================
+   3. tombol view yang di proyek dan dashboard
+   ===================================================================== */
+   
+  function tampilkanDetailProyek(btn) {
+  // 1. Ambil data dari atribut HTML tombol (baik dari Dashboard maupun Proyek)
+  const nama = btn.getAttribute('data-nama');
+  const status = btn.getAttribute('data-status');
+  const pj = btn.getAttribute('data-pj');
+  const deadline = btn.getAttribute('data-deadline');
+  const logo = btn.getAttribute('data-logo');
+  const tugas = btn.getAttribute('data-tugas');
+  const lanjutan = btn.getAttribute('data-lanjutan');
+
+  // 2. Isi data ke dalam elemen Modal Detail (dengan pengecekan `if` agar aman)
+  if (document.getElementById('detail-nama')) document.getElementById('detail-nama').textContent = nama || '-';
+  if (document.getElementById('detail-status')) document.getElementById('detail-status').textContent = status || '-';
+  if (document.getElementById('detail-pj')) document.getElementById('detail-pj').textContent = pj || '-';
+  if (document.getElementById('detail-deadline')) document.getElementById('detail-deadline').textContent = deadline || '-';
+  if (document.getElementById('detail-logo')) document.getElementById('detail-logo').src = logo || '';
+  if (document.getElementById('detail-tugas')) document.getElementById('detail-tugas').textContent = tugas || '-';
+  if (document.getElementById('detail-lanjutan')) document.getElementById('detail-lanjutan').textContent = lanjutan || '-';
+
+  // 3. Sesuaikan warna badge status
+  const badgeElement = document.getElementById('detail-status');
+  if (badgeElement) {
+    badgeElement.className = 'badge'; // Reset class
+    if (status === 'Berjalan') badgeElement.classList.add('status-berjalan');
+    else if (status === 'Selesai') badgeElement.classList.add('status-selesai');
+    else badgeElement.classList.add('status-belum');
+  }
+
+  // 4. JIKA DIKLIK DARI DASHBOARD: Otomatis pindah ke menu/halaman Proyek
+  const pageProyek = document.getElementById('page-proyek');
+  const pageDashboard = document.getElementById('page-dashboard');
+  
+  if (pageDashboard && pageProyek) {
+    pageDashboard.classList.remove('active');
+    pageProyek.classList.add('active');
+  }
+
+  // 5. Tampilkan Modal Detail
+  const fullDetailModal = document.getElementById('full-detail-view');
+  if (fullDetailModal) {
+    fullDetailModal.style.display = 'block';
+  }
+}
+
+function tutupDetail() {
+  // Sembunyikan container detail
+  const fullDetailModal = document.getElementById('full-detail-view');
+  if (fullDetailModal) {
+    fullDetailModal.style.display = 'none';
+  }
+}
 
 /* =====================================================================
    3. HALAMAN TUGAS

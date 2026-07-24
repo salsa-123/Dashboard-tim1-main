@@ -9,6 +9,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   </head>
   <body>
     <div class="app">
@@ -78,15 +81,13 @@
 <section class="page" id="page-proyek">
   <div class="panel">
     
-    <h3>Daftar Seluruh Proyek</h3>
     <table class="project-table">
       <thead>
 
-        <!-- Tombol Tambah Proyek -->
-        <button class="btn-tambah" onclick="bukaFormTambah()">
-            <span class="icon">+</span> Tambah Proyek
-        </button>
-    </div>
+        <div class="proyek-header-container">
+  <h2>Daftar Seluruh Proyek</h2>
+  <button class="btn-tambah-proyek">+ Tambah Proyek</button>
+</div>
         <tr>
           <th>Nama Proyek</th>
           <th>Status</th>
@@ -212,37 +213,42 @@
 
 <!-- TAMPILAN DETAIL FULL PAGE -->
 <div id="full-detail-view" class="full-page-detail" style="display: none;">
-    <div class="header-nav">
-        <button onclick="tutupDetail()" class="btn-back">← Kembali</button>
-        <h2>Proyek Detail</h2>
-    </div>
+  <!-- NAVBAR -->
+  <div class="header-nav">
+    <button onclick="tutupDetail()" class="btn-back">← Kembali</button>
+    <h2>Proyek Detail</h2>
+  </div>
 
-    <div class="main-layout">
-        <!-- Sidebar Kiri: Logo, Status, Nama -->
-        <aside class="detail-sidebar">
-            <img id="detail-logo" src="" alt="Logo Proyek" class="logo-box">
-            <span id="detail-status" class="badge"></span>
-            <h3 id="detail-nama">Nama Proyek</h3>
-        </aside>
+  <!-- KONTEN DUA KOLOM -->
+  <div class="main-layout">
+    <!-- KARTU KIRI -->
+    <aside class="detail-sidebar">
+      <img id="detail-logo" src="emblem/6.jpg" alt="Logo Proyek" class="logo-box">
+      <span id="detail-status" class="badge status-berjalan">Berjalan</span>
+      <h3 id="detail-nama">Dashboard Tim 1</h3>
+    </aside>
 
-        <!-- Main Kanan: Header Info & Deskripsi -->
-        <main class="detail-content">
-            <div class="detail-header-info">
-                <div>
-                    <p><strong>Penanggung Jawab:</strong> <span id="detail-pj">-</span></p>
-                    <p><strong>Deadline:</strong> <span id="detail-deadline">-</span></p>
-                </div>
-                <button class="btn-edit">Edit Proyek</button>
-            </div>
+    <!-- KARTU KANAN -->
+    <main class="detail-content">
+      <!-- INFO PJ & DEADLINE -->
+      <div class="detail-header-info">
+        <div>
+          <p><strong>Penanggung Jawab:</strong> <span id="detail-pj">Budi Santoso</span></p>
+          <p><strong>Deadline:</strong> <span id="detail-deadline">22 Juli 2026</span></p>
+        </div>
+        <button class="btn-edit">Edit Proyek</button>
+      </div>
 
-            <div class="detail-box-tugas">
-                <h4>Detail Penjelasan Tugas</h4>
-                <p id="detail-tugas"></p>
-                <h4>Lanjutan:</h4>
-                <p id="detail-lanjutan"></p>
-            </div>
-        </main>
-    </div>
+      <!-- PENJELASAN TUGAS -->
+      <div class="detail-box-tugas">
+        <h4>Detail Penjelasan Tugas</h4>
+        <p id="detail-tugas">Mengembangkan dashboard utama tim.</p>
+
+        <h4>Lanjutan:</h4>
+        <p id="detail-lanjutan">Finishing tampilan UI.</p>
+      </div>
+    </main>
+  </div>
 </div>
 
    <script src="script.js"></script>

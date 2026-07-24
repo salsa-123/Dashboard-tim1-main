@@ -458,6 +458,57 @@ body {
   font-size: 13px;
 }
 
+/* =====================================================================
+   3. HALAMAN DASHBOARD
+   ===================================================================== */
+
+   /* 1. Reset Global untuk Area Utama */
+/* Memastikan tidak ada background abu-abu di level terluar */
+body, html {
+    background-color: #ffffff !important;
+    margin: 0;
+    padding: 0;
+}
+
+/* 2. Mengatur Main Content agar selalu putih dan full-width */
+.main-content {
+    flex: 1;
+    background-color: #ffffff !important; /* Putih bersih */
+    min-height: 100vh;
+    padding: 32px 40px;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+/* 3. Menghapus 'Box' atau 'Card' di balik konten */
+/* Ini adalah kunci: Menghapus background/border dari div pembungkus */
+.main-content > div {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin-bottom: 0 !important;
+}
+
+/* 4. Memastikan Header tetap rapi */
+.section-header {
+    background-color: transparent !important; /* Pastikan transparan */
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* 5. Mengatur Statistik agar tetap terlihat rapi di atas background putih */
+.stats-container {
+    background-color: transparent !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
 
 /* =====================================================================
    5. TOMBOL (SHARED)
@@ -675,6 +726,18 @@ body {
 /* =====================================================================
    6. KARTU STATISTIK & GREETING (Dashboard)
    ===================================================================== */
+/* Container Utama: Membuat area putih yang bersih dan full-width */
+.dashboard-main, 
+.main-content {
+  flex: 1;
+  background-color: #ffffff; 
+  min-height: 100vh;
+  padding: 32px 40px; /* Jarak agar konten tidak mepet */
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+   
+
 .dash-greeting {
   margin-bottom: 24px;
 }
@@ -1097,6 +1160,7 @@ body {
   display: inline-block;
 }
 
+/* Bagian Bawah Kartu */
 .project-card-bottom {
   background: transparent;
   border: none;
@@ -1106,6 +1170,7 @@ body {
   gap: 10px;
 }
 
+/* Progress Bar & Persentase */
 .project-progress-below {
   display: flex;
   align-items: center;
@@ -1132,10 +1197,18 @@ body {
   font-weight: bold;
 }
 
+/* Tombol View (Memastikan Lebar Full 100%) */
+.btn-view {
+  width: 100%;
+  display: block;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* Badge Status */
 .badge-progress { background: #dbeafe; color: #1d4ed8; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-block; }
 .badge-done     { background: #dcfce7; color: #166534; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-block; }
 .badge-pending  { background: #f1f5f9; color: #64748b; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-block; }
-/* Tombol panah carousel */
 .carousel-btn {
   position: absolute;
   top: 50%;
@@ -1227,7 +1300,45 @@ body {
 /* =====================================================================
    8. TABEL GENERIK (dipakai halaman Proyek)
    ===================================================================== */
-.project-table {
+/* 1. KONTEN UTAMA (Samping Sidebar) */
+.main-content,
+#page-proyek {
+  flex: 1;                     /* Mengisi sisa ruang di sebelah kanan sidebar */
+  background-color: #ffffff;   /* Langsung beri latar putih penuh */
+  min-height: 100vh;           /* Penuhi tinggi layar */
+  padding: 32px 40px;          /* Jarak dalam agar teks tidak mepet layar */
+  box-sizing: border-box;
+  overflow-y: auto;            /* Scroll jika konten panjang */
+}
+
+/* 2. DONT USE FIXED/ABSOLUTE untuk elemen ini agar tidak menimpa sidebar */
+.card-proyek,
+.proyek-card {
+  width: 100%;
+  background: transparent;     /* Ikut warna latar main-content */
+  box-shadow: none;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* 3. HEADER PROYEK (Judul & Tombol Tambah) */
+.proyek-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.proyek-header-container h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+   .project-table {
   width: 100%;
   margin-top: 20px;
   border-collapse: collapse;
@@ -1272,6 +1383,228 @@ body {
 .badge.selesai  { background: #dcfce7; color: #15803d; }
 .status-belum,
 .badge.pending  { background: #fee2e2; color: #b91c1c; }
+/* Container untuk Header Halaman Proyek (Judul + Tombol) */
+.proyek-header-container {
+  display: flex;
+  justify-content: space-between; /* Judul di kiri, Tombol di kanan */
+  align-items: center;            /* Menyejajarkan secara vertikal */
+  margin-bottom: 20px;
+}
+
+.proyek-header-container h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Styling Tombol Tambah Proyek */
+.btn-tambah-proyek {
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-tambah-proyek:hover {
+  background-color: #1d4ed8;
+}
+
+/* =====================================================================
+   9. HALAMAN modal proyek
+   ===================================================================== */
+/* Apply Font Utama ke Seluruh Aplikasi */
+body, button, input, select {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* CONTAINER UTAMA DETAIL PROYEK */
+.full-page-detail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  background-color: #f8fafc; /* Latar abu-abu sangat muda bersih */
+  z-index: 99;
+  padding: 32px;
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   NAVBAR / HEADER DETAIL
+   ========================================== */
+.full-page-detail .header-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;                 /* Jarak tombol ke judul */
+  margin-bottom: 28px;
+}
+
+.full-page-detail .header-nav h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+/* TOMBOL KEMBALI (BIRU SINKRON & MODERN) */
+.btn-back {
+  background-color: #eff6ff; /* Biru lembut transparan */
+  color: #2563eb;            /* Primary Blue */
+  border: 1px solid #bfdbfe;  /* Border biru muda */
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;                  /* Spasi panah & teks */
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.06);
+}
+
+.btn-back:hover {
+  background-color: #2563eb; /* Biru solid saat di-hover */
+  color: #ffffff;            /* Teks berubah putih */
+  border-color: #2563eb;
+  transform: translateX(-3px); /* Geser halus ke kiri */
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+/* ==========================================
+   LAYOUT UTAMA (DUA KOLOM)
+   ========================================== */
+.full-page-detail .main-layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* CARD KIRI (SIDEBAR MINI PROYEK) */
+.detail-sidebar {
+  width: 280px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.detail-sidebar .logo-box {
+  width: 84px;
+  height: 84px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+.detail-sidebar h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+/* KONTEN KANAN */
+.detail-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* CARD KANAN (INFO PJ & DEADLINE) */
+.detail-header-info {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 22px 28px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail-header-info p {
+  margin: 6px 0;
+  font-size: 15px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.detail-header-info strong {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+/* TOMBOL EDIT */
+.btn-edit {
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+}
+
+.btn-edit:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+
+/* CARD KANAN (DETAIL TUGAS & LANJUTAN) */
+.detail-box-tugas {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-box-tugas h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #f1f5f9; /* Garis pembatas halus */
+}
+
+.detail-box-tugas p {
+  font-size: 15px;
+  color: #475569;
+  line-height: 1.7;          /* Spasi teks lebih nyaman dibaca */
+  margin: 0;
+}
+/*tombol edit */
+
 
 
 /* =====================================================================

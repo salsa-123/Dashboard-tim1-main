@@ -1954,8 +1954,7 @@ body, button, input, select {
     display: none !important; 
 }
 
-.btn-secondary { background: #e74c3c !important; color: white !important; border: none !important; padding: 8px 16px !important; border-radius: 6px !important; cursor: pointer !important; font-size: 14px; }
-.btn-primary { background: #486ee0 !important; color: white !important; border: none !important; padding: 8px 16px !important; border-radius: 6px !important; cursor: pointer !important; font-size: 14px; }
+
 
 
 /* =====================================================================
@@ -2296,7 +2295,7 @@ body, button, input, select {
   background: var(--laporan-bg, #f4f7f6);
 }
 
-.page-title {
+.laporan-panel .page-title {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -2305,7 +2304,7 @@ body, button, input, select {
   color: var(--laporan-text, #1f2937);
 }
 
-.page-title i { color: var(--laporan-primary, #4f46e5); }
+.page-title i.laporan-panel { color: var(--laporan-primary, #4f46e5); }
 
 .page-subtitle {
   margin-top: 8px;
@@ -2553,30 +2552,71 @@ body, button, input, select {
 
 #page-pengaturan .container {
   width: 100%;
-  max-width: 900px; /* Diubah agar layout tidak terlalu melar ke samping */
+  max-width: 900px;
   margin: 0 auto;
 }
 
 #page-pengaturan h1,
 #page-pengaturan h2 {
-  margin-bottom: 24px;
-  padding-bottom: 16px;
+  position: relative;
+  margin-bottom: 28px;
+  padding-bottom: 18px;
   font-size: 24px;
   font-weight: 700;
   color: var(--pg-text);
-  border-bottom: 1px solid var(--pg-border);
 }
 
+/* Garis bawah judul dibuat gradient, bukan garis polos */
+#page-pengaturan h1::after,
+#page-pengaturan h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 60px;
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #4f46e5, #818cf8);
+}
+
+/* Judul tiap sub-bagian (AKUN, KEAMANAN, dst) + ikon bulat berwarna */
 #page-pengaturan h3 {
-  margin: 28px 0 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 32px 0 14px 0;
   padding-bottom: 8px;
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: var(--pg-accent);
+  color: var(--pg-text);
   border-bottom: 1px solid var(--pg-border);
 }
+
+#page-pengaturan h3::before {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 12px;
+  color: #fff;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15); /* baris baru */
+}
+
+/* Warna & ikon berbeda tiap section, sesuai urutan h3 di HTML */
+#page-pengaturan h3:nth-of-type(1)::before { content: "\f007"; background: linear-gradient(135deg, #4f46e5, #818cf8); }
+#page-pengaturan h3:nth-of-type(2)::before { content: "\f3ed"; background: linear-gradient(135deg, #f97316, #fb923c); }
+#page-pengaturan h3:nth-of-type(3)::before { content: "\f53f"; background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+#page-pengaturan h3:nth-of-type(4)::before { content: "\f0f3"; background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+#page-pengaturan h3:nth-of-type(5)::before { content: "\f0c0"; background: linear-gradient(135deg, #3b82f6, #60a5fa); }
+#page-pengaturan h3:nth-of-type(6)::before { content: "\f1c0"; background: linear-gradient(135deg, #14b8a6, #2dd4bf); }
+#page-pengaturan h3:nth-of-type(7)::before { content: "\f1e6"; background: linear-gradient(135deg, #ec4899, #f472b6); }
+#page-pengaturan h3:nth-of-type(8)::before { content: "\f013"; background: linear-gradient(135deg, #64748b, #94a3b8); }
 
 /* Format Baris Pengaturan (.setting-row) */
 #page-pengaturan .setting-row {
@@ -2588,13 +2628,17 @@ body, button, input, select {
   padding: 14px 20px;
   background: var(--pg-card);
   border: 1px solid var(--pg-border);
+  border-left: 3px solid transparent;
   border-radius: 10px;
   transition: all .2s ease;
 }
 
 #page-pengaturan .setting-row:hover {
+  background: #fbfbfe;
   border-color: var(--pg-accent);
-  transform: translateX(2px);
+  border-left-color: var(--pg-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.06);
 }
 
 /* Label & Teks di Kiri */
@@ -2609,10 +2653,10 @@ body, button, input, select {
 
 /* Input, Select, & Element di Kanan */
 #page-pengaturan .setting-row input,
-#page-pengaturan .setting-row select,
+
 #page-pengaturan .setting-row .input-field {
   width: 280px;
-  min-width: unset; /* Override min-width bawaan */
+  min-width: unset;
   padding: 9px 14px;
   font-size: 13.5px;
   color: var(--pg-text);
@@ -2621,6 +2665,27 @@ body, button, input, select {
   border-radius: 8px;
   box-sizing: border-box;
   transition: all .2s;
+}
+
+#page-pengaturan .setting-row select {
+  width: 160px;
+  min-width: unset;
+  padding: 9px 14px;
+  font-size: 13.5px;
+  color: var(--pg-text);
+  background: var(--pg-bg);
+  border: 1px solid var(--pg-border);
+  border-radius: 8px;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: all .2s;
+
+  /* baris baru: matikan panah bawaan, ganti panah custom */
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%236b7280' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
 }
 
 #page-pengaturan .setting-row input:hover,
@@ -2641,13 +2706,16 @@ body, button, input, select {
   font-size: 14px;
   font-weight: 600;
   color: var(--pg-label);
-  width: 280px;
+  width: auto;
   text-align: left;
 }
 
 /* Tombol Aksi Sekunder di Dalam Baris (Ubah Password, CSV, dll) */
 #page-pengaturan .setting-row button,
 #page-pengaturan .setting-row .btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 8px 16px;
   font-size: 13px;
   font-weight: 600;
@@ -2667,19 +2735,34 @@ body, button, input, select {
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
+/* Ikon kecil khusus tiap tombol, berdasarkan ID tombolnya */
+#btnUbahPassword::before  { font-family: "Font Awesome 6 Free"; font-weight: 900; content: "\f084"; }
+#btnEksporCSV::before     { font-family: "Font Awesome 6 Free"; font-weight: 900; content: "\f019"; }
+#btnHubungkan::before     { font-family: "Font Awesome 6 Free"; font-weight: 900; content: "\f0c1"; }
+
 /* Tombol Utamanya (Simpan Semua Perubahan) */
 #page-pengaturan button.btn,
 #page-pengaturan button[onclick="simpanSemuaPerubahan()"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 10px 22px;
   font-size: 14px;
   font-weight: 600;
   color: #ffffff;
-  background-color: var(--pg-accent);
+  background: linear-gradient(135deg, var(--pg-accent), #818cf8);
   border: none;
   border-radius: 8px;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
   transition: all .2s;
+}
+
+#page-pengaturan button.btn::before,
+#page-pengaturan button[onclick="simpanSemuaPerubahan()"]::before {
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  content: "\f0c7";
 }
 
 #page-pengaturan button.btn:hover,
@@ -2708,6 +2791,17 @@ body, button, input, select {
   gap: 15px;
   margin-top: 30px;
 }
+
+#page-pengaturan .setting-row {
+  animation: itemFade 0.35s ease both;
+}
+#page-pengaturan .setting-row:nth-of-type(2)  { animation-delay: 0.03s; }
+#page-pengaturan .setting-row:nth-of-type(3)  { animation-delay: 0.06s; }
+#page-pengaturan .setting-row:nth-of-type(4)  { animation-delay: 0.09s; }
+#page-pengaturan .setting-row:nth-of-type(5)  { animation-delay: 0.12s; }
+#page-pengaturan .setting-row:nth-of-type(6)  { animation-delay: 0.15s; }
+#page-pengaturan .setting-row:nth-of-type(7)  { animation-delay: 0.18s; }
+#page-pengaturan .setting-row:nth-of-type(8)  { animation-delay: 0.21s; }
 
 /* =====================================================================
    13. MODAL (GENERIK)

@@ -92,7 +92,7 @@ body {
 }
 
 .page {
-  display: none;
+  display: block;
   width: 100%;
 }
 
@@ -263,8 +263,8 @@ body {
 }
 
 .nav-item:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: #ffffff;
+  background: #f3f4f6;
+  color: #111827;
 }
 
 .nav-item.active {
@@ -2525,6 +2525,31 @@ body, button, input, select {
   background: var(--pg-bg);
 }
 
+/* =====================================================================
+   FIX: Kartu Pembungkus Halaman Pengaturan (.card)
+   Tempel blok ini di style.css, tepat SETELAH blok #page-pengaturan {...}
+   di bagian "12. HALAMAN PENGATURAN"
+   ===================================================================== */
+
+#page-pengaturan .card {
+  background: var(--pg-card);
+  border: 1px solid var(--pg-border);
+  border-radius: 20px;
+  padding: 36px 40px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+/* Beri sedikit ruang napas antara card dan tepi halaman */
+#page-pengaturan .container {
+  padding: 24px 0 40px;
+}
+
+/* Section terakhir (Preferensi Sistem & Tentang) jangan terlalu
+   menempel ke tombol Simpan di bawahnya */
+#page-pengaturan h3:last-of-type {
+  margin-bottom: 18px;
+}
+
 #page-pengaturan .container {
   width: 100%;
   max-width: 900px;
@@ -2777,6 +2802,71 @@ body, button, input, select {
 #page-pengaturan .setting-row:nth-of-type(6)  { animation-delay: 0.15s; }
 #page-pengaturan .setting-row:nth-of-type(7)  { animation-delay: 0.18s; }
 #page-pengaturan .setting-row:nth-of-type(8)  { animation-delay: 0.21s; }
+
+.settings-layout {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+
+.settings-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 210px;
+  flex-shrink: 0;
+}
+
+.settings-tab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--pg-label);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.settings-tab i { width: 16px; text-align: center; color: var(--pg-label); }
+
+.settings-tab:hover {
+  background: var(--pg-accent-soft);
+  color: var(--pg-accent);
+}
+
+.settings-tab.active {
+  background: var(--pg-accent);
+  color: #ffffff;
+}
+
+.settings-tab.active i { color: #ffffff; }
+
+.settings-panels {
+  flex: 1;
+  min-width: 0;
+}
+
+.settings-panel { display: none; }
+.settings-panel.active { display: block; animation: fadeIn 0.2s ease; }
+
+.settings-panel h3 {
+  margin: 0 0 16px 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.settings-panel h3::before { display: none; }
+
+@media (max-width: 700px) {
+  .settings-layout { flex-direction: column; }
+  .settings-tabs { flex-direction: row; overflow-x: auto; width: 100%; }
+}
 
 /* =====================================================================
    13. MODAL (GENERIK)

@@ -42,7 +42,7 @@
 
   <nav class="sidebar-nav">
   <!-- Dashboard -->
-  <a href="dashboard.html" class="nav-item active" data-page="dashboard">
+  <a href="dashboard.html" class="nav-item" data-page="dashboard">
     <span class="nav-icon"><i class="fa-solid fa-gauge"></i></span> Dashboard
   </a>
 
@@ -77,60 +77,89 @@
 <section class="page" id="page-pengaturan">
     <div class="container">
         <div class="card">
-            <h1>Pengaturan Dashboard</h1>
+  <h1>Pengaturan Dashboard</h1>
 
-            <h3>Akun</h3>
-            <div class="setting-row"><span>Nama Lengkap</span><input type="text" value="Budi Santoso"></div>
-            <div class="setting-row"><span>Email</span><input type="email" value="budi@example.com"></div>
+  <div class="settings-layout">
+    <nav class="settings-tabs">
+      <button class="settings-tab active" data-tab="akun"><i class="fa-solid fa-user"></i> Akun</button>
+      <button class="settings-tab" data-tab="keamanan"><i class="fa-solid fa-shield-halved"></i> Keamanan</button>
+      <button class="settings-tab" data-tab="tampilan"><i class="fa-solid fa-palette"></i> Tampilan</button>
+      <button class="settings-tab" data-tab="notifikasi"><i class="fa-solid fa-bell"></i> Notifikasi</button>
+      <button class="settings-tab" data-tab="tim"><i class="fa-solid fa-users"></i> Tim & Proyek</button>
+      <button class="settings-tab" data-tab="backup"><i class="fa-solid fa-database"></i> Backup & Data</button>
+      <button class="settings-tab" data-tab="integrasi"><i class="fa-solid fa-plug"></i> Integrasi</button>
+      <button class="settings-tab" data-tab="sistem"><i class="fa-solid fa-info-circle"></i> Versi</button>
+    </nav>
 
-            <h3>Keamanan</h3>
-            <div class="setting-row"><span>Autentikasi 2FA</span><select><option>Aktif</option><option>Nonaktif</option></select></div>
-            <div class="setting-row"><span>Password</span><button class="btn btn-secondary" id="btnUbahPassword">Ubah Password</button></div>
+    <div class="settings-panels">
+      <div class="settings-panel active" data-panel="akun">
+        <h3>Akun</h3>
+        <div class="setting-row"><span>Nama Lengkap</span><input type="text" value="Budi Santoso"></div>
+        <div class="setting-row"><span>Email</span><input type="email" value="budi@example.com"></div>
+      </div>
 
-            <h3>Tampilan</h3>
-            <div class="setting-row">
-              <span>Tema</span>
-              <select id="tema">
-                <option value="light">Light Mode</option>
-                <option value="dark">Dark Mode</option>
-              </select>
-            </div>
+      <div class="settings-panel" data-panel="keamanan">
+        <h3>Keamanan</h3>
+        <div class="setting-row"><span>Autentikasi 2FA</span><select><option>Aktif</option><option>Nonaktif</option></select></div>
+        <div class="setting-row"><span>Password</span><button class="btn btn-secondary" id="btnUbahPassword">Ubah Password</button></div>
+      </div>
 
-            <h3>Notifikasi</h3>
-            <div class="setting-row"><span>Notifikasi Email</span>
-              <select id="notifEmail"><option>Aktif</option><option>Nonaktif</option></select>
-            </div>
+      <div class="settings-panel" data-panel="tampilan">
+        <h3>Tampilan</h3>
+        <div class="setting-row">
+          <span>Tema</span>
+          <select id="tema">
+            <option value="light">Light Mode</option>
+            <option value="dark">Dark Mode</option>
+          </select>
+        </div>
+      </div>
 
-            <h3>Tim & Proyek</h3>
-            <div class="setting-row">
-                <span class="label">Peran Akses</span>
-                <select class="input-field">
-                    <option>Admin</option>
-                    <option>Editor</option>
-                </select>
-            </div>
-            <div class="setting-row">
-                <span class="label">Proyek Aktif</span>
-                <input type="text" class="input-field" value="Proyek Alpha">
-            </div>
+      <div class="settings-panel" data-panel="notifikasi">
+        <h3>Notifikasi</h3>
+        <div class="setting-row"><span>Notifikasi Email</span>
+          <select id="notifEmail"><option>Aktif</option><option>Nonaktif</option></select>
+        </div>
+      </div>
 
-            <h3>Backup & Data</h3>
-            <div class="setting-row"><span>Ekspor Data</span>
-              <button class="btn btn-secondary" id="btnEksporCSV">Unduh CSV</button>
-            </div>
+      <div class="settings-panel" data-panel="tim">
+        <h3>Tim & Proyek</h3>
+        <div class="setting-row">
+          <span class="label">Peran Akses</span>
+          <select class="input-field"><option>Admin</option><option>Editor</option></select>
+        </div>
+        <div class="setting-row">
+          <span class="label">Proyek Aktif</span>
+          <input type="text" class="input-field" value="Proyek Alpha">
+        </div>
+      </div>
 
-            <h3>Integrasi</h3>
-            <div class="setting-row"><span>GitHub/Slack</span>
-              <button class="btn btn-secondary" id="btnHubungkan">Hubungkan</button>
-            </div>
+      <div class="settings-panel" data-panel="backup">
+        <h3>Backup & Data</h3>
+        <div class="setting-row"><span>Ekspor Data</span>
+          <button class="btn btn-secondary" id="btnEksporCSV">Unduh CSV</button>
+        </div>
+      </div>
 
-            <h3>Preferensi Sistem & Tentang</h3>
-            <div class="setting-row"><span>Zona Waktu</span><select><option>WIB</option><option>WITA</option></select></div>
-            <div class="setting-row"><span>Versi Aplikasi</span><span>v1.2.0</span></div>
+      <div class="settings-panel" data-panel="integrasi">
+        <h3>Integrasi</h3>
+        <div class="setting-row"><span>GitHub/Slack</span>
+          <button class="btn btn-secondary" id="btnHubungkan">Hubungkan</button>
+        </div>
+      </div>
 
-            <div style="margin-top: 30px; text-align: right;">
-                <button class="btn" onclick="simpanSemuaPerubahan()">Simpan Semua Perubahan</button>
-            </div>
+      <div class="settings-panel" data-panel="sistem">
+        <h3>Preferensi Sistem & Tentang</h3>
+        <div class="setting-row"><span>Zona Waktu</span><select><option>WIB</option><option>WITA</option></select></div>
+        <div class="setting-row"><span>Versi Aplikasi</span><span>v1.2.0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 30px; text-align: right;">
+    <button class="btn" onclick="simpanSemuaPerubahan()">Simpan Semua Perubahan</button>
+  </div>
+</div>
         </div>
     </div>
 </section>

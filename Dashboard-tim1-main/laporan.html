@@ -332,26 +332,51 @@
     <!-- MODAL BUAT LAPORAN -->
 <div id="modal-laporan" class="modal-overlay">
     <div class="modal-content">
-        <h3>Buat Laporan Baru</h3>
+        <div class="modal-header">
+            <div class="modal-icon">
+                <i class="fa-solid fa-file-lines"></i>
+            </div>
+            <div>
+                <h3>Buat Laporan Baru</h3>
+                <p class="modal-subtitle">Lengkapi detail laporan di bawah ini</p>
+            </div>
+        </div>
 
-        <input type="text" id="judulLaporan" placeholder="Judul Laporan" class="modal-input">
-        <input type="text" id="penulisLaporan" placeholder="Nama Penulis" class="modal-input">
+        <div class="modal-field">
+            <label for="judulLaporan">Judul Laporan</label>
+            <input type="text" id="judulLaporan" placeholder="Contoh: Progress Proyek Minggu 3" class="modal-input">
+        </div>
 
-        <select id="prioritasLaporan" class="modal-input">
-            <option value="Rendah">Prioritas Rendah</option>
-            <option value="Sedang">Prioritas Sedang</option>
-            <option value="Tinggi">Prioritas Tinggi</option>
-        </select>
+        <div class="modal-field">
+            <label for="penulisLaporan">Nama Penulis</label>
+            <input type="text" id="penulisLaporan" placeholder="Nama lengkap Anda" class="modal-input">
+        </div>
 
-        <select id="statusLaporan" class="modal-input">
-            <option value="pending">Belum Mulai</option>
-            <option value="review">Sedang Review</option>
-            <option value="selesai">Selesai</option>
-        </select>
+        <div class="modal-row">
+            <div class="modal-field">
+                <label for="prioritasLaporan">Prioritas</label>
+                <select id="prioritasLaporan" class="modal-input">
+                    <option value="Rendah">Rendah</option>
+                    <option value="Sedang">Sedang</option>
+                    <option value="Tinggi">Tinggi</option>
+                </select>
+            </div>
 
-        <textarea id="isiLaporan" placeholder="Isi Laporan" class="modal-textarea"></textarea>
+            <div class="modal-field">
+                <label for="statusLaporan">Status</label>
+                <select id="statusLaporan" class="modal-input">
+                    <option value="pending">Belum Mulai</option>
+                    <option value="review">Sedang Review</option>
+                    <option value="selesai">Selesai</option>
+                </select>
+            </div>
+        </div>
 
-        <!-- TAMBAHAN: Upload Lampiran -->
+        <div class="modal-field">
+            <label for="isiLaporan">Isi Laporan</label>
+            <textarea id="isiLaporan" placeholder="Tuliskan detail laporan Anda di sini..." class="modal-textarea"></textarea>
+        </div>
+
         <label for="fileLaporan" class="file-upload-box">
             <i class="fa-solid fa-paperclip"></i>
             <span id="fileLaporanNama">Klik untuk lampirkan file</span>
@@ -359,8 +384,8 @@
         <input type="file" id="fileLaporan" style="display:none;">
 
         <div class="modal-actions">
-            <button class="btn-primary" onclick="simpanLaporan()">Simpan</button>
             <button class="btn-delete" onclick="tutupModalLaporan()">Batal</button>
+            <button class="btn-primary" onclick="simpanLaporan()">Simpan</button>
         </div>
     </div>
 </div>

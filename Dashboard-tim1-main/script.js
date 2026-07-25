@@ -236,6 +236,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const fullDetailModal = document.getElementById('full-detail-view');
   if (fullDetailModal) {
     fullDetailModal.style.display = 'block';
+
+    function tampilkanDetailProyek(nama, gambar, icon, status) {
+
+    localStorage.setItem("namaProyek", nama);
+    localStorage.setItem("gambarProyek", gambar);
+    localStorage.setItem("iconProyek", icon);
+    localStorage.setItem("statusProyek", status);
+
+    window.location.href = "proyek.html";
+}
   }
 }
 

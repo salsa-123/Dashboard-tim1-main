@@ -89,45 +89,47 @@
       </div>
     </div>
 
-    <div class="tugas-stat-grid">
-  <!-- KARTU TOTAL -->
-  <div class="tugas-stat-card" id="cardTotal" style="cursor: pointer;">
-    <div class="tugas-stat-icon total"><i class="fa-solid fa-list-check"></i></div>
-    <div>
-      <span class="tugas-stat-label">Total proyek</span>
-      <span class="tugas-stat-value" id="statTotalproyek">6</span>
+    <div class="stats-container">
+    <!-- Total Proyek -->
+    <div class="stat-card">
+        <div class="stat-icon total"><i class="fas fa-folder-open"></i></div>
+        <div class="stat-info">
+            <p>Total Proyek</p>
+            <h3>6</h3>
+        </div>
     </div>
-  </div>
 
-  <!-- KARTU SELESAI -->
-  <div class="tugas-stat-card" id="cardSelesai" style="cursor: pointer;">
-    <div class="tugas-stat-icon selesai"><i class="fa-solid fa-check"></i></div>
-    <div>
-      <span class="tugas-stat-label">Selesai</span>
-      <span class="tugas-stat-value" id="statSelesai">1</span>
+    <!-- Selesai -->
+    <div class="stat-card">
+        <div class="stat-icon done"><i class="fas fa-check"></i></div>
+        <div class="stat-info">
+            <p>Selesai</p>
+            <h3>1</h3>
+        </div>
     </div>
-  </div>
 
-  <!-- KARTU SEDANG BERJALAN -->
-  <div class="tugas-stat-card" id="cardBerjalan" style="cursor: pointer;">
-    <div class="tugas-stat-icon proses"><i class="fa-solid fa-spinner"></i></div>
-    <div>
-      <span class="tugas-stat-label">Sedang Berjalan</span>
-      <span class="tugas-stat-value" id="statBerjalan">3</span>
+    <!-- Sedang Berjalan -->
+    <div class="stat-card">
+        <div class="stat-icon progress"><i class="fas fa-spinner"></i></div>
+        <div class="stat-info">
+            <p>Sedang Berjalan</p>
+            <h3>3</h3>
+        </div>
     </div>
-  </div>
 
-  <!-- KARTU BELUM MULAI -->
-  <div class="tugas-stat-card" id="cardBelum" style="cursor: pointer;">
-    <div class="tugas-stat-icon belum"><i class="fa-solid fa-circle"></i></div>
-    <div>
-      <span class="tugas-stat-label">Belum Mulai</span>
-      <span class="tugas-stat-value" id="statBelummulai">2</span>
+    <!-- Belum Mulai -->
+    <div class="stat-card">
+        <div class="stat-icon pending"><i class="fas fa-lock"></i></div>
+        <div class="stat-info">
+            <p>Belum Mulai</p>
+            <h3>2</h3>
+        </div>
     </div>
-  </div>
 </div>
 
-    
+<div class="section-header">
+
+      
     <!-- 3. KONTEN CAROUSEL PROYEK (DIBUNGKUS KOTAK OUTSIDE) -->
     <div class="carousel-wrapper" style="position: relative;">
       
@@ -138,113 +140,113 @@
       <!-- JALUR GRID PROYEK -->
       <div class="project-grid" id="dashboardTrack">
         
-    <!-- PROYEK 1 --> 
-  <div class="project-item">
-    <div class="project-card-top">
-      <div class="project-logo-emblem"><img src="emblem/6.jpg" alt="Logo"></div>
-      <div class="project-header">
-        <h3>Dashboard Tim 1</h3>
-        <span class="badge badge-progress">Berjalan</span>
-      </div>
-    </div>
-    <div class="project-card-bottom">
-      <div class="project-progress-below">
-        <div class="progress-bar"><div class="progress-fill" style="width: 60%"></div></div>
-        <span class="progress-percent">60%</span>
-      </div>
-      <button class="btn-view" onclick="tampilkanDetailProyek('Dashboard Tim 1')">View</button>
+ <!-- PROYEK 1: Coding -->
+<div class="project-item" style="background-image: url('https://picsum.photos/seed/code1/400/600');">
+  <div class="project-card-top">
+    <div class="project-logo-emblem"><i class="fas fa-laptop-code"></i></div>
+    <div class="project-header">
+      <h3>Dashboard Tim 1</h3>
+      <span class="badge badge-progress">Berjalan</span>
     </div>
   </div>
+  <div class="project-card-bottom">
+    <div class="project-progress-below">
+      <div class="progress-bar"><div class="progress-fill" style="width: 60%"></div></div>
+      <span class="progress-percent">60%</span>
+    </div>
+    <button class="btn-view" onclick="tampilkanDetailProyek('Dashboard Tim 1')">View</button>
+  </div>
+</div>
 
-  <!-- PROYEK 2 -->
-  <div class="project-item">
-    <div class="project-card-top">
-      <div class="project-logo-emblem"><img src="emblem/1.jpg" alt="Logo"></div>
-      <div class="project-header">
-        <h3>Redesign Logo Tim</h3>
-        <span class="badge badge-done">Selesai</span>
-      </div>
-    </div>
-    <div class="project-card-bottom">
-      <div class="project-progress-below">
-        <div class="progress-bar"><div class="progress-fill" style="width: 100%"></div></div>
-        <span class="progress-percent">100%</span>
-      </div>
-      <button class="btn-view" onclick="tampilkanDetailProyek('Redesign Logo Tim')">View</button>
+<!-- PROYEK 2: UI Design -->
+<div class="project-item" style="background-image: url('https://picsum.photos/seed/design1/400/600');">
+  <div class="project-card-top">
+    <div class="project-logo-emblem"><i class="fas fa-palette"></i></div>
+    <div class="project-header">
+      <h3>Redesign Logo Tim</h3>
+      <span class="badge badge-done">Selesai</span>
     </div>
   </div>
+  <div class="project-card-bottom">
+    <div class="project-progress-below">
+      <div class="progress-bar"><div class="progress-fill" style="width: 100%"></div></div>
+      <span class="progress-percent">100%</span>
+    </div>
+    <button class="btn-view" onclick="tampilkanDetailProyek('Redesign Logo Tim')">View</button>
+  </div>
+</div>
 
-  <!-- PROYEK 3 -->
-  <div class="project-item">
-    <div class="project-card-top">
-      <div class="project-logo-emblem"><img src="emblem/2.jpg" alt="Logo"></div>
-      <div class="project-header">
-        <h3>Integrasi Database</h3>
-        <span class="badge badge-pending">Belum Mulai</span>
-      </div>
-    </div>
-    <div class="project-card-bottom">
-      <div class="project-progress-below">
-        <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
-        <span class="progress-percent">0%</span>
-      </div>
-      <button class="btn-view" onclick="tampilkanDetailProyek('Integrasi Database')">View</button>
+<!-- PROYEK 3: Database/Server -->
+<div class="project-item" style="background-image: url('https://picsum.photos/seed/db1/400/600');">
+  <div class="project-card-top">
+    <div class="project-logo-emblem"><i class="fas fa-database"></i></div>
+    <div class="project-header">
+      <h3>Integrasi Database</h3>
+      <span class="badge badge-pending">Belum Mulai</span>
     </div>
   </div>
+  <div class="project-card-bottom">
+    <div class="project-progress-below">
+      <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+      <span class="progress-percent">0%</span>
+    </div>
+    <button class="btn-view" onclick="tampilkanDetailProyek('Integrasi Database')">View</button>
+  </div>
+</div>
 
-  <!-- PROYEK 4 -->
-  <div class="project-item">
-    <div class="project-card-top">
-      <div class="project-logo-emblem"><img src="emblem/3.jpg" alt="Logo"></div>
-      <div class="project-header">
-        <h3>Aplikasi Mobile Tim</h3>
-        <span class="badge badge-progress">Berjalan</span>
-      </div>
-    </div>
-    <div class="project-card-bottom">
-      <div class="project-progress-below">
-        <div class="progress-bar"><div class="progress-fill" style="width: 35%"></div></div>
-        <span class="progress-percent">35%</span>
-      </div>
-      <button class="btn-view" onclick="tampilkanDetailProyek('Aplikasi Mobile Tim')">View</button>
+<!-- PROYEK 4: Mobile App -->
+<div class="project-item" style="background-image: url('https://picsum.photos/seed/mobile1/400/600');">
+  <div class="project-card-top">
+    <div class="project-logo-emblem"><i class="fas fa-mobile-screen-button"></i></div>
+    <div class="project-header">
+      <h3>Aplikasi Mobile Tim</h3>
+      <span class="badge badge-progress">Berjalan</span>
     </div>
   </div>
+  <div class="project-card-bottom">
+    <div class="project-progress-below">
+      <div class="progress-bar"><div class="progress-fill" style="width: 35%"></div></div>
+      <span class="progress-percent">35%</span>
+    </div>
+    <button class="btn-view" onclick="tampilkanDetailProyek('Aplikasi Mobile Tim')">View</button>
+  </div>
+</div>
 
-  <!-- PROYEK 5 -->
-  <div class="project-item">
-    <div class="project-card-top">
-      <div class="project-logo-emblem"><img src="emblem/4.jpg" alt="Logo"></div>
-      <div class="project-header">
-        <h3>Optimasi Server</h3>
-        <span class="badge badge-progress">Berjalan</span>
-      </div>
-    </div>
-    <div class="project-card-bottom">
-      <div class="project-progress-below">
-        <div class="progress-bar"><div class="progress-fill" style="width: 80%"></div></div>
-        <span class="progress-percent">80%</span>
-      </div>
-      <button class="btn-view" onclick="tampilkanDetailProyek('Optimasi Server')">View</button>
+<!-- PROYEK 5: Cloud/Network -->
+<div class="project-item" style="background-image: url('https://picsum.photos/seed/cloud1/400/600');">
+  <div class="project-card-top">
+    <div class="project-logo-emblem"><i class="fas fa-server"></i></div>
+    <div class="project-header">
+      <h3>Optimasi Server</h3>
+      <span class="badge badge-progress">Berjalan</span>
     </div>
   </div>
+  <div class="project-card-bottom">
+    <div class="project-progress-below">
+      <div class="progress-bar"><div class="progress-fill" style="width: 80%"></div></div>
+      <span class="progress-percent">80%</span>
+    </div>
+    <button class="btn-view" onclick="tampilkanDetailProyek('Optimasi Server')">View</button>
+  </div>
+</div>
 
-  <!-- PROYEK 6 -->
-  <div class="project-item">
-    <div class="project-card-top">
-      <div class="project-logo-emblem"><img src="emblem/5.jpg" alt="Logo"></div>
-      <div class="project-header">
-        <h3>Dokumentasi Sistem</h3>
-        <span class="badge badge-pending">Belum Mulai</span>
-      </div>
-    </div>
-    <div class="project-card-bottom">
-      <div class="project-progress-below">
-        <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
-        <span class="progress-percent">0%</span>
-      </div>
-      <button class="btn-view" onclick="tampilkanDetailProyek('Dokumentasi Sistem')">View</button>
+<!-- PROYEK 6: Documentation -->
+<div class="project-item" style="background-image: url('https://picsum.photos/seed/doc1/400/600');">
+  <div class="project-card-top">
+    <div class="project-logo-emblem"><i class="fas fa-file-lines"></i></div>
+    <div class="project-header">
+      <h3>Dokumentasi Sistem</h3>
+      <span class="badge badge-pending">Belum Mulai</span>
     </div>
   </div>
+  <div class="project-card-bottom">
+    <div class="project-progress-below">
+      <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+      <span class="progress-percent">0%</span>
+    </div>
+    <button class="btn-view" onclick="tampilkanDetailProyek('Dokumentasi Sistem')">View</button>
+  </div>
+</div>
     <!-- Contoh di dalam project-item -->
   </div>
 </div>

@@ -724,27 +724,28 @@ body, html {
 
 
 /* =====================================================================
-   6. KARTU STATISTIK & GREETING (Dashboard)
+   TIPOGRAFI & KARTU STATISTIK (Dashboard)
    ===================================================================== */
-/* Container Utama: Membuat area putih yang bersih dan full-width */
-.dashboard-main, 
-.main-content {
-  flex: 1;
-  background-color: #ffffff; 
-  min-height: 100vh;
-  padding: 32px 40px; /* Jarak agar konten tidak mepet */
-  box-sizing: border-box;
-  overflow-y: auto;
-}
-   
 
+/* Terapkan font Inter secara global di main content */
+.main-content, .dashboard-main {
+  font-family: 'Inter', sans-serif; /* Font Modern */
+  line-height: 1.5; /* Memberi "ruang napas" antar baris */
+  flex: 1;
+  background-color: #f9fafb; /* Sedikit lebih abu-abu agar kartu putih lebih menonjol */
+  min-height: 100vh;
+  padding: 32px 40px;
+}
+
+/* Greeting Section */
 .dash-greeting {
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .dash-greeting-title {
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 28px; /* Lebih besar dari sebelumnya */
+  font-weight: 700;
+  color: #111827; /* Hitam pekat untuk judul */
   margin: 0;
 }
 
@@ -753,94 +754,58 @@ body, html {
 }
 
 .dash-greeting-sub {
-  font-size: 13.5px;
+  font-size: 14px;
   color: #6B7280;
-  margin: 5px 0 0;
+  margin: 6px 0 0;
+  letter-spacing: -0.01em; /* Sedikit lebih rapat agar elegan */
 }
 
-.stats-container,
-.stat-grid,
-.dashboard-card-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
+/* Kartu Statistik */
+.stats-container {
+    display: grid;
+    /* Ini kuncinya: Memaksa 4 kolom dengan lebar yang sama rata */
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px;
+    margin-bottom: 30px;
 }
 
 .stat-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  text-align: center;
   background: #ffffff;
-  padding: 16px 20px;
-  border: 1px solid #f1f5f9;
-  border-radius: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: 0.3s;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px; /* Sedikit lebih lega */
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Shadow sangat tipis */
+  transition: all 0.2s ease;
 }
 
 .stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-color: #d1d5db;
 }
 
-.stat-card span,
-.stat-label {
-  order: 1;
-  font-size: 13px;
-  font-weight: 600;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.stat-card h2,
-.stat-value {
-  order: 2;
+/* Teks Statistik */
+.stat-info h3 {
   margin: 0;
-  font-size: 28px;
+  font-size: 28px; /* Ukuran angka lebih menonjol */
+  color: #111827;
   font-weight: 700;
   line-height: 1;
-  color: #1e293b;
+  letter-spacing: -0.02em; /* Membuat angka terlihat lebih solid */
 }
 
-.stat-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-}
-
-.stat-icon {
-  width: 34px;
-  height: 34px;
-  flex-shrink: 0;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.stat-icon svg {
-  width: 17px;
-  height: 17px;
-}
-
-.stat-icon.amber { background: #F7E9D2; color: #C98A2B; }
-.stat-icon.teal  { background: #E1EFEA; color: #1F6F5C; }
-.stat-icon.coral { background: #FBE7DF; color: #D96C4B; }
-.stat-icon.ink   { background: #EAEAF2; color: #1C2333; }
-
-.stat-trend {
-  margin: 4px 0 0;
-  font-size: 12.5px;
-  color: #9A9DA8;
-}
-
-.stat-trend.up {
-  color: #1F6F5C;
+/* Teks Label Statistik (Versi Formal) */
+.stat-info p {
+    margin: 0 0 4px 0;
+    font-size: 13px;
+    color: #4b5563; /* Abu-abu yang sedikit lebih gelap agar terlihat serius */
+    font-weight: 600; /* Font semi-bold agar tegas */
+    text-transform: none; /* Mematikan ALL CAPS */
+    letter-spacing: normal; /* Menghilangkan jarak lebar antar huruf */
+    text-transform: capitalize; /* Opsional: Membuat huruf awal kata menjadi kapital */
 }
 
 /* Header section: judul di kiri, kotak pencarian di kanan */
@@ -1022,187 +987,161 @@ body, html {
 
 
 /* =====================================================================
-   7. CAROUSEL / GRID PROYEK
+   7. CAROUSEL / GRID PROYEK (DIOPTIMALKAN)
    ===================================================================== */
-.carousel-wrapper {
-  position: relative;
-  margin-top: 12px;
-  padding: 20px 16px;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-}
 
-#dashboardTrack {
-  display: flex !important;
-  flex-direction: row !important;
-  overflow-x: auto !important;
-  gap: 16px;
-  padding: 12px 4px;
-  scroll-behavior: smooth;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* Wadah Utama Carousel */
+.carousel-wrapper{
+    position:relative;
+    margin-top:16px;
+    margin-left:0;
+    padding:20px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:16px;
 }
-
-#dashboardTrack::-webkit-scrollbar {
-  display: none;
-}
-
+/* Container Scroll Horisontal */
 .project-grid {
   display: flex;
-  width: 100%;
+  flex-wrap: nowrap;
   gap: 20px;
   padding: 10px 0;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  scrollbar-width: none; /* Firefox */
 }
 
 .project-grid::-webkit-scrollbar {
-  display: none;
+  display: none; /* Chrome/Safari */
 }
 
+.project-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory; /* Kunci agar menempel */
+    gap: 20px;
+    padding-bottom: 20px;
+    scrollbar-width: none; /* Menyembunyikan scrollbar */
+}
+ 
+/* Kartu Proyek */
 .project-item {
-  flex: 0 0 calc((100% - 32px) / 3);
-  min-width: 280px;
-  min-height: 480px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 20px;
-  background: #ffffff;
-  border: 1px solid #9aacc5;
-  border-radius: 16px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-  overflow: hidden;
   scroll-snap-align: start;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    flex: 0 0 calc(33.33% - 14px);
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px;
+    padding-left: 20px;
+    position: relative;
+    overflow: hidden;
+    
+    /* Penting: Ini membuat gambar latar belakang */
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+}
+
+/* Ini adalah kunci agar gambar punya efek "fade" seperti di foto */
+.project-item::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* Gradasi dari hitam pekat di bawah ke transparan di atas */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0) 100%);
+    z-index: 0;
+    pointer-events: none; /* Agar tombol tetap bisa diklik */
+}
+
+/* Memastikan konten (text, logo, button) berada di atas gradient */
+.project-card-top, .project-card-bottom {
+    position: relative;
+    z-index: 1;
+    color: #ffffff; /* Mengubah teks jadi putih */
 }
 
 .project-item:hover {
-  transform: translateY(-4px);
-  border-color: #1d2f46;
-  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05), 0 8px 8px -5px rgba(0, 0, 0, 0.03);
+  transform: translateY(-8px);
 }
 
-/* Hilangkan border/padding ganda agar isi tidak terhimpit */
-.project-card-top {
-  background: transparent;
-  border: none;
-  padding: 0;
-  box-shadow: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
+/* Container untuk Ikon */
 .project-logo-emblem {
-  width: 100%;
-  height: 120px;
+  width: 80px;      /* Ubah angka ini untuk memperbesar wadah kotak */
+  height: 80px;     /* Ubah angka ini untuk memperbesar wadah kotak */
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
-  overflow: hidden;
+  margin-bottom: 12px;
+  background: rgba(255, 255, 255, 0.15); /* Efek transparan agar menyatu */
+  border-radius: 16px; /* Agar sudut kotak sedikit membulat */
 }
 
-.project-logo-emblem img {
-  width: auto;
-  max-width: 100%;
-  height: 100%;
-  object-fit: contain;
-  margin-bottom: 0;
+/* Mengatur Ikonnya */
+.project-logo-emblem i {
+  font-size: 40px;  /* <--- UBAH ANGKA INI untuk memperbesar ikonnya */
+  color: #ffffff;   /* Warna ikon putih */
 }
 
-/* Header diubah ke vertikal rata tengah agar Judul & Badge TIDAK TABRAKAN */
+/* Header & Teks */
 .project-header {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: center;
-  gap: 6px;
-  margin-bottom: 0;
+  gap: 8px;
 }
 
 .project-header h3 {
   margin: 0;
-  font-size: 16px;
-  font-weight: 700;
-  color: #1e293b;
-  line-height: 1.3;
+  font-size: 18px;
+  color: #ffffff;
 }
 
-.dash-keterangan {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 8px 0;
+/* Badge (Sesuaikan warna agar tetap terlihat) */
+.badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 20px;        /* Sesuaikan angka ini sesuai keinginan (misal: 10px atau 15px) */
+  display: inline-block;   /* Penting: Ini memastikan margin-top berfungsi pada badge */
 }
 
-.dash-keterangan p {
-  margin: 0 0 6px;
-  font-size: 13px;
-  line-height: 1.5;
-  color: #475569;
-}
 
-.ket-label {
-  margin-right: 4px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #0f172a;
-  font-size: 11px;
-  letter-spacing: 0.5px;
-  display: inline-block;
-}
-
-/* Bagian Bawah Kartu */
-.project-card-bottom {
-  background: transparent;
-  border: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* Progress Bar & Persentase */
+/* Progress Section */
 .project-progress-below {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 8px;
-  margin-top: 0;
 }
 
 .progress-bar {
-  flex: 1;
+  width: 100%;
   height: 8px;
-  border: none;
+  background: rgba(255,255,255,0.2);
   border-radius: 5px;
   overflow: hidden;
-  background: #eee;
 }
 
 .progress-fill {
   height: 100%;
-  background: #5B4FE9;
+  background: #3b82f6; /* Warna biru cerah */
 }
 
-.progress-percent {
-  font-size: 12px;
-  font-weight: bold;
-}
+.progress-percent { color: #ffffff; }
 
-/* Tombol View (Memastikan Lebar Full 100%) */
+/* Tombol View */
 .btn-view {
-  width: 100%;
-  display: block;
-  text-align: center;
-  box-sizing: border-box;
+    background: #1d4ed8;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+.btn-view:hover {
+  background: #ffffff;
 }
 
 /* Badge Status */
@@ -1388,7 +1327,7 @@ body, html {
   display: flex;
   justify-content: space-between; /* Judul di kiri, Tombol di kanan */
   align-items: center;            /* Menyejajarkan secara vertikal */
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .proyek-header-container h2 {
@@ -1399,20 +1338,19 @@ body, html {
 }
 
 /* Styling Tombol Tambah Proyek */
-.btn-tambah-proyek {
-  background-color: #2563eb;
-  color: #ffffff;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.btn-tambah-proyek{
+    background: #2563eb;
+    color: #fff;
+    border: 2px solid #1e293b;
+    border-radius: 12px;
+    padding: 10px 18px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+    line-height: 1;
 }
+
 
 .btn-tambah-proyek:hover {
   background-color: #1d4ed8;
@@ -1428,17 +1366,13 @@ body, button, input, select {
 
 /* CONTAINER UTAMA DETAIL PROYEK */
 .full-page-detail {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  min-height: 100%;
-  background-color: #f8fafc; /* Latar abu-abu sangat muda bersih */
-  z-index: 99;
+  position: fixed;
+  inset: 0;
+  background: #f8fafc;
+  z-index: 9999;
   padding: 32px;
-  box-sizing: border-box;
+  overflow-y: auto;
 }
-
 /* ==========================================
    NAVBAR / HEADER DETAIL
    ========================================== */
@@ -1492,37 +1426,78 @@ body, button, input, select {
 }
 
 /* CARD KIRI (SIDEBAR MINI PROYEK) */
-.detail-sidebar {
-  width: 280px;
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 32px 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-  border: 1px solid #f1f5f9;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 12px;
+/* CARD KIRI */
+.detail-sidebar{
+    position: relative;
+    width: 300px;
+    height: 450px;
+    border-radius: 20px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.detail-sidebar .logo-box {
-  width: 84px;
-  height: 84px;
-  object-fit: cover;
-  border-radius: 16px;
-  border: 1px solid #f1f5f9;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+.detail-sidebar::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.28);
 }
 
-.detail-sidebar h3 {
-  font-size: 18px;
-  font-weight: 700;
-  color: #0f172a;
-  margin-top: 6px;
-  line-height: 1.4;
+.detail-overlay{
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+
+    background:rgba(0,0,0,.25);
 }
 
+.project-logo-emblem{
+    width:90px;
+    height:90px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.18);
+    backdrop-filter:blur(10px);
+
+    font-size:42px;
+    color:#fff;
+
+    margin-bottom:24px;
+}
+
+.detail-overlay h3{
+    color:#fff;
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:18px;
+}
+
+.status{
+    padding:10px 24px;
+    border-radius:999px;
+    font-weight:600;
+}
+
+.status.berjalan{
+    background:#dbeafe;
+    color:#2563eb;
+}
 /* KONTEN KANAN */
 .detail-content {
   flex: 1;

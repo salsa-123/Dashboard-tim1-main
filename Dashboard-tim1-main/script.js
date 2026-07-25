@@ -35,36 +35,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // FUNGSI 2: Pindah Halaman & Navigasi Menu Aktif
-  navItems.forEach(item => {
-    item.addEventListener('click', (e) => {
-      // Abaikan jika yang diklik adalah tombol khusus seperti logout
-      if (item.classList.contains('logout-item')) return;
-
-      e.preventDefault();
-
-      const targetPage = item.getAttribute('data-page');
-      if (!targetPage) return;
-
-      // 1. Ubah status menu aktif
-      navItems.forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-
-      // 2. Pindah tampilan halaman aktif
-      pages.forEach(page => page.classList.remove('active'));
-      const target = document.getElementById('page-' + targetPage);
-      if (target) target.classList.add('active');
-
-      // 3. Update Judul Halaman di atas dashboard jika ada
-      if (pageTitle) {
-        // Membersihkan ikon simbol/emoji bawaan agar teks judul rapi
-        const cleanText = item.textContent.replace(/[\u25A0-\u25FF\u2700-\u27BF\u2600-\u26FF\u2B50]/g, '').trim();
-        pageTitle.textContent = cleanText;
-      }
-
-      // Sidebar tetap kokoh (fixed/sticky) di posisinya saat menu diklik
-    });
-  });
+  // FUNGSI 2: Tandai menu aktif otomatis sesuai file yang sedang dibuka
+const currentPage = window.location.pathname.split('/').pop();
+navItems.forEach(item => {
+  item.classList.remove('active');
+  if (item.getAttribute('href') === currentPage) {
+    item.classList.add('active');
+  }
+});
 });
 
 // KONTROL BUKA/TUTUP (HANYA DARI TOMBOL HAMBURGER)
@@ -589,6 +567,7 @@ const detailFile = document.querySelector(".detail-file");
 
 /* ---------- 4a. Muat data laporan dari database ---------- */
 async function muatLaporanDariDatabase() {
+  if (!document.querySelector('.laporan-list')) return;
   try {
     const response = await fetch(API_URL_LAPORAN);
     laporanData = await response.json();
@@ -794,6 +773,22 @@ if (fileLaporanInput) {
 /* =====================================================================
    5. HALAMAN PENGATURAN
    ===================================================================== */
+
+document.addEventListener('DOMContentLoaded', function () {
+  const tabs = document.querySelectorAll('.settings-tab');
+  const panels = document.querySelectorAll('.settings-panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+
+      tab.classList.add('active');
+      const target = document.querySelector(`.settings-panel[data-panel="${tab.dataset.tab}"]`);
+      if (target) target.classList.add('active');
+    });
+  });
+});
 
 /* ---------- 5a. Tombol simpan (beberapa versi id/class berbeda) ---------- */
 document.addEventListener('DOMContentLoaded', function () {
@@ -1017,11 +1012,7 @@ function cariLaporan() {
   });
 }
 
-// Update nama file yang tampil saat user memilih file
-document.getElementById('fileLaporan').addEventListener('change', function () {
-  const namaFile = this.files.length > 0 ? this.files[0].name : 'Klik untuk lampirkan file';
-  document.getElementById('fileLaporanNama').textContent = namaFile;
-});
+
 
 function bukaFormLaporan() {
   const modal = document.getElementById('modal-laporan');

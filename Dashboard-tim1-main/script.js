@@ -607,6 +607,7 @@ function renderLaporanList() {
     const item = document.createElement('div');
     item.classList.add('laporan-item');
     if (index === laporanAktifIndex) item.classList.add('active');
+    item.dataset.prioritas = (data.prioritas || '').toLowerCase().trim();
 
     item.innerHTML = `
       <div class="laporan-icon ${data.status}">
@@ -782,6 +783,22 @@ if (fileLaporanInput) {
   });
 }
 
+
+function filterLaporan(btn, prioritas) {
+    // ubah tombol aktif
+    document.querySelectorAll('.filter-chip').forEach(chip => chip.classList.remove('active'));
+    btn.classList.add('active');
+
+    // tampilkan/sembunyikan item sesuai prioritas
+    document.querySelectorAll('.laporan-item').forEach(item => {
+        const itemPrioritas = item.dataset.prioritas;
+        if (prioritas === 'semua' || itemPrioritas === prioritas) {
+            item.style.display = '';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
 
 /* =====================================================================
    5. HALAMAN PENGATURAN

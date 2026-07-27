@@ -76,6 +76,13 @@
     </a>
   </div>
 </aside>
+
+<script>
+  if (localStorage.getItem('sidebarCollapsed') === 'true') {
+    document.getElementById('mySidebar').classList.add('collapsed');
+  }
+</script>
+
 <!----------proyek------------>
 
 <section class="page" id="page-proyek">
@@ -262,7 +269,61 @@
   </div>
 </div>
 
-   <script src="script.js"></script>
+<!-- MODAL TAMBAH PROYEK -->
+    <div class="modal-overlay" id="modalProyek">
+      <div class="modal-box">
+        <h3>Tambah Proyek Baru</h3>
+        <label>Nama Proyek</label>
+        <input
+          type="text"
+          id="inputNamaProyek"
+          placeholder="Contoh: Landing Page"
+        />
+
+        <label>Deskripsi</label>
+        <input
+          type="text"
+          id="inputDeskProyek"
+          placeholder="Deskripsi singkat proyek"
+        />
+
+        <label>Deadline</label>
+        <input type="date" id="inputDeadlineProyek" />
+
+        <label>Status</label>
+        <select id="inputStatusProyek">
+          <option value="pending">Belum Mulai</option>
+          <option value="progress">Berjalan</option>
+          <option value="done">Selesai</option>
+        </select>
+
+        <div style="margin-bottom: 15px">
+          <label style="display: block; margin-bottom: 5px; font-weight: bold"
+            >Lampirkan Hasil Pekerjaan</label
+          >
+          <input
+            type="file"
+            name="file_tugas"
+            style="
+              width: 100%;
+              padding: 8px;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+            "
+          />
+          <small style="color: #636e72"
+            >Format: .zip, .jpg, .pdf (Maks. 5MB)</small
+          >
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn-secondary" id="btnBatalProyek">Batal</button>
+          <button class="btn-primary" id="btnSimpanProyek">Simpan</button>
+        </div>
+      </div>
+    </div>
+
+<script src="script.js"></script>
 
   </body>
 </html>

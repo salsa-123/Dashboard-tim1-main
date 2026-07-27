@@ -123,10 +123,10 @@ html.sidebar-collapsed .nav-item {
 }
 
 .sidebar ~ .modal-overlay,
-.sidebar.collapsed ~ .modal-overlay {
-  margin-left: 0 !important;
+.sidebar.collapsed + .main-content {
+    margin-left: 70px; /* Lebar sidebar saat tertutup */
+    width: calc(100% - 70px);
 }
-
 .page {
   display: block;
   width: 100%;
@@ -171,10 +171,10 @@ html.sidebar-collapsed .nav-item {
   width: 70px;
 }
 
-/* Brand header (logo + tombol toggle) */
+/* Brand header (logo + tombol toggle) - Sudah Anda perbaiki sebelumnya */
 .sidebar-brand {
   display: flex;
-  flex-direction: row-reverse; /* tombol toggle ke kanan, logo ke kiri */
+  flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -182,9 +182,10 @@ html.sidebar-collapsed .nav-item {
   box-sizing: border-box;
 }
 
+/* --- Penyesuaian PENTING untuk Sidebar Tertutup --- */
 .sidebar.collapsed .sidebar-brand {
-  justify-content: center;
-  padding: 0;
+  justify-content: center; /* Ikon toggle di tengah saat collapsed */
+  padding: 16px;          /* Samakan padding agar vertikal sejajar dengan item bawah */
 }
 
 .brand-logo-wrapper {
@@ -199,7 +200,7 @@ html.sidebar-collapsed .nav-item {
   flex-shrink: 0;
   background: #dbe0dd;
   color: #0f172a;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 14px;
   padding: 4px 8px;
   border-radius: 6px;
@@ -285,31 +286,40 @@ html.sidebar-collapsed .nav-item {
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
+  justify-content: flex-start;
+  width: fit-content;
+  padding: 10px 14px; /* Tambahkan sedikit padding horizontal agar lebih lega */
   border-radius: 8px;
-  color: var(--sidebar-text, #94a3b8);
+  cursor: pointer;
   text-decoration: none;
-  white-space: nowrap;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  transition: all 0.15s ease;
+  color: inherit;
+  transition: all 0.2s ease;
+  
+  /* --- Pengaturan Font Profesional --- */
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;       /* Medium: tidak terlalu tebal, tidak terlalu tipis */
+  font-size: 14.5px;      /* Ukuran standar untuk kenyamanan mata */
+  letter-spacing: -0.01em; /* Sedikit merapatkan huruf untuk kesan premium */
 }
-
+/* Efek hover */
 .nav-item:hover {
-  background: #f3f4f6;
-  color: #111827;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
+/* --- Penyesuaian Khusus Item Saat Diciutkan --- */
+
+/* Saat sidebar diciutkan, setiap ikon individual juga harus ditengahkan di dalam container-nya */
+.sidebar.collapsed .nav-item {
+  justify-content: center; /* Ikon di dalam link menjadi di tengah */
+  margin-left: 0;          /* Pastikan tidak ada margin kiri yang menggesernya */
+  width: auto;             /* Biarkan flexbox yang mengatur lebarnya */
+}
+
+/* Contoh style untuk ikon aktif (seperti pada gambar) */
 .nav-item.active {
-  background: rgba(34, 197, 94, 0.15);
-  color: var(--accent, #5b4fe9);
-  font-weight: 600;
-  letter-spacing: -0.015em;
+  background-color: #e6f7ff; /* Warna latar belakang aktif */
+  color: #1890ff;          /* Warna ikon aktif */
 }
-
 .nav-icon {
   width: 20px;
   flex-shrink: 0;
@@ -358,7 +368,7 @@ html.sidebar-collapsed .nav-item {
 
 .page-title {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .topbar-title {
@@ -1391,6 +1401,114 @@ body, html {
 .btn-tambah-proyek:hover {
   background-color: #1d4ed8;
 }
+
+
+/* =====================================================================
+   9. MODAL TAMBAH PROYEK 
+   ===================================================================== */
+/* Styling Tombol Tambah Proyek */
+.btn-tambah-proyek{
+    background: #2563eb;
+    color: #fff;
+    border: 2px solid #2563eb;
+    border-radius: 12px;
+    padding: 0px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+    line-height: 1;
+    height: 45px; /* Mengatur tinggi yang sama untuk keduanya */
+    box-sizing: border-box; /* Memastikan padding tidak menambah tinggi elemen */
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+
+.btn-tambah-proyek:hover {
+  background-color: #1d4ed8;
+}
+
+/* Sembunyikan modal secara default */
+.modal-overlay {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Background gelap transparan */
+    z-index: 9999; /* Supaya selalu berada paling atas */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Class ini digunakan untuk menampilkan modal */
+.modal-overlay.active {
+    display: flex;
+}
+
+/* Styling dasar modal box agar cantik */
+.modal-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Styling Modal Box agar lebih cantik */
+.modal-box {
+    background: #ffffff;
+    padding: 20px; /* Diperkecil dari 30px agar lebih ringkas */
+    border-radius: 16px;
+    width: 350px; /* Diperkecil dari 450px agar modal lebih ramping */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Sedikit penyesuaian agar isian di dalamnya tetap proporsional */
+.modal-box input, 
+.modal-box select {
+    width: 100%;
+    padding: 10px; /* Padding input diperkecil agar tidak terlalu memakan tempat */
+    margin-bottom: 15px; /* Jarak antar kolom diperkecil */
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px; /* Jarak tombol diperkecil */
+}
+.modal-actions button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Tombol Simpan (Biru) */
+.btn-primary {
+    background-color: #2563eb;
+    color: white;
+}
+.btn-primary:hover { background-color: #1d4ed8; }
+
+/* Tombol Batal (Grey lembut) */
+.btn-secondary {
+    background-color: #e2e8f0;
+    color: #475569;
+}
+.btn-secondary:hover { background-color: #cbd5e1; }
+
 
 /* =====================================================================
    9. HALAMAN modal proyek

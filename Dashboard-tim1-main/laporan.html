@@ -73,6 +73,13 @@
     </a>
   </div>
 </aside>
+
+<script>
+  if (localStorage.getItem('sidebarCollapsed') === 'true') {
+    document.getElementById('mySidebar').classList.add('collapsed');
+  }
+</script>
+
  <!-- ================= HALAMAN : LAPORAN ================= -->
 <section class="page" id="page-laporan">
 
@@ -118,6 +125,13 @@
                     >
 
                 </div>
+
+                <div class="filter-row">
+    <button class="filter-chip active" data-prioritas="semua" onclick="filterLaporan(this,'semua')">Semua</button>
+    <button class="filter-chip" data-prioritas="tinggi" onclick="filterLaporan(this,'tinggi')">Tinggi</button>
+    <button class="filter-chip" data-prioritas="sedang" onclick="filterLaporan(this,'sedang')">Sedang</button>
+    <button class="filter-chip" data-prioritas="rendah" onclick="filterLaporan(this,'rendah')">Rendah</button>
+</div>
 
                 <div class="laporan-list">
 
@@ -332,36 +346,66 @@
     <!-- MODAL BUAT LAPORAN -->
 <div id="modal-laporan" class="modal-overlay">
     <div class="modal-content">
-        <h3>Buat Laporan Baru</h3>
 
-        <input type="text" id="judulLaporan" placeholder="Judul Laporan" class="modal-input">
-        <input type="text" id="penulisLaporan" placeholder="Nama Penulis" class="modal-input">
+        <!-- HEADER (tetap, tidak scroll) -->
+        <div class="modal-header">
+            <h3>Buat Laporan Baru</h3>
+            <p class="modal-subtitle">Isi detail laporan tim di bawah ini</p>
+        </div>
 
-        <select id="prioritasLaporan" class="modal-input">
-            <option value="Rendah">Prioritas Rendah</option>
-            <option value="Sedang">Prioritas Sedang</option>
-            <option value="Tinggi">Prioritas Tinggi</option>
-        </select>
+        <!-- BODY (area yang bisa discroll) -->
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="judulLaporan">Judul Laporan</label>
+                <input type="text" id="judulLaporan" placeholder="Contoh: Laporan Progres Backend" class="modal-input">
+            </div>
 
-        <select id="statusLaporan" class="modal-input">
-            <option value="pending">Belum Mulai</option>
-            <option value="review">Sedang Review</option>
-            <option value="selesai">Selesai</option>
-        </select>
+            <div class="form-group">
+                <label for="penulisLaporan">Nama Penulis</label>
+                <input type="text" id="penulisLaporan" placeholder="Nama lengkap kamu" class="modal-input">
+            </div>
 
-        <textarea id="isiLaporan" placeholder="Isi Laporan" class="modal-textarea"></textarea>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="prioritasLaporan">Prioritas</label>
+                    <select id="prioritasLaporan" class="modal-input">
+                        <option value="Rendah">Rendah</option>
+                        <option value="Sedang">Sedang</option>
+                        <option value="Tinggi">Tinggi</option>
+                    </select>
+                </div>
 
-        <!-- TAMBAHAN: Upload Lampiran -->
-        <label for="fileLaporan" class="file-upload-box">
-            <i class="fa-solid fa-paperclip"></i>
-            <span id="fileLaporanNama">Klik untuk lampirkan file</span>
-        </label>
-        <input type="file" id="fileLaporan" style="display:none;">
+                <div class="form-group">
+                    <label for="statusLaporan">Status</label>
+                    <select id="statusLaporan" class="modal-input">
+                        <option value="pending">Belum Mulai</option>
+                        <option value="review">Sedang Review</option>
+                        <option value="selesai">Selesai</option>
+                    </select>
+                </div>
+            </div>
 
-        <div class="modal-actions">
+            <div class="form-group">
+                <label for="isiLaporan">Isi Laporan</label>
+                <textarea id="isiLaporan" placeholder="Tulis ringkasan atau detail laporan di sini..." class="modal-textarea"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Lampiran</label>
+                <label for="fileLaporan" class="file-upload-box">
+                    <i class="fa-solid fa-paperclip"></i>
+                    <span id="fileLaporanNama">Klik untuk lampirkan file</span>
+                </label>
+                <input type="file" id="fileLaporan" style="display:none;">
+            </div>
+        </div>
+
+        <!-- FOOTER (tetap, tidak scroll) -->
+        <div class="modal-footer">
             <button class="btn-primary" onclick="simpanLaporan()">Simpan</button>
             <button class="btn-delete" onclick="tutupModalLaporan()">Batal</button>
         </div>
+
     </div>
 </div>
 

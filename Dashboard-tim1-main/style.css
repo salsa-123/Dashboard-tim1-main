@@ -26,6 +26,20 @@
 /* =====================================================================
    1. VARIABEL & RESET
    ===================================================================== */
+
+   @view-transition {
+  navigation: auto;
+}
+
+/* Sembunyikan halaman dulu sampai JS selesai menentukan status sidebar */
+body {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+body.ready {
+  opacity: 1;
+}
+
 :root {
   --bg: #f5f3ef;
   --sidebar-bg: #ffffff;
@@ -80,6 +94,28 @@ body {
   padding: 24px;
   margin-left: 230px;
   transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Versi instan dari .sidebar.collapsed, dipicu class di <html> (bukan nunggu JS di bawah) */
+html.sidebar-collapsed .sidebar {
+  width: 70px;
+}
+html.sidebar-collapsed .sidebar ~ * {
+  margin-left: 70px;
+}
+html.sidebar-collapsed .sidebar-brand {
+  justify-content: center;
+  padding: 0;
+}
+html.sidebar-collapsed .brand-name,
+html.sidebar-collapsed .brand-mark {
+  opacity: 0;
+  display: none;
+}
+html.sidebar-collapsed .nav-item {
+  font-size: 0;
+  justify-content: center;
+  padding: 10px 0;
 }
 
 .sidebar.collapsed ~ * {

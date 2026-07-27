@@ -17,6 +17,9 @@
 /* =====================================================================
    1. SIDEBAR — NAVIGASI, BUKA/TUTUP, & PINDAH HALAMAN
    ===================================================================== */
+/* =====================================================================
+   1. SIDEBAR — NAVIGASI, BUKA/TUTUP, & PINDAH HALAMAN
+   ===================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
   const navItems = document.querySelectorAll('.nav-item');
   const pages = document.querySelectorAll('.page');
@@ -26,24 +29,32 @@ document.addEventListener("DOMContentLoaded", () => {
   // ID disesuaikan dengan tombol kotak hijau utama
   const brandToggle = document.getElementById('brandToggle');
 
+  // 🔹 TAMBAHAN: pulihkan status collapsed dari localStorage
+  if (sidebar && localStorage.getItem('sidebarCollapsed') === 'true') {
+    sidebar.classList.add('collapsed');
+  }
+
   // FUNGSI 1: Logika Buka-Tutup Sidebar (Toggle Collapse)
   if (brandToggle && sidebar) {
     brandToggle.addEventListener('click', (e) => {
       e.preventDefault();
-      e.stopPropagation(); // Mencegah bentrokan klik dengan elemen di luarnya
+      e.stopPropagation();
       sidebar.classList.toggle('collapsed');
+      localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
     });
   }
 
   // FUNGSI 2: Tandai menu aktif otomatis sesuai file yang sedang dibuka
-const currentPage = window.location.pathname.split('/').pop();
-navItems.forEach(item => {
-  item.classList.remove('active');
-  if (item.getAttribute('href') === currentPage) {
-    item.classList.add('active');
-  }
+  const currentPage = window.location.pathname.split('/').pop();
+  navItems.forEach(item => {
+    item.classList.remove('active');
+    if (item.getAttribute('href') === currentPage) {
+      item.classList.add('active');
+    }
+  });
+  document.body.classList.add('ready');
 });
-});
+
 
 // KONTROL BUKA/TUTUP (HANYA DARI TOMBOL HAMBURGER)
 const menuToggleBtn = document.querySelector('.menu-toggle');
@@ -51,6 +62,8 @@ const sidebarEl = document.querySelector('.sidebar');
 if (menuToggleBtn && sidebarEl) {
   menuToggleBtn.addEventListener('click', () => {
     sidebarEl.classList.toggle('collapsed');
+    // 🔹 TAMBAHAN
+    localStorage.setItem('sidebarCollapsed', sidebarEl.classList.contains('collapsed'));
   });
 }
 

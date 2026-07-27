@@ -181,40 +181,63 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })();
 
+// Fungsi untuk fitur pencarian proyek
+const searchInput = document.getElementById('searchProyek');
+const tableRows = document.querySelectorAll('.project-table tbody tr');
 
+searchInput.addEventListener('input', function() {
+    // Mengubah nilai input menjadi huruf kecil agar pencarian tidak sensitif huruf besar/kecil
+    const query = this.value.toLowerCase();
+
+    tableRows.forEach(row => {
+        // Mengambil teks dari seluruh isi baris tabel
+        const rowText = row.textContent.toLowerCase();
+
+        // Jika teks baris mengandung query yang diketik, tampilkan barisnya
+        // Jika tidak, sembunyikan baris tersebut
+        if (rowText.includes(query)) {
+            row.style.display = ''; 
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
 /* =====================================================================
    3. tombol view yang di proyek dan dashboard
    ===================================================================== */
    
   function tampilkanDetailProyek(btn) {
-  // 1. Ambil data dari atribut HTML tombol (baik dari Dashboard maupun Proyek)
-  const nama = btn.getAttribute('data-nama');
-  const status = btn.getAttribute('data-status');
-  const pj = btn.getAttribute('data-pj');
-  const deadline = btn.getAttribute('data-deadline');
-  const logo = btn.getAttribute('data-logo');
-  const tugas = btn.getAttribute('data-tugas');
-  const lanjutan = btn.getAttribute('data-lanjutan');
+  // 1. Ambil data dari atribut `data-` pada tombol yang diklik
+  // Catatan: Pastikan di HTML, tombol Anda memiliki attribute data-nama, data-status, dll.
+  const data = {
+    nama: btn.getAttribute('data-nama'),
+    status: btn.getAttribute('data-status'),
+    pj: btn.getAttribute('data-pj'),
+    deadline: btn.getAttribute('data-deadline'),
+    logo: btn.getAttribute('data-logo'),
+    tugas: btn.getAttribute('data-tugas'),
+    lanjutan: btn.getAttribute('data-lanjutan')
+  };
 
-  // 2. Isi data ke dalam elemen Modal Detail (dengan pengecekan `if` agar aman)
-  if (document.getElementById('detail-nama')) document.getElementById('detail-nama').textContent = nama || '-';
-  if (document.getElementById('detail-status')) document.getElementById('detail-status').textContent = status || '-';
-  if (document.getElementById('detail-pj')) document.getElementById('detail-pj').textContent = pj || '-';
-  if (document.getElementById('detail-deadline')) document.getElementById('detail-deadline').textContent = deadline || '-';
-  if (document.getElementById('detail-logo')) document.getElementById('detail-logo').src = logo || '';
-  if (document.getElementById('detail-tugas')) document.getElementById('detail-tugas').textContent = tugas || '-';
-  if (document.getElementById('detail-lanjutan')) document.getElementById('detail-lanjutan').textContent = lanjutan || '-';
+  // 2. Isi data ke dalam elemen Modal Detail
+  if (document.getElementById('detail-nama')) document.getElementById('detail-nama').textContent = data.nama || '-';
+  if (document.getElementById('detail-status')) document.getElementById('detail-status').textContent = data.status || '-';
+  if (document.getElementById('detail-pj')) document.getElementById('detail-pj').textContent = data.pj || '-';
+  if (document.getElementById('detail-deadline')) document.getElementById('detail-deadline').textContent = data.deadline || '-';
+  if (document.getElementById('detail-logo')) document.getElementById('detail-logo').src = data.logo || '';
+  if (document.getElementById('detail-tugas')) document.getElementById('detail-tugas').textContent = data.tugas || '-';
+  if (document.getElementById('detail-lanjutan')) document.getElementById('detail-lanjutan').textContent = data.lanjutan || '-';
 
   // 3. Sesuaikan warna badge status
   const badgeElement = document.getElementById('detail-status');
   if (badgeElement) {
     badgeElement.className = 'badge'; // Reset class
-    if (status === 'Berjalan') badgeElement.classList.add('status-berjalan');
-    else if (status === 'Selesai') badgeElement.classList.add('status-selesai');
+    if (data.status === 'Berjalan') badgeElement.classList.add('status-berjalan');
+    else if (data.status === 'Selesai') badgeElement.classList.add('status-selesai');
     else badgeElement.classList.add('status-belum');
   }
 
-  // 4. JIKA DIKLIK DARI DASHBOARD: Otomatis pindah ke menu/halaman Proyek
+  // 4. Navigasi: Pindah halaman jika tombol diklik dari Dashboard
   const pageProyek = document.getElementById('page-proyek');
   const pageDashboard = document.getElementById('page-dashboard');
   
@@ -227,26 +250,182 @@ document.addEventListener('DOMContentLoaded', () => {
   const fullDetailModal = document.getElementById('full-detail-view');
   if (fullDetailModal) {
     fullDetailModal.style.display = 'block';
-
-    function tampilkanDetailProyek(nama, gambar, icon, status) {
-
-    localStorage.setItem("namaProyek", nama);
-    localStorage.setItem("gambarProyek", gambar);
-    localStorage.setItem("iconProyek", icon);
-    localStorage.setItem("statusProyek", status);
-
-    window.location.href = "proyek.html";
-}
   }
 }
 
 function tutupDetail() {
-  // Sembunyikan container detail
   const fullDetailModal = document.getElementById('full-detail-view');
   if (fullDetailModal) {
     fullDetailModal.style.display = 'none';
   }
 }
+
+/* =====================================================================
+   3. hitungKorelasiProyek
+   ===================================================================== */
+
+function hitungKorelasiProyek() {
+    const tableRows = document.querySelectorAll('.project-table tbody tr');
+    let statusValues = []; // Y
+    let deadlineValues = []; // X (Sisa hari)
+    
+    const today = new Date("2026-07-27"); // Tanggal hari ini
+
+    tableRows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length < 4) return; // Skip jika baris tidak lengkap
+
+        // 1. Ambil Status dan mapping ke angka
+        const statusText = cells[1].innerText.trim();
+        let statusVal = 0;
+        if (statusText.includes("Belum Mulai")) statusVal = 1;
+        else if (statusText.includes("Berjalan")) statusVal = 2;
+        else if (statusText.includes("Selesai")) statusVal = 3;
+
+        // 2. Ambil Deadline dan hitung sisa hari
+        const deadlineText = cells[3].innerText.trim();
+        // Mengubah format "22 Juli 2026" agar bisa dibaca JS
+        const deadlineDate = new Date(deadlineText.replace("Juli", "Jul")); 
+        const timeDiff = deadlineDate.getTime() - today.getTime();
+        const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+        statusValues.push(statusVal);
+        deadlineValues.push(daysLeft);
+    });
+
+    // 3. Rumus Korelasi Pearson
+    const n = statusValues.length;
+    let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0;
+
+    for (let i = 0; i < n; i++) {
+        sumX += deadlineValues[i];
+        sumY += statusValues[i];
+        sumXY += (deadlineValues[i] * statusValues[i]);
+        sumX2 += (deadlineValues[i] * deadlineValues[i]);
+        sumY2 += (statusValues[i] * statusValues[i]);
+    }
+
+    const num = (n * sumXY) - (sumX * sumY);
+    const den = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
+    
+    const r = (den === 0) ? 0 : (num / den);
+    
+    console.log("Skor Korelasi (Deadline vs Status):", r.toFixed(2));
+    return r;
+}
+
+// Jalankan fungsi saat halaman dimuat
+window.addEventListener('DOMContentLoaded', (event) => {
+    const korelasi = hitungKorelasiProyek();
+    console.log("Analisis Otomatis: Korelasi ditemukan sebesar " + korelasi);
+});
+
+function simpanProyekBaru() {
+    // ... kode simpan Anda ...
+    
+    // Setelah data tabel diupdate, hitung ulang korelasinya
+    hitungKorelasiProyek();
+}
+/* =====================================================================
+   3. MODAL TAMBAH PROYEK 
+   ===================================================================== */
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Ambil elemen-elemen yang diperlukan
+    const modal = document.getElementById('modalProyek');
+    const btnTambah = document.querySelector('.btn-tambah-proyek');
+    const btnBatal = document.getElementById('btnBatalProyek');
+    const btnSimpan = document.getElementById('btnSimpanProyek');
+    const tbody = document.querySelector('.project-table tbody');
+
+    // 2. Fungsi Buka Modal
+    btnTambah.addEventListener('click', () => {
+        modal.style.display = 'flex';
+    });
+
+    // 3. Fungsi Tutup Modal (Batal)
+    btnBatal.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // 4. Fungsi Simpan & Tambah Baris ke Tabel
+    btnSimpan.addEventListener('click', () => {
+        // Ambil nilai dari input
+        const nama = document.getElementById('inputNamaProyek').value;
+        const pj = document.getElementById('inputPJProyek').value; // Ambil PJ
+        const deskripsi = document.getElementById('inputDeskProyek').value; // Ambil Deskripsi
+        const lanjutan = document.getElementById('inputLanjutanProyek').value; // Ambil Lanjutan
+        const deadline = document.getElementById('inputDeadlineProyek').value;
+        const statusValue = document.getElementById('inputStatusProyek').value;
+
+        // Validasi: Pastikan field penting diisi
+        if (nama === "" || deadline === "" || pj === "") {
+            alert("Harap isi Nama Proyek, PJ, dan Deadline!");
+            return;
+        }
+
+        // Tentukan label dan class untuk badge status
+        let statusBadge = "";
+        let statusText = "";
+        if (statusValue === "pending") {
+            statusBadge = '<span class="badge status-belum">Belum Mulai</span>';
+            statusText = "Belum Mulai";
+        } else if (statusValue === "progress") {
+            statusBadge = '<span class="badge status-berjalan">Berjalan</span>';
+            statusText = "Berjalan";
+        } else {
+            statusBadge = '<span class="badge status-selesai">Selesai</span>';
+            statusText = "Selesai";
+        }
+
+        // Buat elemen baris baru (tr)
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${nama}</td>
+            <td>${statusBadge}</td>
+            <td>${pj}</td> 
+            <td>${deadline}</td>
+            <td>
+                <button class="btn-view" 
+                    onclick="tampilkanDetailProyek(this)" 
+                    data-nama="${nama}" 
+                    data-status="${statusText}" 
+                    data-pj="${pj}" 
+                    data-deadline="${deadline}" 
+                    data-tugas="${deskripsi}" 
+                    data-lanjutan="${lanjutan}">
+                    View
+                </button>
+            </td>
+        `;
+
+        // Masukkan baris ke dalam tbody
+        tbody.appendChild(row);
+
+        // Reset inputan form
+        document.getElementById('inputNamaProyek').value = "";
+        document.getElementById('inputPJProyek').value = "";
+        document.getElementById('inputDeskProyek').value = "";
+        document.getElementById('inputLanjutanProyek').value = "";
+        document.getElementById('inputDeadlineProyek').value = "";
+        
+        // Tutup modal
+        modal.style.display = 'none';
+        
+        // (Opsional) Panggil fungsi korelasi jika Anda sudah membuatnya
+        if (typeof hitungKorelasiProyek === 'function') {
+            hitungKorelasiProyek();
+        }
+    });
+
+    // 5. Tutup modal jika klik di area luar (overlay)
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
 
 /* =====================================================================
    3. HALAMAN TUGAS

@@ -88,22 +88,21 @@
 <section class="page" id="page-proyek">
   <div class="panel">
     
+    <div class="proyek-header-container">
+      <h2>Daftar Seluruh Proyek</h2>
+      <div id="info-korelasi" style="font-size: 14px; color: #636e72; margin-bottom: 10px;">
+        <div class="search-container">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#94a3b8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input type="text" id="searchProyek" placeholder="Cari proyek..." class="search-input">
+        </div>
+      </div>
+      <button class="btn-tambah-proyek">+ Tambah Proyek</button>
+    </div>
+
     <table class="project-table">
       <thead>
-
-        <div class="proyek-header-container">
-  <h2>Daftar Seluruh Proyek</h2>
-  <div id="info-korelasi" style="font-size: 14px; color: #636e72; margin-bottom: 10px;">
-    <div class="search-container">
-    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#94a3b8">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-    </svg>
-    <input type="text" id="searchProyek" placeholder="Cari proyek..." class="search-input">
-</div>
-</div>
-  <button class="btn-tambah-proyek">+ Tambah Proyek</button>
-</div>
-
         <tr>
           <th>Nama Proyek</th>
           <th>Status</th>
@@ -113,7 +112,7 @@
         </tr>
       </thead>
       <tbody>
-     <tbody>
+
   <!-- PROYEK 1 -->
   <!-- BARIS PERTAMA (Dashboard Tim 1) -->
 <tr>
@@ -242,13 +241,13 @@
 
     <div class="detail-overlay">
 
-        <div class="logo-box">
-            <img src="emblem/logo-dashboard.png" alt="Logo">
+       <div class="logo-box">
+            <img id="detail-logo" src="emblem/logo-dashboard.png" alt="Logo">
         </div>
 
-        <h3>Dashboard Tim 1</h3>
+        <h3 id="detail-nama">Dashboard Tim 1</h3>
 
-        <span class="status berjalan">
+        <span class="status berjalan" id="detail-status">
             Berjalan
         </span>
 
@@ -260,7 +259,7 @@
 
       <!-- TAMBAHKAN CONTAINER INI UNTUK TOMBOL -->
     <div class="detail-action-wrapper">
-        <button class="btn-edit">Edit Proyek</button>
+        <button class="btn-edit" id="btnEditProyek">Edit Proyek</button>
     </div>
 
       <!-- INFO PJ & DEADLINE -->
@@ -294,11 +293,25 @@
           placeholder="Contoh: Landing Page"
         />
 
+        <label>Penanggung Jawab (PJ)</label>
+        <input
+          type="text"
+          id="inputPJProyek"
+          placeholder="Nama penanggung jawab"
+        />
+
         <label>Deskripsi</label>
         <input
           type="text"
           id="inputDeskProyek"
           placeholder="Deskripsi singkat proyek"
+        />
+
+        <label>Lanjutan / Rencana Berikutnya</label>
+        <input
+          type="text"
+          id="inputLanjutanProyek"
+          placeholder="Contoh: Finishing tampilan UI"
         />
 
         <label>Deadline</label>

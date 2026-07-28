@@ -2425,6 +2425,10 @@ body, button, input, select {
 /* =====================================================================
    11. HALAMAN LAPORAN
    ===================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 /* 1. Beri ruang di dalam panel agar tidak mentok ke pinggir */
 .laporan-panel {
     padding: 30px; /* Tambahkan ini agar ada jarak antara tulisan dan bingkai abu-abu */
@@ -2536,17 +2540,22 @@ body, button, input, select {
 .report-empty-title { margin: 0 0 4px; font-size: 14px; font-weight: 600; color: var(--text-main); }
 .report-empty-sub { margin: 0; font-size: 12.5px; color: var(--text-muted); }
 
-.report-list {
-  padding-top: 15px;
-  border-top: 2px solid #f0f0f0;
+.laporan-list {
+  flex: 1;
+  min-height: 0px;
+  overflow-y: auto;
+  padding-right: 5px;
 }
 
 /* Halaman laporan versi penuh (list + detail) */
+/* Halaman laporan versi penuh (list + detail) */
 .laporan-panel {
-  min-height: calc(100vh - 80px);
+  box-sizing: border-box;
   padding: 30px;
   border-radius: 22px;
   background: var(--laporan-bg, #f4f7f6);
+  /* height & overflow:hidden DIHAPUS — biar panel bebas mengikuti tinggi konten,
+     tidak lagi bergantung tebakan calc(100vh - 80px) yang bikin kepotong */
 }
 
 .laporan-panel .page-title {
@@ -2567,14 +2576,16 @@ body, button, input, select {
 }
 
 .laporan-layout {
+  --laporan-h: 620px;   /* <-- SATU angka ini yang menentukan tinggi kedua kartu. Ubah sesuai kebutuhan Anda. */
   display: grid;
   grid-template-columns: 340px 1fr;
   gap: 25px;
+  align-items: stretch;
 }
 
 .laporan-sidebar {
-  height: 100%;
-  min-height: 750;
+  box-sizing: border-box;
+  height: var(--laporan-h);   /* pakai variable yang sama */
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -2582,16 +2593,18 @@ body, button, input, select {
   border: 1px solid var(--laporan-border, #e5e7eb);
   border-radius: var(--laporan-radius, 16px);
   box-shadow: var(--laporan-shadow, 0 4px 15px rgba(0, 0, 0, 0.05));
+  overflow: hidden;
 }
 
 .laporan-detail {
-  height: 100%;
-  min-height: 750px;
+  box-sizing: border-box;
+  height: var(--laporan-h);   /* pakai variable yang sama persis */
   padding: 28px;
   background: var(--laporan-card, #fff);
   border: 1px solid var(--laporan-border, #e5e7eb);
   border-radius: var(--laporan-radius, 16px);
   box-shadow: var(--laporan-shadow, 0 4px 15px rgba(0, 0, 0, 0.05));
+  overflow-y: auto;
 }
 
 .detail-card {
@@ -3040,8 +3053,8 @@ body, button, input, select {
 
 #page-pengaturan .container {
   width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 1200px;   /* diperlebar dari 900px, sesuaikan angka ini kalau masih kurang/lebih */
+ margin: 0 auto 40px auto;
 }
 
 #page-pengaturan h1,

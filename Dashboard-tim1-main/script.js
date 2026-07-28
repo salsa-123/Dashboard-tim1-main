@@ -313,14 +313,8 @@ document.addEventListener("DOMContentLoaded", () => {
    3. tombol view yang di proyek dan dashboard
    ===================================================================== */
    
-  let currentProyekRow = null; // simpan baris <tr> yang datanya sedang ditampilkan di detail
-
-  function tampilkanDetailProyek(btn) {
-  // 1. Ambil data dari atribut `data-` pada tombol yang diklik
-  // Catatan: Pastikan di HTML, tombol Anda memiliki attribute data-nama, data-status, dll.
-  currentProyekRow = btn.closest('tr'); // simpan baris asalnya, dipakai tombol Edit nanti
+function tampilkanDetailProyek(btn) {
   const data = {
-
     nama: btn.getAttribute('data-nama'),
     status: btn.getAttribute('data-status'),
     pj: btn.getAttribute('data-pj'),
@@ -330,7 +324,21 @@ document.addEventListener("DOMContentLoaded", () => {
     lanjutan: btn.getAttribute('data-lanjutan')
   };
 
-  // 2. Isi data ke dalam elemen Modal Detail
+  const fullDetailModal = document.getElementById('full-detail-view');
+
+  if (fullDetailModal) {
+    // Kita SUDAH di proyek.html -> tampilkan langsung
+    currentProyekRow = btn.closest('tr');
+    isiDetailProyek(data);
+    fullDetailModal.style.display = 'block';
+  } else {
+    // Kita di dashboard.html -> simpan data, lalu pindah ke proyek.html
+    sessionStorage.setItem('bukaDetailProyek', JSON.stringify(data));
+    window.location.href = 'proyek.html';
+  }
+}
+
+function isiDetailProyek(data) {
   if (document.getElementById('detail-nama')) document.getElementById('detail-nama').textContent = data.nama || '-';
   if (document.getElementById('detail-status')) document.getElementById('detail-status').textContent = data.status || '-';
   if (document.getElementById('detail-pj')) document.getElementById('detail-pj').textContent = data.pj || '-';
@@ -339,28 +347,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById('detail-tugas')) document.getElementById('detail-tugas').textContent = data.tugas || '-';
   if (document.getElementById('detail-lanjutan')) document.getElementById('detail-lanjutan').textContent = data.lanjutan || '-';
 
-  // 3. Sesuaikan warna badge status
   const badgeElement = document.getElementById('detail-status');
   if (badgeElement) {
-    badgeElement.className = 'badge'; // Reset class
+    badgeElement.className = 'badge';
     if (data.status === 'Berjalan') badgeElement.classList.add('status-berjalan');
     else if (data.status === 'Selesai') badgeElement.classList.add('status-selesai');
     else badgeElement.classList.add('status-belum');
-  }
-
-  // 4. Navigasi: Pindah halaman jika tombol diklik dari Dashboard
-  const pageProyek = document.getElementById('page-proyek');
-  const pageDashboard = document.getElementById('page-dashboard');
-  
-  if (pageDashboard && pageProyek) {
-    pageDashboard.classList.remove('active');
-    pageProyek.classList.add('active');
-  }
-
-  // 5. Tampilkan Modal Detail
-  const fullDetailModal = document.getElementById('full-detail-view');
-  if (fullDetailModal) {
-    fullDetailModal.style.display = 'block';
   }
 }
 
@@ -370,6 +362,26 @@ function tutupDetail() {
     fullDetailModal.style.display = 'none';
   }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const stored = sessionStorage.getItem('bukaDetailProyek');
+  const fullDetailModal = document.getElementById('full-detail-view');
+  if (stored && fullDetailModal) {
+    const data = JSON.parse(stored);
+    isiDetailProyek(data);
+    fullDetailModal.style.display = 'block';
+    sessionStorage.removeItem('bukaDetailProyek');
+
+    // Cari baris tabel proyek yang namanya cocok, supaya tombol Edit tetap berfungsi
+    const semuaBarisProyek = document.querySelectorAll('.project-table tbody tr');
+    semuaBarisProyek.forEach((row) => {
+      const viewBtn = row.querySelector('.btn-view');
+      if (viewBtn && viewBtn.getAttribute('data-nama') === data.nama) {
+        currentProyekRow = row;
+      }
+    });
+  }
+});
 
 /* =====================================================================
    3. hitungKorelasiProyek
@@ -1407,3 +1419,50 @@ function bukaFormLaporan() {
     modal.classList.add('active');
   }
 }
+
+
+
+/* =====================================================================
+   4. STATISTIK OTOMATIS (Dashboard <-> Proyek via localStorage)
+   ===================================================================== */
+
+function hitungStatistikProyek() {
+  const rows = document.querySelectorAll('.project-table tbody tr');
+  if (rows.length === 0) return; // fungsi ini hanya jalan kalau tabel proyek ada (di proyek.html)
+
+  let total = rows.length;
+  let selesai = 0, berjalan = 0, belum = 0;
+
+  rows.forEach((row) => {
+    const badge = row.querySelector('.badge');
+    if (!badge) return;
+    if (badge.classList.contains('status-selesai')) selesai++;
+    else if (badge.classList.contains('status-berjalan')) berjalan++;
+    else if (badge.classList.contains('status-belum')) belum++;
+  });
+
+  const statistik = { total, selesai, berjalan, belum };
+  localStorage.setItem('statistikProyek', JSON.stringify(statistik));
+}
+
+function tampilkanStatistikDiDashboard() {
+  const statTotal = document.getElementById('statTotal');
+  if (!statTotal) return; // fungsi ini hanya jalan kalau berada di dashboard.html
+
+  const stored = localStorage.getItem('statistikProyek');
+  if (!stored) return; // belum ada data tersimpan, biarkan angka default
+
+  const data = JSON.parse(stored);
+  document.getElementById('statTotal').textContent = data.total;
+  document.getElementById('statSelesai').textContent = data.selesai;
+  document.getElementById('statProgress').textContent = data.berjalan;
+  document.getElementById('statPending').textContent = data.belum;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  hitungStatistikProyek();       // hitung ulang kalau sedang di proyek.html
+if (typeof hitungKorelasiProyek === 'function') {
+    hitungKorelasiProyek();
+}
+  tampilkanStatistikDiDashboard(); // tampilkan kalau sedang di dashboard.html
+});

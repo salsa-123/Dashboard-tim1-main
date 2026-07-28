@@ -209,6 +209,106 @@ if (searchInput) {
       });
   });
 }
+
+
+
+
+
+// ================= 2. FUNGSI TAMBAH DATA PROYEK =================
+// Fungsi bantu untuk format tanggal jadi "31 Juli 2026"
+function formatTanggal(deadline) {
+    if (!deadline) return '-';
+    const tgl = new Date(deadline);
+    return tgl.toLocaleDateString('id-ID', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+    });
+}
+
+function getBadgeClass(status) {
+    switch (status) {
+        case 'Berjalan': return 'status-berjalan';
+        case 'Selesai': return 'status-selesai';
+        case 'Belum Mulai': return 'status-belum';
+        default: return '';
+    }
+}
+async function loadProyek() {
+    try {
+        const response = await fetch("http://localhost:3000/api/proyek");
+        const data = await response.json();
+        
+        const tbody = document.querySelector('tbody');
+        if (tbody) {
+            tbody.innerHTML = ''; // Kosongkan tabel
+            data.forEach(item => {
+                tbody.innerHTML += `
+                    <tr><td>${item.Nama_proyek}</td>
+                        <td><span class="badge ${getBadgeClass(item.Status)}">${item.Status}</span></td>
+                        <td>${item.Pj}</td>
+                        <td>${formatTanggal(item.Deadline)}</td>
+                        <td>
+                            <button class="btn-view" onclick="tampilkanDetailProyek(this)"
+                                data-nama="${item.Nama_proyek}"
+                                data-status="${item.Status}"
+                                data-pj="${item.Pj}"
+                                data-deadline="${formatTanggal(item.Deadline)}">
+                                View
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+    } catch (error) {
+        console.error("Gagal memuat data:", error);
+    }
+}
+
+// Fungsi untuk menangani simpan data
+function setupFormTambahProyek() {
+    const btnSimpan = document.querySelector("#btnSimpanProyek");
+    if (!btnSimpan) return;
+
+    btnSimpan.addEventListener("click", async function(e) {
+        e.preventDefault();
+
+       const payload = {
+    Nama_proyek: document.querySelector("#inputNamaProyek")?.value,
+    Pj: document.querySelector("#inputPJProyek")?.value,
+    Deadline: document.querySelector("#inputDeadlineProyek")?.value,
+    Status: document.querySelector("#inputStatusProyek")?.value,
+    Deskripsi: document.querySelector("#idInputDeskripsi")?.value,
+   Lanjutan: document.querySelector("#idInputLanjutan")?.value
+};
+
+        try {
+            const response = await fetch("http://localhost:3000/api/proyek", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+    alert("Berhasil!");
+    loadProyek(); // Refresh tabel
+    document.getElementById('ID_MODAL_KAMU').style.display = 'none';
+} else {
+    alert("Gagal menyimpan.");
+}
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    });
+}
+// Jalankan fungsi saat halaman dimuat
+document.addEventListener("DOMContentLoaded", () => {
+    loadProyek();
+    setupFormTambahProyek();
+});
+
+
 /* =====================================================================
    3. tombol view yang di proyek dan dashboard
    ===================================================================== */

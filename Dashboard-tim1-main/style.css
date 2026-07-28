@@ -888,7 +888,8 @@ body, html {
   z-index: 2;
 }
 
-#searchProject {
+#searchProject,
+.search-input {
   width: 240px;
   padding: 8px 12px 8px 36px;
   font-family: 'Inter', sans-serif;
@@ -901,7 +902,8 @@ body, html {
   transition: all 0.2s ease;
 }
 
-#searchProject:focus {
+#searchProject:focus,
+.search-input:focus {
   width: 280px;
   border-color: #5b4fe9;
   background-color: #ffffff;
@@ -1509,6 +1511,41 @@ body, html {
 }
 .btn-secondary:hover { background-color: #cbd5e1; }
 
+/* Fix ukuran modal Tambah Proyek supaya tombol Simpan/Batal selalu kelihatan */
+#modalProyek .modal-box {
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+/* Tombol Batal dibikin merah, samain kayak modal Tugas & Laporan */
+#modalProyek #btnBatalProyek {
+  background-color: #e61009 !important;
+  color: #fdf8f7 !important;
+}
+
+#modalProyek #btnBatalProyek:hover {
+  background-color: #fbdad7 !important;
+}
+
+/* Fix teks tombol Simpan/Batal supaya center, dan hilangkan efek "loncat" pas hover/klik */
+#modalProyek .modal-actions button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#modalProyek .modal-actions button:hover,
+#modalProyek .modal-actions button:active {
+  transform: none !important;
+}
+
+#modalProyek #btnSimpanProyek {
+  background: #2563eb !important;
+}
+
+#modalProyek #btnSimpanProyek:hover {
+  background: #1d4ed8 !important;
+}
 
 /* =====================================================================
    9. HALAMAN modal proyek
@@ -2536,7 +2573,8 @@ body, button, input, select {
 }
 
 .laporan-sidebar {
-  height: 750px;
+  height: 100%;
+  min-height: 750;
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -2547,6 +2585,7 @@ body, button, input, select {
 }
 
 .laporan-detail {
+  height: 100%;
   min-height: 750px;
   padding: 28px;
   background: var(--laporan-card, #fff);
@@ -2594,6 +2633,7 @@ body, button, input, select {
 
 .laporan-list {
   flex: 1;
+  min-height: 0px;
   overflow-y: auto;
   padding-right: 5px;
 }

@@ -183,33 +183,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Fungsi untuk fitur pencarian proyek
 const searchInput = document.getElementById('searchProyek');
-const tableRows = document.querySelectorAll('.project-table tbody tr');
 
-searchInput.addEventListener('input', function() {
-    // Mengubah nilai input menjadi huruf kecil agar pencarian tidak sensitif huruf besar/kecil
-    const query = this.value.toLowerCase();
 
-    tableRows.forEach(row => {
-        // Mengambil teks dari seluruh isi baris tabel
-        const rowText = row.textContent.toLowerCase();
 
-        // Jika teks baris mengandung query yang diketik, tampilkan barisnya
-        // Jika tidak, sembunyikan baris tersebut
-        if (rowText.includes(query)) {
-            row.style.display = ''; 
-        } else {
-            row.style.display = 'none';
-        }
-    });
-});
+
+
+
+
+
+if (searchInput) {
+  searchInput.addEventListener('input', function() {
+      // Mengubah nilai input menjadi huruf kecil agar pencarian tidak sensitif huruf besar/kecil
+      const query = this.value.toLowerCase();
+
+      // Query ulang di sini supaya baris baru hasil "Tambah Proyek" ikut ke-search
+      const tableRows = document.querySelectorAll('.project-table tbody tr');
+
+      tableRows.forEach(row => {
+          const rowText = row.textContent.toLowerCase();
+          if (rowText.includes(query)) {
+              row.style.display = '';
+          } else {
+              row.style.display = 'none';
+          }
+      });
+  });
+}
 /* =====================================================================
    3. tombol view yang di proyek dan dashboard
    ===================================================================== */
    
+  let currentProyekRow = null; // simpan baris <tr> yang datanya sedang ditampilkan di detail
+
   function tampilkanDetailProyek(btn) {
   // 1. Ambil data dari atribut `data-` pada tombol yang diklik
   // Catatan: Pastikan di HTML, tombol Anda memiliki attribute data-nama, data-status, dll.
+  currentProyekRow = btn.closest('tr'); // simpan baris asalnya, dipakai tombol Edit nanti
   const data = {
+
     nama: btn.getAttribute('data-nama'),
     status: btn.getAttribute('data-status'),
     pj: btn.getAttribute('data-pj'),
@@ -331,41 +342,90 @@ function simpanProyekBaru() {
    ===================================================================== */
 
 
+/* Helper: ubah "22 Juli 2026" -> "2026-07-22" (buat isi ulang <input type="date"> saat Edit) */
+function tanggalIndoKeInputDate(teks) {
+  const bulanIndoMap = {
+    januari: '01', februari: '02', maret: '03', april: '04', mei: '05', juni: '06',
+    juli: '07', agustus: '08', september: '09', oktober: '10', november: '11', desember: '12'
+  };
+  if (!teks) return '';
+  const parts = teks.trim().split(' ');
+  if (parts.length < 3) return '';
+  const [hari, bulanNama, tahun] = parts;
+  const bulan = bulanIndoMap[bulanNama.toLowerCase()];
+  if (!bulan) return '';
+  return `${tahun}-${bulan}-${hari.padStart(2, '0')}`;
+}
+
+/* Helper: ubah "2026-07-22" (dari <input type="date">) -> "22 Juli 2026" (buat ditampilkan di tabel) */
+function formatTanggalKeIndo(yyyyMmDd) {
+  const bulanIndo = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  if (!yyyyMmDd) return '';
+  const [tahun, bulan, hari] = yyyyMmDd.split('-');
+  const namaBulan = bulanIndo[parseInt(bulan, 10) - 1] || bulan;
+  return `${parseInt(hari, 10)} ${namaBulan} ${tahun}`;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Ambil elemen-elemen yang diperlukan
     const modal = document.getElementById('modalProyek');
     const btnTambah = document.querySelector('.btn-tambah-proyek');
     const btnBatal = document.getElementById('btnBatalProyek');
     const btnSimpan = document.getElementById('btnSimpanProyek');
+    const btnEditProyek = document.getElementById('btnEditProyek');
     const tbody = document.querySelector('.project-table tbody');
 
-    // 2. Fungsi Buka Modal
+    let editingProyekRow = null; // null = mode Tambah, berisi <tr> = mode Edit
+
+    // 2. Fungsi Buka Modal (mode Tambah)
     btnTambah.addEventListener('click', () => {
+        editingProyekRow = null;
         modal.style.display = 'flex';
     });
+
+    // 2b. Fungsi Buka Modal (mode Edit) — isi otomatis dari proyek yang sedang dibuka di Detail
+    if (btnEditProyek) {
+        btnEditProyek.addEventListener('click', () => {
+            if (!currentProyekRow) return;
+            const viewBtn = currentProyekRow.querySelector('.btn-view');
+            if (!viewBtn) return;
+
+            document.getElementById('inputNamaProyek').value = viewBtn.getAttribute('data-nama') || '';
+            document.getElementById('inputPJProyek').value = viewBtn.getAttribute('data-pj') || '';
+            document.getElementById('inputDeskProyek').value = viewBtn.getAttribute('data-tugas') || '';
+            document.getElementById('inputLanjutanProyek').value = viewBtn.getAttribute('data-lanjutan') || '';
+            document.getElementById('inputDeadlineProyek').value = tanggalIndoKeInputDate(viewBtn.getAttribute('data-deadline'));
+
+            const statusValueMap = { 'Belum Mulai': 'pending', 'Berjalan': 'progress', 'Selesai': 'done' };
+            document.getElementById('inputStatusProyek').value = statusValueMap[viewBtn.getAttribute('data-status')] || 'pending';
+
+            editingProyekRow = currentProyekRow; // aktifkan mode Edit
+            modal.style.display = 'flex';
+        });
+    }
 
     // 3. Fungsi Tutup Modal (Batal)
     btnBatal.addEventListener('click', () => {
         modal.style.display = 'none';
+        editingProyekRow = null;
     });
 
-    // 4. Fungsi Simpan & Tambah Baris ke Tabel
+    // 4. Fungsi Simpan — Tambah baris baru ATAU update baris yang sedang diedit
     btnSimpan.addEventListener('click', () => {
-        // Ambil nilai dari input
-        const nama = document.getElementById('inputNamaProyek').value;
-        const pj = document.getElementById('inputPJProyek').value; // Ambil PJ
-        const deskripsi = document.getElementById('inputDeskProyek').value; // Ambil Deskripsi
-        const lanjutan = document.getElementById('inputLanjutanProyek').value; // Ambil Lanjutan
-        const deadline = document.getElementById('inputDeadlineProyek').value;
-        const statusValue = document.getElementById('inputStatusProyek').value;
+        const nama = document.getElementById('inputNamaProyek')?.value || '';
+        const pj = document.getElementById('inputPJProyek')?.value || '';
+        const deskripsi = document.getElementById('inputDeskProyek')?.value || '';
+        const lanjutan = document.getElementById('inputLanjutanProyek')?.value || '';
+        const deadlineInput = document.getElementById('inputDeadlineProyek')?.value || '';
+        const statusValue = document.getElementById('inputStatusProyek')?.value || 'pending';
 
-        // Validasi: Pastikan field penting diisi
-        if (nama === "" || deadline === "" || pj === "") {
+        if (nama === "" || deadlineInput === "" || pj === "") {
             alert("Harap isi Nama Proyek, PJ, dan Deadline!");
             return;
         }
 
-        // Tentukan label dan class untuk badge status
+        const deadline = formatTanggalKeIndo(deadlineInput); // "2026-07-22" -> "22 Juli 2026"
+
         let statusBadge = "";
         let statusText = "";
         if (statusValue === "pending") {
@@ -379,41 +439,60 @@ document.addEventListener('DOMContentLoaded', () => {
             statusText = "Selesai";
         }
 
-        // Buat elemen baris baru (tr)
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${nama}</td>
-            <td>${statusBadge}</td>
-            <td>${pj}</td> 
-            <td>${deadline}</td>
-            <td>
-                <button class="btn-view" 
-                    onclick="tampilkanDetailProyek(this)" 
-                    data-nama="${nama}" 
-                    data-status="${statusText}" 
-                    data-pj="${pj}" 
-                    data-deadline="${deadline}" 
-                    data-tugas="${deskripsi}" 
-                    data-lanjutan="${lanjutan}">
-                    View
-                </button>
-            </td>
-        `;
+        if (editingProyekRow) {
+            // ===== MODE EDIT: update baris yang sudah ada, TIDAK bikin baris baru =====
+            const cells = editingProyekRow.querySelectorAll('td');
+            cells[0].textContent = nama;
+            cells[1].innerHTML = statusBadge;
+            cells[2].textContent = pj;
+            cells[3].textContent = deadline;
 
-        // Masukkan baris ke dalam tbody
-        tbody.appendChild(row);
+            const viewBtn = editingProyekRow.querySelector('.btn-view');
+            if (viewBtn) {
+                viewBtn.setAttribute('data-nama', nama);
+                viewBtn.setAttribute('data-status', statusText);
+                viewBtn.setAttribute('data-pj', pj);
+                viewBtn.setAttribute('data-deadline', deadline);
+                viewBtn.setAttribute('data-tugas', deskripsi);
+                viewBtn.setAttribute('data-lanjutan', lanjutan);
+            }
+
+            editingProyekRow = null; // balik ke mode Tambah setelah selesai
+        } else {
+            // ===== MODE TAMBAH: bikin baris baru (sama seperti sebelumnya) =====
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${nama}</td>
+                <td>${statusBadge}</td>
+                <td>${pj}</td> 
+                <td>${deadline}</td>
+                <td>
+                    <button class="btn-view" 
+                        onclick="tampilkanDetailProyek(this)" 
+                        data-nama="${nama}" 
+                        data-status="${statusText}" 
+                        data-pj="${pj}" 
+                        data-deadline="${deadline}" 
+                        data-tugas="${deskripsi}" 
+                        data-lanjutan="${lanjutan}">
+                        View
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        }
 
         // Reset inputan form
-        document.getElementById('inputNamaProyek').value = "";
-        document.getElementById('inputPJProyek').value = "";
-        document.getElementById('inputDeskProyek').value = "";
-        document.getElementById('inputLanjutanProyek').value = "";
-        document.getElementById('inputDeadlineProyek').value = "";
+        if (document.getElementById('inputNamaProyek')) document.getElementById('inputNamaProyek').value = "";
+        if (document.getElementById('inputPJProyek')) document.getElementById('inputPJProyek').value = "";
+        if (document.getElementById('inputDeskProyek')) document.getElementById('inputDeskProyek').value = "";
+        if (document.getElementById('inputLanjutanProyek')) document.getElementById('inputLanjutanProyek').value = "";
+        if (document.getElementById('inputDeadlineProyek')) document.getElementById('inputDeadlineProyek').value = "";
         
-        // Tutup modal
+       
         modal.style.display = 'none';
+       
         
-        // (Opsional) Panggil fungsi korelasi jika Anda sudah membuatnya
         if (typeof hitungKorelasiProyek === 'function') {
             hitungKorelasiProyek();
         }
@@ -423,6 +502,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('click', (event) => {
         if (event.target === modal) {
             modal.style.display = 'none';
+            editingProyekRow = null;
         }
     });
 });
@@ -831,13 +911,30 @@ function formatTanggalLaporan(tanggalISO) {
 }
 
 /* ---------- 4d. Cari laporan ---------- */
-function cariLaporan() {
-  const keyword = document.getElementById('searchLaporan').value.toLowerCase().trim();
+/* ---------- 4d. Cari laporan + filter prioritas (digabung, tidak saling menimpa) ---------- */
+let prioritasAktifLaporan = 'semua';
+
+function terapkanFilterLaporan() {
+  const searchEl = document.getElementById('searchLaporan');
+  const keyword = searchEl ? searchEl.value.toLowerCase().trim() : '';
   const items = document.querySelectorAll('.laporan-item');
+
   items.forEach((item, index) => {
-    const judul = laporanData[index].judul.toLowerCase();
-    item.style.display = judul.includes(keyword) ? '' : 'none';
+    const data = laporanData[index];
+    if (!data) return;
+
+    const judul = data.judul.toLowerCase();
+    const prioritasItem = (data.prioritas || '').toLowerCase().trim();
+
+    const cocokKeyword = judul.includes(keyword);
+    const cocokPrioritas = prioritasAktifLaporan === 'semua' || prioritasItem === prioritasAktifLaporan;
+
+    item.style.display = (cocokKeyword && cocokPrioritas) ? '' : 'none';
   });
+}
+
+function cariLaporan() {
+  terapkanFilterLaporan();
 }
 
 /* ---------- 4e. Buka / edit / hapus / simpan laporan (modal) ---------- */
@@ -968,15 +1065,9 @@ function filterLaporan(btn, prioritas) {
     document.querySelectorAll('.filter-chip').forEach(chip => chip.classList.remove('active'));
     btn.classList.add('active');
 
-    // tampilkan/sembunyikan item sesuai prioritas
-    document.querySelectorAll('.laporan-item').forEach(item => {
-        const itemPrioritas = item.dataset.prioritas;
-        if (prioritas === 'semua' || itemPrioritas === prioritas) {
-            item.style.display = '';
-        } else {
-            item.style.display = 'none';
-        }
-    });
+    // simpan prioritas yang sedang aktif, lalu terapkan bareng keyword search
+    prioritasAktifLaporan = prioritas;
+    terapkanFilterLaporan();
 }
 
 /* =====================================================================
@@ -1206,20 +1297,7 @@ function renderLaporanList() {
   });
 }
 
-function cariLaporan() {
-  const keyword = document.getElementById('searchLaporan').value.toLowerCase().trim();
-  const items = document.querySelectorAll('.laporan-item');
 
-  items.forEach(item => {
-    const judul = item.querySelector('.laporan-info h4').textContent.toLowerCase();
-
-    if (judul.includes(keyword)) {
-      item.style.display = '';
-    } else {
-      item.style.display = 'none';
-    }
-  });
-}
 
 
 

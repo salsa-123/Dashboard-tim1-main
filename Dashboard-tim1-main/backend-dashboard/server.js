@@ -66,8 +66,75 @@ async function startServer() {
             res.json({ message: 'Laporan berhasil dihapus' });
         });
 
-        // ======================= ENDPOINT PROYEK ======================= //
+        // // =============================== ENDPOINT PROYEK =============================== //
 
+const express = require('express');
+const cors = require('cors');
+const mysql = require('mysql2/promise'); // Pastikan install mysql2
+
+const app = express();
+
+// --- Konfigurasi Database (Sesuaikan dengan settingan XAMPP Anda) ---
+const db = mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'teamwork_db'
+});
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// --- ENDPOINT PROYEK ---
+
+// 1. GET: Ambil semua data
+app.get("/api/proyek", async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT * FROM proyek ORDER BY id DESC");
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ message: "Gagal mengambil data", error: error.message });
+  }
+});
+
+// 2. POST: Tambah data
+app.post("/api/proyek", async (req, res) => {
+  try {
+    const { Nama_proyek, Status, Pj, Deadline, Deskripsi, lanjutan } = req.body;
+    await db.query(
+      "INSERT INTO proyek (Nama_proyek, Status, Pj, Deadline, Deskripsi, lanjutan) VALUES (?, ?, ?, ?, ?, ?)",
+      [Nama_proyek, Status, Pj, Deadline, Deskripsi, lanjutan]
+    );
+    res.status(201).json({ message: "Proyek berhasil ditambahkan" });
+  } catch (error) {
+    res.status(500).json({ message: "Gagal menambah proyek", error: error.message });
+  }
+});
+
+// 3. PUT: Update data
+app.put("/api/proyek/:id", async (req, res) => {
+  try {
+    const { Nama_proyek, Status, Pj, Deadline } = req.body;
+    await db.query(
+      "UPDATE proyek SET Nama_proyek = ?, Status = ?, Pj = ?, Deadline = ? WHERE id = ?",
+      [Nama_proyek, Status, Pj, Deadline, req.params.id]
+    );
+    res.json({ message: "Proyek berhasil diupdate" });
+  } catch (error) {
+    res.status(500).json({ message: "Gagal mengupdate proyek", error: error.message });
+  }
+});
+
+// 4. DELETE: Hapus data
+app.delete("/api/proyek/:id", async (req, res) => {
+  try {
+    await db.query("DELETE FROM proyek WHERE id = ?", [req.params.id]);
+    res.json({ message: "Proyek berhasil dihapus" });
+  } catch (error) {
+    res.status(500).json({ message: "Gagal menghapus proyek", error: error.message });
+  }
+});
 
         // Jalankan Server //
         app.listen(3000, () => {

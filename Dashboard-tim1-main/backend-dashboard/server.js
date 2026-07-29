@@ -45,21 +45,60 @@ async function startServer() {
 
         // ======================= ENDPOINT LAPORAN ======================= //
         app.get('/api/laporan', async (req, res) => {
-            const [rows] = await db.query('SELECT * FROM laporan ORDER BY tanggal DESC');
-            res.json(rows);
-        });
+    const [rows] = await db.query(`
+        SELECT laporan.*, proyek.Nama_proyek 
+        FROM laporan 
+        LEFT JOIN proyek ON laporan.id_proyek = proyek.id 
+        ORDER BY laporan.tanggal DESC
+    `);
+    res.json(rows);
+});
 
         app.post('/api/laporan', async (req, res) => {
-            const { judul, penulis, tanggal, prioritas, status, isi, file } = req.body;
-            await db.query('INSERT INTO laporan (judul, penulis, tanggal, prioritas, status, isi, file) VALUES (?, ?, ?, ?, ?, ?, ?)', [judul, penulis, tanggal, prioritas, status, isi, file]);
-            res.json({ message: "Laporan berhasil ditambahkan" });
-        });
+    const { judul, penulis, tanggal, prioritas, status, isi, file, id_proyek } = req.body;
+    await db.query('INSERT INTO laporan (judul, penulis, tanggal, prioritas, status, isi, file, id_proyek) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [judul, penulis, tanggal, prioritas, status, isi, file, id_proyek || null]);
+    res.json({ message: "Laporan berhasil ditambahkan" });
+});
 
         app.put('/api/laporan/:id', async (req, res) => {
-            const { judul, penulis, tanggal, prioritas, status, isi, file } = req.body;
-            await db.query('UPDATE laporan SET judul=?, penulis=?, tanggal=?, prioritas=?, status=?, isi=?, file=? WHERE id=?', [judul, penulis, tanggal, prioritas, status, isi, file, req.params.id]);
-            res.json({ message: 'Laporan berhasil diupdate' });
-        });
+    const {
+        judul,
+        penulis,
+        tanggal,
+        prioritas,
+        status,
+        isi,
+        file,
+        id_proyek
+    } = req.body;
+
+    await db.query(
+        `UPDATE laporan
+         SET
+            judul = ?,
+            penulis = ?,
+            tanggal = ?,
+            prioritas = ?,
+            status = ?,
+            isi = ?,
+            file = ?,
+            id_proyek = ?
+         WHERE id = ?`,
+        [
+            judul,
+            penulis,
+            tanggal,
+            prioritas,
+            status,
+            isi,
+            file,
+            id_proyek,
+            req.params.id
+        ]
+    );
+
+    res.json({ message: 'Laporan berhasil diupdate' });
+});
 
         app.delete('/api/laporan/:id', async (req, res) => {
             await db.query('DELETE FROM laporan WHERE id = ?', [req.params.id]);
@@ -68,9 +107,7 @@ async function startServer() {
 
         // // =============================== ENDPOINT PROYEK =============================== //
 
-const express = require('express');
-const cors = require('cors');
-const mysql = require('mysql2/promise'); // Pastikan install mysql2
+        
 
 const app = express();
 
@@ -101,10 +138,10 @@ app.get("/api/proyek", async (req, res) => {
 // 2. POST: Tambah data
 app.post("/api/proyek", async (req, res) => {
   try {
-    const { Nama_proyek, Status, Pj, Deadline, Deskripsi, lanjutan } = req.body;
+    const { Nama_proyek, Status, Pj, Deadline, Deskripsi } = req.body;
     await db.query(
-      "INSERT INTO proyek (Nama_proyek, Status, Pj, Deadline, Deskripsi, lanjutan) VALUES (?, ?, ?, ?, ?, ?)",
-      [Nama_proyek, Status, Pj, Deadline, Deskripsi, lanjutan]
+      "INSERT INTO proyek (Nama_proyek, Status, Pj, Deadline, Deskripsi) VALUES (?, ?, ?, ?, ?)",
+      [Nama_proyek, Status, Pj, Deadline, Deskripsi]
     );
     res.status(201).json({ message: "Proyek berhasil ditambahkan" });
   } catch (error) {
@@ -133,6 +170,16 @@ app.delete("/api/proyek/:id", async (req, res) => {
     res.json({ message: "Proyek berhasil dihapus" });
   } catch (error) {
     res.status(500).json({ message: "Gagal menghapus proyek", error: error.message });
+  }
+});
+
+// 5. GET: Ambil semua laporan milik satu proyek tertentu
+app.get("/api/proyek/:id/laporan", async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT * FROM laporan WHERE id_proyek = ? ORDER BY tanggal DESC", [req.params.id]);
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ message: "Gagal mengambil laporan proyek", error: error.message });
   }
 });
 

@@ -250,12 +250,13 @@ async function loadProyek() {
                         <td>${formatTanggal(item.Deadline)}</td>
                         <td>
                             <button class="btn-view" onclick="tampilkanDetailProyek(this)"
-                                data-nama="${item.Nama_proyek}"
-                                data-status="${item.Status}"
-                                data-pj="${item.Pj}"
-                                data-deadline="${formatTanggal(item.Deadline)}">
-                                View
-                            </button>
+    data-id="${item.id}"
+    data-nama="${item.Nama_proyek}"
+    data-status="${item.Status}"
+    data-pj="${item.Pj}"
+    data-deadline="${formatTanggal(item.Deadline)}">
+    View
+</button>
                         </td>
                     </tr>
                 `;
@@ -279,8 +280,7 @@ function setupFormTambahProyek() {
     Pj: document.querySelector("#inputPJProyek")?.value,
     Deadline: document.querySelector("#inputDeadlineProyek")?.value,
     Status: document.querySelector("#inputStatusProyek")?.value,
-    Deskripsi: document.querySelector("#idInputDeskripsi")?.value,
-   Lanjutan: document.querySelector("#idInputLanjutan")?.value
+    Deskripsi: document.querySelector("#idInputDeskripsi")?.value
 };
 
         try {
@@ -313,15 +313,14 @@ document.addEventListener("DOMContentLoaded", () => {
    3. tombol view yang di proyek dan dashboard
    ===================================================================== */
    
-function tampilkanDetailProyek(btn) {
-  const data = {
+const data = {
+    id: btn.getAttribute('data-id'),
     nama: btn.getAttribute('data-nama'),
     status: btn.getAttribute('data-status'),
     pj: btn.getAttribute('data-pj'),
     deadline: btn.getAttribute('data-deadline'),
     logo: btn.getAttribute('data-logo'),
-    tugas: btn.getAttribute('data-tugas'),
-    lanjutan: btn.getAttribute('data-lanjutan')
+    tugas: btn.getAttribute('data-tugas')
   };
 
   const fullDetailModal = document.getElementById('full-detail-view');
@@ -336,7 +335,7 @@ function tampilkanDetailProyek(btn) {
     sessionStorage.setItem('bukaDetailProyek', JSON.stringify(data));
     window.location.href = 'proyek.html';
   }
-}
+
 
 function isiDetailProyek(data) {
   if (document.getElementById('detail-nama')) document.getElementById('detail-nama').textContent = data.nama || '-';
@@ -345,7 +344,38 @@ function isiDetailProyek(data) {
   if (document.getElementById('detail-deadline')) document.getElementById('detail-deadline').textContent = data.deadline || '-';
   if (document.getElementById('detail-logo')) document.getElementById('detail-logo').src = data.logo || '';
   if (document.getElementById('detail-tugas')) document.getElementById('detail-tugas').textContent = data.tugas || '-';
-  if (document.getElementById('detail-lanjutan')) document.getElementById('detail-lanjutan').textContent = data.lanjutan || '-';
+muatLaporanTerkaitProyek(data.id);
+
+  /* ---------- Laporan Terkait di Detail Proyek ---------- */
+async function muatLaporanTerkaitProyek(idProyek) {
+  const container = document.getElementById('laporanTerkaitList');
+  if (!container) return;
+
+  if (!idProyek) {
+    container.innerHTML = '<p style="color:#9ca3af;font-size:14px;">Proyek ini belum tersimpan di database, jadi laporan terkait belum bisa ditampilkan.</p>';
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:3000/api/proyek/${idProyek}/laporan`);
+    const data = await response.json();
+
+    if (data.length === 0) {
+      container.innerHTML = '<p style="color:#9ca3af;font-size:14px;">Belum ada laporan untuk proyek ini.</p>';
+      return;
+    }
+
+    container.innerHTML = data.map(l => `
+      <div class="laporan-terkait-item">
+        <span>${l.judul}</span>
+        <span class="badge ${l.status}">${l.status}</span>
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error('Gagal memuat laporan terkait proyek:', error);
+    container.innerHTML = '<p style="color:#9ca3af;font-size:14px;">Gagal memuat laporan terkait.</p>';
+  }
+}
 
   const badgeElement = document.getElementById('detail-status');
   if (badgeElement) {
@@ -505,7 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('inputNamaProyek').value = viewBtn.getAttribute('data-nama') || '';
             document.getElementById('inputPJProyek').value = viewBtn.getAttribute('data-pj') || '';
             document.getElementById('inputDeskProyek').value = viewBtn.getAttribute('data-tugas') || '';
-            document.getElementById('inputLanjutanProyek').value = viewBtn.getAttribute('data-lanjutan') || '';
+
             document.getElementById('inputDeadlineProyek').value = tanggalIndoKeInputDate(viewBtn.getAttribute('data-deadline'));
 
             const statusValueMap = { 'Belum Mulai': 'pending', 'Berjalan': 'progress', 'Selesai': 'done' };
@@ -527,7 +557,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const nama = document.getElementById('inputNamaProyek')?.value || '';
         const pj = document.getElementById('inputPJProyek')?.value || '';
         const deskripsi = document.getElementById('inputDeskProyek')?.value || '';
-        const lanjutan = document.getElementById('inputLanjutanProyek')?.value || '';
+
         const deadlineInput = document.getElementById('inputDeadlineProyek')?.value || '';
         const statusValue = document.getElementById('inputStatusProyek')?.value || 'pending';
 
@@ -566,7 +596,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 viewBtn.setAttribute('data-pj', pj);
                 viewBtn.setAttribute('data-deadline', deadline);
                 viewBtn.setAttribute('data-tugas', deskripsi);
-                viewBtn.setAttribute('data-lanjutan', lanjutan);
+                
             }
 
             editingProyekRow = null; // balik ke mode Tambah setelah selesai
@@ -585,8 +615,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         data-status="${statusText}" 
                         data-pj="${pj}" 
                         data-deadline="${deadline}" 
-                        data-tugas="${deskripsi}" 
-                        data-lanjutan="${lanjutan}">
+                        data-tugas="${deskripsi}" >
+                        
                         View
                     </button>
                 </td>
@@ -598,7 +628,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (document.getElementById('inputNamaProyek')) document.getElementById('inputNamaProyek').value = "";
         if (document.getElementById('inputPJProyek')) document.getElementById('inputPJProyek').value = "";
         if (document.getElementById('inputDeskProyek')) document.getElementById('inputDeskProyek').value = "";
-        if (document.getElementById('inputLanjutanProyek')) document.getElementById('inputLanjutanProyek').value = "";
+        
         if (document.getElementById('inputDeadlineProyek')) document.getElementById('inputDeadlineProyek').value = "";
         
        
@@ -1012,6 +1042,9 @@ function tampilkanLaporan(index) {
   detailPrioritas.textContent = data.prioritas;
   detailIsi.textContent = data.isi;
 
+  const detailProyekTerkaitEl = document.getElementById('detail-proyek-terkait');
+  if (detailProyekTerkaitEl) detailProyekTerkaitEl.textContent = data.Nama_proyek || 'Tidak terkait proyek';
+
   detailFile.innerHTML = `<i class="fa-solid fa-paperclip"></i> ${data.file || '-'}`;
   detailBadge.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
   detailBadge.className = "badge " + data.status;
@@ -1049,6 +1082,26 @@ function cariLaporan() {
   terapkanFilterLaporan();
 }
 
+/* ---------- 4a-2. Muat dropdown proyek untuk form laporan ---------- */
+async function muatDropdownProyekLaporan(selectedId = '') {
+  const select = document.getElementById('proyekTerkaitLaporan');
+  if (!select) return;
+  try {
+    const response = await fetch('http://localhost:3000/api/proyek');
+    const data = await response.json();
+    select.innerHTML = '<option value="">-- Tidak terkait proyek --</option>';
+    data.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = p.Nama_proyek;
+      if (String(p.id) === String(selectedId)) opt.selected = true;
+      select.appendChild(opt);
+    });
+  } catch (error) {
+    console.error('Gagal memuat daftar proyek untuk dropdown laporan:', error);
+  }
+}
+
 /* ---------- 4e. Buka / edit / hapus / simpan laporan (modal) ---------- */
 function bukaFormLaporan() {
   modeEditLaporan = null;
@@ -1057,8 +1110,10 @@ function bukaFormLaporan() {
   document.getElementById('prioritasLaporan').value = 'Rendah';
   document.getElementById('statusLaporan').value = 'pending';
   document.getElementById('isiLaporan').value = '';
+  muatDropdownProyekLaporan();
   document.getElementById('modal-laporan').classList.add('active');
 }
+
 
 function editLaporan() {
   const data = laporanData[laporanAktifIndex];
@@ -1070,6 +1125,7 @@ function editLaporan() {
   document.getElementById('prioritasLaporan').value = data.prioritas;
   document.getElementById('statusLaporan').value = data.status;
   document.getElementById('isiLaporan').value = data.isi;
+  muatDropdownProyekLaporan(data.id_proyek);
   document.getElementById('modal-laporan').classList.add('active');
 }
 
@@ -1106,13 +1162,16 @@ async function simpanLaporan() {
   const dataLamaTanggal = modeEditLaporan ? laporanData[laporanAktifIndex].tanggal.split('T')[0] : tanggalSekarang;
   const dataLamaFile = modeEditLaporan ? laporanData[laporanAktifIndex].file : '-';
 
+  const idProyekTerkait = document.getElementById('proyekTerkaitLaporan')?.value || null;
+
   const bodyLaporan = {
     judul, penulis,
     tanggal: dataLamaTanggal,
     prioritas, status, isi,
-    file: namaFile !== '-' ? namaFile : dataLamaFile
+    file: namaFile !== '-' ? namaFile : dataLamaFile,
+    id_proyek: idProyekTerkait
   };
-
+  
   try {
     let response;
     if (modeEditLaporan) {
@@ -1414,10 +1473,14 @@ function renderLaporanList() {
 
 
 function bukaFormLaporan() {
-  const modal = document.getElementById('modal-laporan');
-  if (modal) {
-    modal.classList.add('active');
-  }
+  modeEditLaporan = null;
+  document.getElementById('judulLaporan').value = '';
+  document.getElementById('penulisLaporan').value = '';
+  document.getElementById('prioritasLaporan').value = 'Rendah';
+  document.getElementById('statusLaporan').value = 'pending';
+  document.getElementById('isiLaporan').value = '';
+  muatDropdownProyekLaporan();
+  document.getElementById('modal-laporan').classList.add('active');
 }
 
 

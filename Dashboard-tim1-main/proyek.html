@@ -124,8 +124,7 @@
             data-pj="Budi Santoso" 
             data-deadline="22 Juli 2026" 
             data-logo="emblem/logo1.jpg" 
-            data-tugas="Mengembangkan dashboard utama tim." 
-            data-lanjutan="Finishing tampilan UI.">View</button>
+            data-tugas="Mengembangkan dashboard utama tim.">view</button>
     </td>
 </tr>
   <!-- PROYEK 2 -->
@@ -141,8 +140,7 @@
             data-pj="Citra Dewi" 
             data-deadline="20 Juli 2026" 
             data-logo="emblem/1.jpg" 
-            data-tugas="Membuat ulang identitas visual logo Tim 1." 
-            data-lanjutan="Tidak ada, proyek sudah tuntas.">View</button>
+            data-tugas="Membuat ulang identitas visual logo Tim 1." >view</button>
     </td>
 </tr>
 
@@ -159,8 +157,7 @@
             data-pj="Andi Wijaya" 
             data-deadline="30 Juli 2026" 
             data-logo="emblem/2.jpg" 
-            data-tugas="Menghubungkan dashboard dengan database tugas." 
-            data-lanjutan="Menentukan struktur tabel database dan metode koneksi.">View</button>
+            data-tugas="Menghubungkan dashboard dengan database tugas." >view</button>
     </td>
 </tr>
 
@@ -177,8 +174,7 @@
             data-pj="Diana Putri" 
             data-deadline="28 Juli 2026" 
             data-logo="emblem/3.jpg" 
-            data-tugas="Membangun aplikasi mobile pendamping dashboard." 
-            data-lanjutan="Mulai development fitur login dan notifikasi.">View</button>
+            data-tugas="Membangun aplikasi mobile pendamping dashboard." >view</button>
     </td>
 </tr>
 
@@ -195,8 +191,7 @@
             data-pj="Eko Prasetyo" 
             data-deadline="5 Agustus 2026" 
             data-logo="emblem/4.jpg" 
-            data-tugas="Meningkatkan performa dan kecepatan server backend." 
-            data-lanjutan="Load testing dan monitoring performa.">View</button>
+            data-tugas="Meningkatkan performa dan kecepatan server backend.">view</button>
     </td>
 </tr>
 
@@ -213,8 +208,7 @@
             data-pj="Fajar Hidayat" 
             data-deadline="15 Agustus 2026" 
             data-logo="emblem/5.jpg" 
-            data-tugas="Menyusun dokumentasi teknis seluruh modul sistem." 
-            data-lanjutan="Menentukan format dan struktur dokumentasi.">View</button>
+            data-tugas="Menyusun dokumentasi teknis seluruh modul sistem." >view</button>
     </td>
 </tr>
 </tbody>
@@ -271,9 +265,16 @@
         <h4>Detail Penjelasan Tugas</h4>
         <p id="detail-tugas">Mengembangkan dashboard utama tim.</p>
 
-        <h4>Lanjutan:</h4>
-        <p id="detail-lanjutan">Finishing tampilan UI.</p>
+        
       </div>
+
+      <div class="detail-box-tugas">
+  <h4>Laporan Terkait</h4>
+  <div id="laporanTerkaitList">
+    <p style="color:#9ca3af; font-size:14px;">Memuat laporan terkait...</p>
+  </div>
+</div>
+
     </main>
   </div>
 </div>
@@ -303,12 +304,7 @@
           placeholder="Deskripsi singkat proyek"
         />
 
-        <label>Lanjutan / Rencana Berikutnya</label>
-        <input
-          type="text"
-          id="inputLanjutanProyek"
-          placeholder="Contoh: Finishing tampilan UI"
-        />
+        
 
         <label>Deadline</label>
         <input type="date" id="inputDeadlineProyek" />

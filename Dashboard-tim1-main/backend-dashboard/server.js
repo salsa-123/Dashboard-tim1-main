@@ -25,15 +25,15 @@ async function startServer() {
             res.json(rows);
         });
 
-        app.post("/api/tugas", async (req, res) => {
-            const { nama_tugas, deadline, status } = req.body;
-            await db.query("INSERT INTO tugas (nama_tugas, deadline, status) VALUES (?, ?, ?)", [nama_tugas, deadline, status]);
+      app.post("/api/tugas", async (req, res) => {
+            const { nama_tugas, deadline, status, id_proyek } = req.body;
+            await db.query("INSERT INTO tugas (nama_tugas, deadline, status, id_proyek) VALUES (?, ?, ?, ?)", [nama_tugas, deadline, status, id_proyek || null]);
             res.status(201).json({ message: "Tugas berhasil ditambahkan" });
         });
 
         app.put("/api/tugas/:id", async (req, res) => {
-            const { nama_tugas, deadline, status } = req.body;
-            await db.query("UPDATE tugas SET nama_tugas = ?, deadline = ?, status = ? WHERE id = ?", [nama_tugas, deadline, status, req.params.id]);
+            const { nama_tugas, deadline, status, id_proyek } = req.body;
+            await db.query("UPDATE tugas SET nama_tugas = ?, deadline = ?, status = ?, id_proyek = ? WHERE id = ?", [nama_tugas, deadline, status, id_proyek || null, req.params.id]);
             res.json({ message: "Tugas berhasil diupdate" });
         });
 
@@ -158,6 +158,14 @@ async function startServer() {
             } catch (error) {
                 res.status(500).json({ message: "Gagal mengambil laporan proyek", error: error.message });
             }
+            app.get("/api/proyek/:id/tugas", async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT * FROM tugas WHERE id_proyek = ? ORDER BY deadline ASC", [req.params.id]);
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ message: "Gagal mengambil tugas proyek", error: error.message });
+  }
+});
         });
 
 

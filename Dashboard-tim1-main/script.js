@@ -150,6 +150,73 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+
+async function muatKartuProyekDashboard() {
+  const track = document.getElementById('dashboardTrack');
+  if (!track) return;
+
+  try {
+    const res = await fetch('http://localhost:3000/api/proyek');
+    const proyekList = await res.json();
+// Hitung statistik
+    const total = proyekList.length;
+    const selesai = proyekList.filter(p => p.Status === 'Selesai').length;
+    const berjalan = proyekList.filter(p => p.Status === 'Berjalan').length;
+    const belumMulai = proyekList.filter(p => p.Status === 'Belum Mulai').length;
+
+    const elTotal = document.getElementById('statTotal');
+    const elSelesai = document.getElementById('statSelesai');
+    const elProgress = document.getElementById('statProgress');
+    const elPending = document.getElementById('statPending');
+
+    if (elTotal) elTotal.textContent = total;
+    if (elSelesai) elSelesai.textContent = selesai;
+    if (elProgress) elProgress.textContent = berjalan;
+    if (elPending) elPending.textContent = belumMulai;
+    if (!proyekList.length) {
+      track.innerHTML = '<p>Belum ada proyek.</p>';
+      return;
+    }
+
+    track.innerHTML = proyekList.map(p => {
+      const badgeClass = p.Status === 'Selesai' ? 'badge-done' : (p.Status === 'Berjalan' ? 'badge-progress' : 'badge-pending');
+      const percent = p.Status === 'Selesai' ? 100 : (p.Status === 'Berjalan' ? 50 : 0);
+      const bg = `https://picsum.photos/seed/proyek${p.id}/400/600`;
+
+      return `
+        <div class="project-item" style="background-image: url('${bg}');">
+          <div class="project-card-top">
+            <div class="project-logo-emblem"><i class="fas fa-folder"></i></div>
+            <div class="project-header">
+              <h3>${p.Nama_proyek}</h3>
+              <span class="badge ${badgeClass}">${p.Status}</span>
+            </div>
+          </div>
+          <div class="project-card-bottom">
+            <div class="project-progress-below">
+              <div class="progress-bar"><div class="progress-fill" style="width: ${percent}%"></div></div>
+              <span class="progress-percent">${percent}%</span>
+            </div>
+            <button class="btn-view"
+              onclick="tampilkanDetailProyek(this)"
+              data-id="${p.id}"
+              data-nama="${p.Nama_proyek}"
+              data-status="${p.Status}"
+              data-pj="${p.Pj}"
+              data-deadline="${p.Deadline}"
+              data-logo="${bg}"
+              data-tugas="${p.Deskripsi || ''}">View</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (error) {
+    console.error('Gagal memuat proyek dashboard:', error);
+    track.innerHTML = '<p>Gagal memuat proyek.</p>';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', muatKartuProyekDashboard);
 /* ---------- 2b. Pencarian Proyek (aman, terisolasi) ---------- */
 (function () {
   const searchInput = document.getElementById('searchProject');
@@ -343,10 +410,38 @@ function isiDetailProyek(data) {
   if (document.getElementById('detail-nama')) document.getElementById('detail-nama').textContent = data.nama || '-';
   if (document.getElementById('detail-status')) document.getElementById('detail-status').textContent = data.status || '-';
   if (document.getElementById('detail-pj')) document.getElementById('detail-pj').textContent = data.pj || '-';
-  if (document.getElementById('detail-deadline')) document.getElementById('detail-deadline').textContent = data.deadline || '-';
+  if (document.getElementById('detail-deadline')) {
+    const tgl = new Date(data.deadline);
+    document.getElementById('detail-deadline').textContent = isNaN(tgl) ? (data.deadline || '-') : tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
   if (document.getElementById('detail-logo')) document.getElementById('detail-logo').src = data.logo || '';
   if (document.getElementById('detail-tugas')) document.getElementById('detail-tugas').textContent = data.tugas || '-';
 muatLaporanTerkaitProyek(data.id);
+muatTugasTerkaitProyek(data.id);
+async function muatTugasTerkaitProyek(idProyek) {
+  const container = document.getElementById('tugas-terkait-list');
+  if (!container) return;
+
+  try {
+    const res = await fetch(`http://localhost:3000/api/proyek/${idProyek}/tugas`);
+    const tugasList = await res.json();
+
+    if (!tugasList.length) {
+      container.innerHTML = '<p>Belum ada tugas untuk proyek ini.</p>';
+      return;
+    }
+
+    container.innerHTML = tugasList.map(t => `
+      <div class="tugas-item">
+        <span>${t.nama_tugas}</span>
+        <span class="badge">${t.status}</span>
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error('Gagal memuat tugas proyek:', error);
+    container.innerHTML = '<p>Gagal memuat tugas.</p>';
+  }
+}
 
   /* ---------- Laporan Terkait di Detail Proyek ---------- */
 async function muatLaporanTerkaitProyek(idProyek) {
@@ -776,7 +871,30 @@ const inputNamaTugas = document.getElementById('inputNamaTugas');
 
 const inputDeadlineTugas = document.getElementById('inputDeadlineTugas');
 const inputStatusTugas = document.getElementById('inputStatusTugas');
+/* ---------- 3d-2. Isi dropdown Proyek Terkait dari database ---------- */
+const inputProyekTugas = document.getElementById('inputProyekTugas');
 
+async function muatDropdownProyek() {
+  if (!inputProyekTugas) return;
+  try {
+    const res = await fetch('http://localhost:3000/api/proyek');
+    const proyekList = await res.json();
+
+    // Kosongkan dulu, sisain opsi default
+    inputProyekTugas.innerHTML = '<option value="">- Tidak terhubung ke proyek -</option>';
+
+    proyekList.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = p.Nama_proyek;
+      inputProyekTugas.appendChild(opt);
+    });
+  } catch (error) {
+    console.error('Gagal memuat daftar proyek:', error);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', muatDropdownProyek);
 let editingRow = null; // null = mode tambah, berisi <tr> = mode edit
 
 function resetModalTugas() {
@@ -784,6 +902,7 @@ function resetModalTugas() {
 
   inputDeadlineTugas.value = '';
   inputStatusTugas.value = 'pending';
+  if (inputProyekTugas) inputProyekTugas.value = '';
   editingRow = null;
   if (modalTugasTitle) modalTugasTitle.textContent = 'Tambah Tugas Baru';
 }
@@ -809,6 +928,7 @@ if (btnSimpanTugas && taskTableBody) {
 
     const deadline = inputDeadlineTugas.value;
     const status = inputStatusTugas.value;
+    const idProyek = inputProyekTugas ? (inputProyekTugas.value || null) : null;
 
     if (!nama || !deadline) {
       alert('Semua kolom wajib diisi!');
@@ -822,13 +942,14 @@ if (btnSimpanTugas && taskTableBody) {
       if (editingRow) {
         // MODE EDIT: kirim ke database lewat PUT
         const id = editingRow.getAttribute('data-id');
-        await fetch(`${API_URL}/${id}`, {
+       await fetch(`${API_URL}/${id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             nama_tugas: nama,
             deadline: deadline,
-            status: statusLabel
+            status: statusLabel,
+            id_proyek: idProyek
           })
         });
       } else {
@@ -836,7 +957,7 @@ if (btnSimpanTugas && taskTableBody) {
         await fetch(API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ nama_tugas: nama, deadline: deadline, status: statusLabel })
+          body: JSON.stringify({ nama_tugas: nama, deadline: deadline, status: statusLabel, id_proyek: idProyek })
         });
       }
 

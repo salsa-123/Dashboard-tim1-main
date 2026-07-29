@@ -45,143 +45,121 @@ async function startServer() {
 
         // ======================= ENDPOINT LAPORAN ======================= //
         app.get('/api/laporan', async (req, res) => {
-    const [rows] = await db.query(`
-        SELECT laporan.*, proyek.Nama_proyek 
-        FROM laporan 
-        LEFT JOIN proyek ON laporan.id_proyek = proyek.id 
-        ORDER BY laporan.tanggal DESC
-    `);
-    res.json(rows);
-});
+            const [rows] = await db.query(`
+                SELECT laporan.*, proyek.Nama_proyek 
+                FROM laporan 
+                LEFT JOIN proyek ON laporan.id_proyek = proyek.id 
+                ORDER BY laporan.tanggal DESC
+            `);
+            res.json(rows);
+        });
 
         app.post('/api/laporan', async (req, res) => {
-    const { judul, penulis, tanggal, prioritas, status, isi, file, id_proyek } = req.body;
-    await db.query('INSERT INTO laporan (judul, penulis, tanggal, prioritas, status, isi, file, id_proyek) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [judul, penulis, tanggal, prioritas, status, isi, file, id_proyek || null]);
-    res.json({ message: "Laporan berhasil ditambahkan" });
-});
+            const { judul, penulis, tanggal, prioritas, status, isi, file, id_proyek } = req.body;
+            await db.query('INSERT INTO laporan (judul, penulis, tanggal, prioritas, status, isi, file, id_proyek) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [judul, penulis, tanggal, prioritas, status, isi, file, id_proyek || null]);
+            res.json({ message: "Laporan berhasil ditambahkan" });
+        });
 
         app.put('/api/laporan/:id', async (req, res) => {
-    const {
-        judul,
-        penulis,
-        tanggal,
-        prioritas,
-        status,
-        isi,
-        file,
-        id_proyek
-    } = req.body;
+            const {
+                judul,
+                penulis,
+                tanggal,
+                prioritas,
+                status,
+                isi,
+                file,
+                id_proyek
+            } = req.body;
 
-    await db.query(
-        `UPDATE laporan
-         SET
-            judul = ?,
-            penulis = ?,
-            tanggal = ?,
-            prioritas = ?,
-            status = ?,
-            isi = ?,
-            file = ?,
-            id_proyek = ?
-         WHERE id = ?`,
-        [
-            judul,
-            penulis,
-            tanggal,
-            prioritas,
-            status,
-            isi,
-            file,
-            id_proyek,
-            req.params.id
-        ]
-    );
+            await db.query(
+                `UPDATE laporan
+                 SET
+                    judul = ?,
+                    penulis = ?,
+                    tanggal = ?,
+                    prioritas = ?,
+                    status = ?,
+                    isi = ?,
+                    file = ?,
+                    id_proyek = ?
+                 WHERE id = ?`,
+                [
+                    judul,
+                    penulis,
+                    tanggal,
+                    prioritas,
+                    status,
+                    isi,
+                    file,
+                    id_proyek,
+                    req.params.id
+                ]
+            );
 
-    res.json({ message: 'Laporan berhasil diupdate' });
-});
+            res.json({ message: 'Laporan berhasil diupdate' });
+        });
 
         app.delete('/api/laporan/:id', async (req, res) => {
             await db.query('DELETE FROM laporan WHERE id = ?', [req.params.id]);
             res.json({ message: 'Laporan berhasil dihapus' });
         });
 
-        // // =============================== ENDPOINT PROYEK =============================== //
 
-        
+        // ======================= ENDPOINT PROYEK ======================= //
+        app.get("/api/proyek", async (req, res) => {
+            try {
+                const [rows] = await db.query("SELECT * FROM proyek ORDER BY id DESC");
+                res.json(rows);
+            } catch (error) {
+                res.status(500).json({ message: "Gagal mengambil data", error: error.message });
+            }
+        });
 
-const app = express();
+        app.post("/api/proyek", async (req, res) => {
+            try {
+                const { Nama_proyek, Status, Pj, Deadline, Deskripsi } = req.body;
+                await db.query(
+                    "INSERT INTO proyek (Nama_proyek, Status, Pj, Deadline, Deskripsi) VALUES (?, ?, ?, ?, ?)",
+                    [Nama_proyek, Status, Pj, Deadline, Deskripsi]
+                );
+                res.status(201).json({ message: "Proyek berhasil ditambahkan" });
+            } catch (error) {
+                res.status(500).json({ message: "Gagal menambah proyek", error: error.message });
+            }
+        });
 
-// --- Konfigurasi Database (Sesuaikan dengan settingan XAMPP Anda) ---
-const db = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'teamwork_db'
-});
+        app.put("/api/proyek/:id", async (req, res) => {
+            try {
+                const { Nama_proyek, Status, Pj, Deadline } = req.body;
+                await db.query(
+                    "UPDATE proyek SET Nama_proyek = ?, Status = ?, Pj = ?, Deadline = ? WHERE id = ?",
+                    [Nama_proyek, Status, Pj, Deadline, req.params.id]
+                );
+                res.json({ message: "Proyek berhasil diupdate" });
+            } catch (error) {
+                res.status(500).json({ message: "Gagal mengupdate proyek", error: error.message });
+            }
+        });
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+        app.delete("/api/proyek/:id", async (req, res) => {
+            try {
+                await db.query("DELETE FROM proyek WHERE id = ?", [req.params.id]);
+                res.json({ message: "Proyek berhasil dihapus" });
+            } catch (error) {
+                res.status(500).json({ message: "Gagal menghapus proyek", error: error.message });
+            }
+        });
 
-// --- ENDPOINT PROYEK ---
+        app.get("/api/proyek/:id/laporan", async (req, res) => {
+            try {
+                const [rows] = await db.query("SELECT * FROM laporan WHERE id_proyek = ? ORDER BY tanggal DESC", [req.params.id]);
+                res.json(rows);
+            } catch (error) {
+                res.status(500).json({ message: "Gagal mengambil laporan proyek", error: error.message });
+            }
+        });
 
-// 1. GET: Ambil semua data
-app.get("/api/proyek", async (req, res) => {
-  try {
-    const [rows] = await db.query("SELECT * FROM proyek ORDER BY id DESC");
-    res.json(rows);
-  } catch (error) {
-    res.status(500).json({ message: "Gagal mengambil data", error: error.message });
-  }
-});
-
-// 2. POST: Tambah data
-app.post("/api/proyek", async (req, res) => {
-  try {
-    const { Nama_proyek, Status, Pj, Deadline, Deskripsi } = req.body;
-    await db.query(
-      "INSERT INTO proyek (Nama_proyek, Status, Pj, Deadline, Deskripsi) VALUES (?, ?, ?, ?, ?)",
-      [Nama_proyek, Status, Pj, Deadline, Deskripsi]
-    );
-    res.status(201).json({ message: "Proyek berhasil ditambahkan" });
-  } catch (error) {
-    res.status(500).json({ message: "Gagal menambah proyek", error: error.message });
-  }
-});
-
-// 3. PUT: Update data
-app.put("/api/proyek/:id", async (req, res) => {
-  try {
-    const { Nama_proyek, Status, Pj, Deadline } = req.body;
-    await db.query(
-      "UPDATE proyek SET Nama_proyek = ?, Status = ?, Pj = ?, Deadline = ? WHERE id = ?",
-      [Nama_proyek, Status, Pj, Deadline, req.params.id]
-    );
-    res.json({ message: "Proyek berhasil diupdate" });
-  } catch (error) {
-    res.status(500).json({ message: "Gagal mengupdate proyek", error: error.message });
-  }
-});
-
-// 4. DELETE: Hapus data
-app.delete("/api/proyek/:id", async (req, res) => {
-  try {
-    await db.query("DELETE FROM proyek WHERE id = ?", [req.params.id]);
-    res.json({ message: "Proyek berhasil dihapus" });
-  } catch (error) {
-    res.status(500).json({ message: "Gagal menghapus proyek", error: error.message });
-  }
-});
-
-// 5. GET: Ambil semua laporan milik satu proyek tertentu
-app.get("/api/proyek/:id/laporan", async (req, res) => {
-  try {
-    const [rows] = await db.query("SELECT * FROM laporan WHERE id_proyek = ? ORDER BY tanggal DESC", [req.params.id]);
-    res.json(rows);
-  } catch (error) {
-    res.status(500).json({ message: "Gagal mengambil laporan proyek", error: error.message });
-  }
-});
 
         // Jalankan Server //
         app.listen(3000, () => {

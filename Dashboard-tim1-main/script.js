@@ -68,6 +68,7 @@ if (menuToggleBtn && sidebarEl) {
 }
 
 
+let currentProyekRow = null;
 /* =====================================================================
    2. DASHBOARD & PROYEK
    ===================================================================== */
@@ -312,8 +313,8 @@ document.addEventListener("DOMContentLoaded", () => {
 /* =====================================================================
    3. tombol view yang di proyek dan dashboard
    ===================================================================== */
-   
-const data = {
+function tampilkanDetailProyek(btn) {
+  const data = {
     id: btn.getAttribute('data-id'),
     nama: btn.getAttribute('data-nama'),
     status: btn.getAttribute('data-status'),
@@ -335,6 +336,7 @@ const data = {
     sessionStorage.setItem('bukaDetailProyek', JSON.stringify(data));
     window.location.href = 'proyek.html';
   }
+}
 
 
 function isiDetailProyek(data) {

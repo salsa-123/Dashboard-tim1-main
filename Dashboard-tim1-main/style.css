@@ -2876,11 +2876,12 @@ body, button, input, select {
     color: #999 !important;
 }
 
-/* 1c. BODY — tidak perlu scroll lagi */
+/* 1c. BODY — scroll internal supaya footer tidak kepotong */
 #modal-laporan .modal-body {
     padding: 10px 24px !important;
-    overflow-y: visible !important;
+    overflow-y: auto !important;
     flex: 1 1 auto !important;
+    min-height: 0 !important;
     display: flex !important;
     flex-direction: column !important;
 }

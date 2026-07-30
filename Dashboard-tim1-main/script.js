@@ -69,6 +69,7 @@ if (menuToggleBtn && sidebarEl) {
 
 
 let currentProyekRow = null;
+let currentProyekData = null;
 /* =====================================================================
    2. DASHBOARD & PROYEK
    ===================================================================== */
@@ -429,6 +430,7 @@ function tampilkanDetailProyek(btn) {
 
 
 function isiDetailProyek(data) {
+  currentProyekData = data;
   if (document.getElementById('detail-nama')) document.getElementById('detail-nama').textContent = data.nama || '-';
   if (document.getElementById('detail-status')) document.getElementById('detail-status').textContent = data.status || '-';
   if (document.getElementById('detail-pj')) document.getElementById('detail-pj').textContent = data.pj || '-';
@@ -634,35 +636,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnBatal = document.getElementById('btnBatalProyek');
     const btnSimpan = document.getElementById('btnSimpanProyek');
     const btnEditProyek = document.getElementById('btnEditProyek');
+    const modalTitle = document.getElementById('modalProyekTitle');
     const tbody = document.querySelector('.project-table tbody');
 
     editingProyekRow = null; // null = mode Tambah, berisi <tr> = mode Edit
 
     // 2. Fungsi Buka Modal (mode Tambah)
     btnTambah.addEventListener('click', () => {
-    editingProyekRow = null;
-    window.editingProyekId = null; // baris tambahan
-    if (modalTitle) modalTitle.textContent = 'Tambah Proyek Baru';
-    modal.style.display = 'flex';
-});
+        editingProyekRow = null;
+        if (modalTitle) modalTitle.textContent = 'Tambah Proyek Baru';
+        modal.style.display = 'flex';
+    });
 
+    // 2b. Fungsi Buka Modal (mode Edit) — isi otomatis dari proyek yang sedang dibuka di Detail
     // 2b. Fungsi Buka Modal (mode Edit) — isi otomatis dari proyek yang sedang dibuka di Detail
     if (btnEditProyek) {
         btnEditProyek.addEventListener('click', () => {
-            if (!currentProyekRow) return;
-            const viewBtn = currentProyekRow.querySelector('.btn-view');
-            if (!viewBtn) return;
+            if (!currentProyekData) {
+                alert('Data proyek belum siap. Coba buka lagi detail proyeknya.');
+                return;
+            }
 
-            document.getElementById('inputNamaProyek').value = viewBtn.getAttribute('data-nama') || '';
-            document.getElementById('inputPJProyek').value = viewBtn.getAttribute('data-pj') || '';
-            document.getElementById('inputDeskProyek').value = viewBtn.getAttribute('data-tugas') || '';
+            document.getElementById('inputNamaProyek').value = currentProyekData.nama || '';
+            document.getElementById('inputPJProyek').value = currentProyekData.pj || '';
+            document.getElementById('inputDeskProyek').value = currentProyekData.tugas || '';
 
-            document.getElementById('inputDeadlineProyek').value = tanggalIndoKeInputDate(viewBtn.getAttribute('data-deadline'));
+            document.getElementById('inputDeadlineProyek').value = tanggalIndoKeInputDate(currentProyekData.deadline);
 
             const statusValueMap = { 'Belum Mulai': 'pending', 'Berjalan': 'progress', 'Selesai': 'done' };
-            document.getElementById('inputStatusProyek').value = statusValueMap[viewBtn.getAttribute('data-status')] || 'pending';
+            document.getElementById('inputStatusProyek').value = statusValueMap[currentProyekData.status] || 'pending';
 
-            editingProyekRow = currentProyekRow; // aktifkan mode Edit
+            editingProyekRow = currentProyekRow;
+            if (modalTitle) modalTitle.textContent = 'Edit Proyek';
             modal.style.display = 'flex';
         });
     }

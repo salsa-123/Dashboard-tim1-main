@@ -69,7 +69,6 @@ if (menuToggleBtn && sidebarEl) {
 
 
 let currentProyekRow = null;
-let currentProyekData = null;
 /* =====================================================================
    2. DASHBOARD & PROYEK
    ===================================================================== */
@@ -408,7 +407,6 @@ function tampilkanDetailProyek(btn) {
 
 
 function isiDetailProyek(data) {
-  currentProyekData = data;
   if (document.getElementById('detail-nama')) document.getElementById('detail-nama').textContent = data.nama || '-';
   if (document.getElementById('detail-status')) document.getElementById('detail-status').textContent = data.status || '-';
   if (document.getElementById('detail-pj')) document.getElementById('detail-pj').textContent = data.pj || '-';
@@ -614,7 +612,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnBatal = document.getElementById('btnBatalProyek');
     const btnSimpan = document.getElementById('btnSimpanProyek');
     const btnEditProyek = document.getElementById('btnEditProyek');
-    const modalTitle = document.getElementById('modalProyekTitle');
     const tbody = document.querySelector('.project-table tbody');
 
     let editingProyekRow = null; // null = mode Tambah, berisi <tr> = mode Edit
@@ -622,29 +619,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Fungsi Buka Modal (mode Tambah)
     btnTambah.addEventListener('click', () => {
         editingProyekRow = null;
-        if (modalTitle) modalTitle.textContent = 'Tambah Proyek Baru';
         modal.style.display = 'flex';
     });
 
     // 2b. Fungsi Buka Modal (mode Edit) — isi otomatis dari proyek yang sedang dibuka di Detail
     if (btnEditProyek) {
         btnEditProyek.addEventListener('click', () => {
-            if (!currentProyekData) {
-                alert('Data proyek belum siap. Coba buka lagi detail proyeknya.');
-                return;
-            }
+            if (!currentProyekRow) return;
+            const viewBtn = currentProyekRow.querySelector('.btn-view');
+            if (!viewBtn) return;
 
-            document.getElementById('inputNamaProyek').value = currentProyekData.nama || '';
-            document.getElementById('inputPJProyek').value = currentProyekData.pj || '';
-            document.getElementById('inputDeskProyek').value = currentProyekData.tugas || '';
+            document.getElementById('inputNamaProyek').value = viewBtn.getAttribute('data-nama') || '';
+            document.getElementById('inputPJProyek').value = viewBtn.getAttribute('data-pj') || '';
+            document.getElementById('inputDeskProyek').value = viewBtn.getAttribute('data-tugas') || '';
 
-            document.getElementById('inputDeadlineProyek').value = tanggalIndoKeInputDate(currentProyekData.deadline);
+            document.getElementById('inputDeadlineProyek').value = tanggalIndoKeInputDate(viewBtn.getAttribute('data-deadline'));
 
             const statusValueMap = { 'Belum Mulai': 'pending', 'Berjalan': 'progress', 'Selesai': 'done' };
-            document.getElementById('inputStatusProyek').value = statusValueMap[currentProyekData.status] || 'pending';
+            document.getElementById('inputStatusProyek').value = statusValueMap[viewBtn.getAttribute('data-status')] || 'pending';
 
-            editingProyekRow = currentProyekRow;
-            if (modalTitle) modalTitle.textContent = 'Edit Proyek';
+            editingProyekRow = currentProyekRow; // aktifkan mode Edit
             modal.style.display = 'flex';
         });
     }
@@ -838,7 +832,6 @@ async function muatTugasDariDatabase() {
       const statusKey = statusKeyMap[tugas.status] || 'belum';
 
       const row = document.createElement('tr');
-      console.log("Data tugas yang diterima:", tugas);
       row.setAttribute('data-status', statusKey);
       row.setAttribute('data-id', tugas.id); // simpan id database di baris ini
     row.innerHTML = `

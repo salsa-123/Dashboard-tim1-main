@@ -317,14 +317,24 @@ async function loadProyek() {
                         <td>${item.Pj}</td>
                         <td>${formatTanggal(item.Deadline)}</td>
                         <td>
-                            <button class="btn-view" onclick="tampilkanDetailProyek(this)"
-    data-id="${item.id}"
-    data-nama="${item.Nama_proyek}"
-    data-status="${item.Status}"
-    data-pj="${item.Pj}"
-    data-deadline="${formatTanggal(item.Deadline)}">
-    View
-</button>
+                            <div class="aksi-buttons">
+                                <button class="btn-view" onclick="tampilkanDetailProyek(this)"
+                                    data-id="${item.id}"
+                                    data-nama="${item.Nama_proyek}"
+                                    data-status="${item.Status}"
+                                    data-pj="${item.Pj}"
+                                    data-deadline="${formatTanggal(item.Deadline)}">
+                                    View
+                                </button>
+
+                                <button class="btn-icon btn-edit-row" title="Edit" onclick="editProyek(this)">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+
+                                <button class="btn-icon btn-hapus-row" title="Hapus" onclick="hapusProyek(this, ${item.id})">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 `;
@@ -343,28 +353,40 @@ function setupFormTambahProyek() {
     btnSimpan.addEventListener("click", async function(e) {
         e.preventDefault();
 
-       const payload = {
-    Nama_proyek: document.querySelector("#inputNamaProyek")?.value,
-    Pj: document.querySelector("#inputPJProyek")?.value,
-    Deadline: document.querySelector("#inputDeadlineProyek")?.value,
-    Status: document.querySelector("#inputStatusProyek")?.value,
-    Deskripsi: document.querySelector("#idInputDeskripsi")?.value
-};
+        const payload = {
+            Nama_proyek: document.querySelector("#inputNamaProyek")?.value,
+            Pj: document.querySelector("#inputPJProyek")?.value,
+            Deadline: document.querySelector("#inputDeadlineProyek")?.value,
+            Status: document.querySelector("#inputStatusProyek")?.value,
+            Deskripsi: document.querySelector("#inputDeskProyek")?.value
+        };
 
         try {
-            const response = await fetch("http://localhost:3000/api/proyek", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
+            let response;
+            if (window.editingProyekId) {
+                // MODE EDIT: update data yang sudah ada
+                response = await fetch(`http://localhost:3000/api/proyek/${window.editingProyekId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+            } else {
+                // MODE TAMBAH: bikin data baru
+                response = await fetch("http://localhost:3000/api/proyek", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+            }
 
             if (response.ok) {
-    alert("Berhasil!");
-    loadProyek(); // Refresh tabel
-    document.getElementById('ID_MODAL_KAMU').style.display = 'none';
-} else {
-    alert("Gagal menyimpan.");
-}
+                alert("Berhasil!");
+                window.editingProyekId = null; // reset mode
+                loadProyek(); // Refresh tabel
+                document.getElementById('modalProyek').style.display = 'none';
+            } else {
+                alert("Gagal menyimpan.");
+            }
         } catch (error) {
             console.error("Error:", error);
         }
@@ -614,13 +636,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnEditProyek = document.getElementById('btnEditProyek');
     const tbody = document.querySelector('.project-table tbody');
 
-    let editingProyekRow = null; // null = mode Tambah, berisi <tr> = mode Edit
+    editingProyekRow = null; // null = mode Tambah, berisi <tr> = mode Edit
 
     // 2. Fungsi Buka Modal (mode Tambah)
     btnTambah.addEventListener('click', () => {
-        editingProyekRow = null;
-        modal.style.display = 'flex';
-    });
+    editingProyekRow = null;
+    window.editingProyekId = null; // baris tambahan
+    if (modalTitle) modalTitle.textContent = 'Tambah Proyek Baru';
+    modal.style.display = 'flex';
+});
 
     // 2b. Fungsi Buka Modal (mode Edit) — isi otomatis dari proyek yang sedang dibuka di Detail
     if (btnEditProyek) {
@@ -1653,3 +1677,59 @@ if (typeof hitungKorelasiProyek === 'function') {
 }
   tampilkanStatistikDiDashboard(); // tampilkan kalau sedang di dashboard.html
 });
+
+
+
+/* =====================================================================
+   tombol edit hapus proyek
+   ===================================================================== */
+function editProyek(btn) {
+  const row = btn.closest("tr");
+  const viewBtn = row.querySelector(".btn-view");
+  const modal = document.getElementById("modalProyek");
+  const modalTitle = document.getElementById("modalProyekTitle");
+
+  if (!viewBtn || !modal) {
+    console.error("editProyek gagal: viewBtn atau modal tidak ditemukan");
+    return;
+  }
+
+  modalTitle.textContent = "Edit Proyek";
+  document.getElementById("inputNamaProyek").value = viewBtn.dataset.nama || "";
+  document.getElementById("inputPJProyek").value = viewBtn.dataset.pj || "";
+  document.getElementById("inputDeskProyek").value = viewBtn.dataset.tugas || "";
+  document.getElementById("inputDeadlineProyek").value = tanggalIndoKeInputDate(viewBtn.dataset.deadline);
+  document.getElementById("inputStatusProyek").value = viewBtn.dataset.status || "Belum Mulai";
+
+  window.editingProyekId = viewBtn.dataset.id;
+
+  const modalBox = modal.querySelector(".modal-box");
+  if (modalBox) modalBox.scrollTop = 0;
+
+  modal.style.display = "flex";
+}
+
+async function hapusProyek(btn, id) {
+  const row = btn.closest("tr");
+  const viewBtn = row ? row.querySelector(".btn-view") : null;
+  const nama = viewBtn ? viewBtn.dataset.nama : "proyek ini";
+
+  if (confirm(`Yakin ingin menghapus proyek "${nama}"?`)) {
+    try {
+      const response = await fetch(`http://localhost:3000/api/proyek/${id}`, {
+        method: "DELETE"
+      });
+      if (response.ok) {
+        row.remove();
+      } else {
+        alert("Gagal menghapus proyek dari server.");
+      }
+    } catch (error) {
+      console.error("Gagal hapus proyek:", error);
+      alert("Gagal terhubung ke server.");
+    }
+  }
+}
+
+window.editProyek = editProyek;
+window.hapusProyek = hapusProyek;

@@ -674,18 +674,17 @@ body, html {
 }
 
 .btn-view {
-  display: inline-block;
-  margin-top: 10px;
-  background-color: #3b82f6;
+  background: #2563eb;
   color: white;
   border: none;
-  padding: 8px 16px;
+  padding: 0 16px;
+  height: 36px;
   border-radius: 6px;
   font-size: 13px;
-  font-weight: 500;
-  text-decoration: none;
   cursor: pointer;
-  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-view:hover {
@@ -1825,8 +1824,50 @@ body, button, input, select {
   line-height: 1.7;          /* Spasi teks lebih nyaman dibaca */
   margin: 0;
 }
-/*tombol edit */
 
+
+/* =====================================================================
+   TOMBOL EDIT HAPUS PROYEK
+   ===================================================================== */
+.project-table th:last-child,
+.project-table td:last-child {
+  text-align: center;
+}
+
+.aksi-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-edit-row {
+  background: #f1f5f9;
+  color: #475569;
+}
+.btn-edit-row:hover {
+  background: #e2e8f0;
+}
+
+.btn-hapus-row {
+  background: #fee2e2;
+  color: #dc2626;
+}
+.btn-hapus-row:hover {
+  background: #fecaca;
+}
 
 
 /* =====================================================================

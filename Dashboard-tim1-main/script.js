@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     setupClick('cardTotal', 'Semua');
-    setupClick('cardSelesai', 'Selesai');
+    setupClick('cardSelesai', 'Selesai');1
     setupClick('cardBerjalan', 'Berjalan');
     setupClick('cardBelum', 'Belum Mulai');
   });

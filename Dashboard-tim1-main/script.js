@@ -311,7 +311,6 @@ async function loadProyek() {
         if (tbody) {
             tbody.innerHTML = ''; // Kosongkan tabel
             data.forEach(item => {
-              const bg = `https://picsum.photos/seed/proyek${item.id}/400/600`;
                 tbody.innerHTML += `
                     <tr><td>${item.Nama_proyek}</td>
                         <td><span class="badge ${getBadgeClass(item.Status)}">${item.Status}</span></td>
@@ -323,9 +322,7 @@ async function loadProyek() {
     data-nama="${item.Nama_proyek}"
     data-status="${item.Status}"
     data-pj="${item.Pj}"
-    data-deadline="${formatTanggal(item.Deadline)}"
-    data-logo="${bg}"
-    data-tugas="${item.Deskripsi || ''}">
+    data-deadline="${formatTanggal(item.Deadline)}">
     View
 </button>
                         </td>
@@ -835,22 +832,22 @@ async function muatTugasDariDatabase() {
       const statusKey = statusKeyMap[tugas.status] || 'belum';
 
       const row = document.createElement('tr');
+      console.log("Data tugas yang diterima:", tugas);
       row.setAttribute('data-status', statusKey);
       row.setAttribute('data-id', tugas.id); // simpan id database di baris ini
-      row.setAttribute('data-id-proyek', tugas.id_proyek || ''); // simpan id proyek terkait
-      row.innerHTML = `
-        <td></td>
-        <td>${tugas.nama_tugas}</td>
-        <td>${deadlineFormatted}</td>
-        <td>${buatBadgeHTML(statusKey)}</td>
-        <td>${tugas.Nama_proyek || '-'}</td>
-        <td>
-          <div class="action-cell">
+    row.innerHTML = `
+    <td></td>
+    <td>${tugas.nama_tugas}</td>
+    <td>${deadlineFormatted}</td>
+    <td>${buatBadgeHTML(statusKey)}</td>
+    <td>${tugas.nama_proyek || '-'}</td>
+    <td>
+        <div class="action-cell">
             <button class="icon-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
             <button class="icon-btn delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-          </div>
-        </td>
-      `;
+        </div>
+    </td>
+`;
       taskTableBodyEl.appendChild(row);
     });
 
@@ -1004,7 +1001,6 @@ if (taskTableBody) {
       const nama = row.children[1].textContent.trim();
       const deadlineText = row.children[2].textContent.trim();
       const statusKey = row.getAttribute('data-status');
-      const idProyekTerkait = row.getAttribute('data-id-proyek') || '';
 
       inputNamaTugas.value = nama;
 
@@ -1020,9 +1016,6 @@ if (taskTableBody) {
       } else {
         inputDeadlineTugas.value = '';
       }
-
-      await muatDropdownProyek(); // pastikan dropdown terisi daftar proyek terbaru
-      if (inputProyekTugas) inputProyekTugas.value = idProyekTerkait; // pilih otomatis proyek yang sesuai
 
       if (modalTugasTitle) modalTugasTitle.textContent = 'Edit Tugas';
       modalTugas.classList.add('active');

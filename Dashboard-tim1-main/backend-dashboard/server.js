@@ -22,9 +22,9 @@ async function startServer() {
         // ======================= ENDPOINT TUGAS ======================= //
         app.get("/api/tugas", async (req, res) => {
     const [rows] = await db.query(`
-        SELECT tugas.*, proyek.Nama_proyek 
+        SELECT tugas.*, proyek.nama_proyek 
         FROM tugas 
-        LEFT JOIN proyek ON tugas.id_proyek = proyek.id 
+        LEFT JOIN proyek ON tugas.id_proyek = proyek.id
         ORDER BY tugas.id DESC
     `);
     res.json(rows);

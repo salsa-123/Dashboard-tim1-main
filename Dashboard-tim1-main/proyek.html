@@ -109,24 +109,35 @@
       </thead>
       <tbody>
 
+  <tbody>
+
   <!-- PROYEK 1 -->
-  <!-- BARIS PERTAMA (Dashboard Tim 1) -->
 <tr>
     <td>Dashboard Tim 1</td>
     <td><span class="badge status-berjalan">Berjalan</span></td>
     <td>Budi Santoso</td>
     <td>22 Juli 2026</td>
-    <!-- Tombol yang benar posisinya -->
     <td>
-        <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
-            data-nama="Dashboard Tim 1" 
-            data-status="Berjalan" 
-            data-pj="Budi Santoso" 
-            data-deadline="22 Juli 2026" 
-            data-logo="emblem/logo1.jpg" 
-            data-tugas="Mengembangkan dashboard utama tim.">view</button>
+        <div class="aksi-buttons">
+            <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
+                data-nama="Dashboard Tim 1" 
+                data-status="Berjalan" 
+                data-pj="Budi Santoso" 
+                data-deadline="22 Juli 2026" 
+                data-logo="emblem/logo1.jpg" 
+                data-tugas="Mengembangkan dashboard utama tim.">view</button>
+
+            <button class="btn-icon btn-edit-row" title="Edit" onclick="editProyek(this)">
+                <i class="fa-solid fa-pen"></i>
+            </button>
+
+            <button class="btn-icon btn-hapus-row" title="Hapus" onclick="hapusProyek(this)">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </div>
     </td>
 </tr>
+
   <!-- PROYEK 2 -->
 <tr>
     <td>Redesign Logo Tim</td>
@@ -134,13 +145,23 @@
     <td>Citra Dewi</td>
     <td>20 Juli 2026</td>
     <td>
-        <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
-            data-nama="Redesign Logo Tim" 
-            data-status="Selesai" 
-            data-pj="Citra Dewi" 
-            data-deadline="20 Juli 2026" 
-            data-logo="emblem/1.jpg" 
-            data-tugas="Membuat ulang identitas visual logo Tim 1." >view</button>
+        <div class="aksi-buttons">
+            <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
+                data-nama="Redesign Logo Tim" 
+                data-status="Selesai" 
+                data-pj="Citra Dewi" 
+                data-deadline="20 Juli 2026" 
+                data-logo="emblem/1.jpg" 
+                data-tugas="Membuat ulang identitas visual logo Tim 1.">view</button>
+
+            <button class="btn-icon btn-edit-row" title="Edit" onclick="editProyek(this)">
+                <i class="fa-solid fa-pen"></i>
+            </button>
+
+            <button class="btn-icon btn-hapus-row" title="Hapus" onclick="hapusProyek(this)">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </div>
     </td>
 </tr>
 
@@ -151,13 +172,23 @@
     <td>Andi Wijaya</td>
     <td>30 Juli 2026</td>
     <td>
-        <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
-            data-nama="Integrasi Database" 
-            data-status="Belum Mulai" 
-            data-pj="Andi Wijaya" 
-            data-deadline="30 Juli 2026" 
-            data-logo="emblem/2.jpg" 
-            data-tugas="Menghubungkan dashboard dengan database tugas." >view</button>
+        <div class="aksi-buttons">
+            <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
+                data-nama="Integrasi Database" 
+                data-status="Belum Mulai" 
+                data-pj="Andi Wijaya" 
+                data-deadline="30 Juli 2026" 
+                data-logo="emblem/2.jpg" 
+                data-tugas="Menghubungkan dashboard dengan database tugas.">view</button>
+
+            <button class="btn-icon btn-edit-row" title="Edit" onclick="editProyek(this)">
+                <i class="fa-solid fa-pen"></i>
+            </button>
+
+            <button class="btn-icon btn-hapus-row" title="Hapus" onclick="hapusProyek(this)">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </div>
     </td>
 </tr>
 
@@ -168,13 +199,23 @@
     <td>Diana Putri</td>
     <td>28 Juli 2026</td>
     <td>
-        <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
-            data-nama="Aplikasi Mobile Tim" 
-            data-status="Berjalan" 
-            data-pj="Diana Putri" 
-            data-deadline="28 Juli 2026" 
-            data-logo="emblem/3.jpg" 
-            data-tugas="Membangun aplikasi mobile pendamping dashboard." >view</button>
+        <div class="aksi-buttons">
+            <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
+                data-nama="Aplikasi Mobile Tim" 
+                data-status="Berjalan" 
+                data-pj="Diana Putri" 
+                data-deadline="28 Juli 2026" 
+                data-logo="emblem/3.jpg" 
+                data-tugas="Membangun aplikasi mobile pendamping dashboard.">view</button>
+
+            <button class="btn-icon btn-edit-row" title="Edit" onclick="editProyek(this)">
+                <i class="fa-solid fa-pen"></i>
+            </button>
+
+            <button class="btn-icon btn-hapus-row" title="Hapus" onclick="hapusProyek(this)">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </div>
     </td>
 </tr>
 
@@ -185,13 +226,23 @@
     <td>Eko Prasetyo</td>
     <td>5 Agustus 2026</td>
     <td>
-        <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
-            data-nama="Optimasi Server" 
-            data-status="Berjalan" 
-            data-pj="Eko Prasetyo" 
-            data-deadline="5 Agustus 2026" 
-            data-logo="emblem/4.jpg" 
-            data-tugas="Meningkatkan performa dan kecepatan server backend.">view</button>
+        <div class="aksi-buttons">
+            <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
+                data-nama="Optimasi Server" 
+                data-status="Berjalan" 
+                data-pj="Eko Prasetyo" 
+                data-deadline="5 Agustus 2026" 
+                data-logo="emblem/4.jpg" 
+                data-tugas="Meningkatkan performa dan kecepatan server backend.">view</button>
+
+            <button class="btn-icon btn-edit-row" title="Edit" onclick="editProyek(this)">
+                <i class="fa-solid fa-pen"></i>
+            </button>
+
+            <button class="btn-icon btn-hapus-row" title="Hapus" onclick="hapusProyek(this)">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </div>
     </td>
 </tr>
 
@@ -202,15 +253,26 @@
     <td>Fajar Hidayat</td>
     <td>15 Agustus 2026</td>
     <td>
-        <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
-            data-nama="Dokumentasi Sistem" 
-            data-status="Belum Mulai" 
-            data-pj="Fajar Hidayat" 
-            data-deadline="15 Agustus 2026" 
-            data-logo="emblem/5.jpg" 
-            data-tugas="Menyusun dokumentasi teknis seluruh modul sistem." >view</button>
+        <div class="aksi-buttons">
+            <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
+                data-nama="Dokumentasi Sistem" 
+                data-status="Belum Mulai" 
+                data-pj="Fajar Hidayat" 
+                data-deadline="15 Agustus 2026" 
+                data-logo="emblem/5.jpg" 
+                data-tugas="Menyusun dokumentasi teknis seluruh modul sistem.">view</button>
+
+            <button class="btn-icon btn-edit-row" title="Edit" onclick="editProyek(this)">
+                <i class="fa-solid fa-pen"></i>
+            </button>
+
+            <button class="btn-icon btn-hapus-row" title="Hapus" onclick="hapusProyek(this)">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </div>
     </td>
 </tr>
+
 </tbody>
     </table>
   </div>

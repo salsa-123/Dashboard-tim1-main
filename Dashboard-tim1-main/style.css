@@ -1253,10 +1253,20 @@ body, html {
 }
 
 .logo-box {
-  width: 150px;
-  height: 150px;
-  margin-bottom: 15px;
-  background: #ddd;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  z-index: 0;
+}
+
+.logo-box img,
+#detail-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .detail-content {
@@ -1561,6 +1571,28 @@ body, html {
   color: #334155;
 }
 
+.tugas-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #334155;
+}
+
+.tugas-item .badge {
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #eef2ff;
+  color: #4f46e5;
+  border-radius: 20px;
+}
+
 /* Apply Font Utama ke Seluruh Aplikasi */
 body, button, input, select {
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -1774,6 +1806,19 @@ body, button, input, select {
   border-bottom: 2px solid #f1f5f9; /* Garis pembatas halus */
 }
 
+.detail-box-tugas .detail-section {
+  margin-top: 24px;
+}
+
+.detail-box-tugas .detail-section h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 12px 0;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
 .detail-box-tugas p {
   font-size: 15px;
   color: #475569;
@@ -1916,8 +1961,19 @@ body, button, input, select {
 
 .task-table {
   width: 100%;
-  min-width: 1100px;
+  min-width: 1200px;
   border-collapse: collapse;
+}
+
+.task-table td:nth-child(5),
+.task-table th:nth-child(5) {
+  min-width: 160px;
+  max-width: 200px;
+}
+
+.task-table td:nth-child(5) {
+  color: #475569;
+  font-weight: 500;
 }
 
 .task-table thead {
@@ -2210,13 +2266,13 @@ body, button, input, select {
 }
 
 #modalTugas .btn-secondary {
-    background-color: #fdecea !important;
-    color: #e74c3c !important;
+    background-color: #f70c0c !important;
+    color: #f5eff0f6 !important;
     order: 2;
 }
 
 #modalTugas .btn-secondary:hover {
-    background-color: #fbdad7 !important;
+    background-color: #e43b3b !important;
 }
 
 
@@ -2985,8 +3041,8 @@ body, button, input, select {
 }
 
 .modal-footer .btn-delete {
-    background-color: #fdecea !important;
-    color: #e74c3c !important;
+    background-color: #f70c0c !important;
+    color: #f8ebea !important;
 }
 
 /* ===== FILTER CHIP LAPORAN ===== */
@@ -3481,6 +3537,11 @@ body, button, input, select {
   cursor: pointer;
 }
 
+/* Pastikan overlay modal Proyek selalu full screen, tidak ikut kena margin sidebar */
+#modalProyek.modal-overlay {
+  margin-left: 0 !important;
+  padding: 0 !important;
+}
 
 /* =====================================================================
    14. DARK MODE

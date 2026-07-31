@@ -1161,11 +1161,7 @@ let modeEditLaporan = null;
 
 const detailTitle = document.querySelector(".detail-header h3");
 const detailBadge = document.querySelector(".detail-header .badge");
-const detailPenulis = document.querySelectorAll(".detail-info p")[0];
-const detailTanggal = document.querySelectorAll(".detail-info p")[1];
-const detailPrioritas = document.querySelectorAll(".detail-info p")[2];
-const detailIsi = document.querySelector(".detail-content p");
-const detailFile = document.querySelector(".detail-file");
+
 
 /* ---------- 4a. Muat data laporan dari database ---------- */
 async function muatLaporanDariDatabase() {
@@ -1174,6 +1170,7 @@ async function muatLaporanDariDatabase() {
     const response = await fetch(API_URL_LAPORAN);
     laporanData = await response.json();
     renderLaporanList();
+    muatDropdownFilterProyekLaporan();   // ← baris baru ini
     if (laporanData.length > 0) {
       tampilkanLaporan(0);
     } else {
@@ -1225,17 +1222,76 @@ function tampilkanLaporan(index) {
   if (!data) return;
 
   detailTitle.textContent = data.judul;
-  detailPenulis.textContent = data.penulis;
-  detailTanggal.textContent = formatTanggalLaporan(data.tanggal);
-  detailPrioritas.textContent = data.prioritas;
-  detailIsi.textContent = data.isi;
 
-  const detailProyekTerkaitEl = document.getElementById('detail-proyek-terkait');
-  if (detailProyekTerkaitEl) detailProyekTerkaitEl.textContent = data.Nama_proyek || 'Tidak terkait proyek';
+  const persen = Number(data.status) || 0;
+let labelBadge = 'Belum Mulai';
+let classBadge = 'pending';
+if (persen >= 100) { labelBadge = 'Selesai'; classBadge = 'selesai'; }
+else if (persen > 0) { labelBadge = 'Sedang Berjalan'; classBadge = 'review'; }
+detailBadge.textContent = labelBadge;
+detailBadge.className = "badge " + classBadge;
 
-  detailFile.innerHTML = `<i class="fa-solid fa-paperclip"></i> ${data.file || '-'}`;
-  detailBadge.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
-  detailBadge.className = "badge " + data.status;
+  hitungDanRenderProgres(data);
+}
+
+let chartProgresInstance = null;
+
+function hitungDanRenderProgres(data) {
+  const daftarSatuProyek = data.id_proyek
+    ? laporanData.filter(l => String(l.id_proyek) === String(data.id_proyek))
+    : laporanData.slice();
+
+  daftarSatuProyek.sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
+
+  const labels = daftarSatuProyek.map(l => formatTanggalLaporan(l.tanggal));
+const persenData = daftarSatuProyek.map(l => Number(l.status) || 0);
+
+  const current = persenData.length ? persenData[persenData.length - 1] : 0;
+  const rata = persenData.length
+    ? Math.round(persenData.reduce((a, b) => a + b, 0) / persenData.length)
+    : 0;
+  const selesaiCount = daftarSatuProyek.filter(l => Number(l.status) >= 100).length;
+
+  document.getElementById('progres-current').textContent = current + '%';
+  document.getElementById('progres-avg').textContent = rata + '%';
+  document.getElementById('progres-selesai').textContent = selesaiCount + '/' + daftarSatuProyek.length;
+
+  renderChartProgres(labels, persenData);
+}
+
+function renderChartProgres(labels, data) {
+  const canvas = document.getElementById('progresChart');
+  if (!canvas || typeof Chart === 'undefined') return;
+  if (chartProgresInstance) chartProgresInstance.destroy();
+
+  chartProgresInstance = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Progres (%)',
+        data,
+        borderColor: '#4f46e5',
+        backgroundColor: 'rgba(79,70,229,0.1)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 4,
+        pointBackgroundColor: '#4f46e5',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { min: 0, max: 100, ticks: { callback: v => v + '%' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
 }
 
 function formatTanggalLaporan(tanggalISO) {
@@ -1245,7 +1301,7 @@ function formatTanggalLaporan(tanggalISO) {
 
 /* ---------- 4d. Cari laporan ---------- */
 /* ---------- 4d. Cari laporan + filter prioritas (digabung, tidak saling menimpa) ---------- */
-let prioritasAktifLaporan = 'semua';
+let proyekAktifLaporan = 'semua';
 
 function terapkanFilterLaporan() {
   const searchEl = document.getElementById('searchLaporan');
@@ -1257,12 +1313,11 @@ function terapkanFilterLaporan() {
     if (!data) return;
 
     const judul = data.judul.toLowerCase();
-    const prioritasItem = (data.prioritas || '').toLowerCase().trim();
 
     const cocokKeyword = judul.includes(keyword);
-    const cocokPrioritas = prioritasAktifLaporan === 'semua' || prioritasItem === prioritasAktifLaporan;
+    const cocokProyek = proyekAktifLaporan === 'semua' || String(data.id_proyek) === String(proyekAktifLaporan);
 
-    item.style.display = (cocokKeyword && cocokPrioritas) ? '' : 'none';
+    item.style.display = (cocokKeyword && cocokProyek) ? '' : 'none';
   });
 }
 
@@ -1295,8 +1350,7 @@ function bukaFormLaporan() {
   modeEditLaporan = null;
   document.getElementById('judulLaporan').value = '';
   document.getElementById('penulisLaporan').value = '';
-  document.getElementById('prioritasLaporan').value = 'Rendah';
-  document.getElementById('statusLaporan').value = 'pending';
+  document.getElementById('statusLaporan').value = 0;   // ganti dari 'pending' ke 0
   document.getElementById('isiLaporan').value = '';
   muatDropdownProyekLaporan();
   document.getElementById('modal-laporan').classList.add('active');
@@ -1308,9 +1362,9 @@ function editLaporan() {
   if (!data) return;
   modeEditLaporan = data.id;
 
+  document.getElementById('tanggalLaporan').value = data.tanggal.split('T')[0];
   document.getElementById('judulLaporan').value = data.judul;
   document.getElementById('penulisLaporan').value = data.penulis;
-  document.getElementById('prioritasLaporan').value = data.prioritas;
   document.getElementById('statusLaporan').value = data.status;
   document.getElementById('isiLaporan').value = data.isi;
   muatDropdownProyekLaporan(data.id_proyek);
@@ -1335,7 +1389,6 @@ async function hapusLaporan() {
 async function simpanLaporan() {
   const judul = document.getElementById('judulLaporan').value.trim();
   const penulis = document.getElementById('penulisLaporan').value.trim();
-  const prioritas = document.getElementById('prioritasLaporan').value;
   const status = document.getElementById('statusLaporan').value;
   const isi = document.getElementById('isiLaporan').value.trim();
   const fileInput = document.getElementById('fileLaporan');
@@ -1346,8 +1399,9 @@ async function simpanLaporan() {
     return;
   }
 
+const tanggalInput = document.getElementById('tanggalLaporan').value;
   const tanggalSekarang = new Date().toISOString().split('T')[0];
-  const dataLamaTanggal = modeEditLaporan ? laporanData[laporanAktifIndex].tanggal.split('T')[0] : tanggalSekarang;
+  const dataLamaTanggal = tanggalInput || tanggalSekarang;
   const dataLamaFile = modeEditLaporan ? laporanData[laporanAktifIndex].file : '-';
 
   const idProyekTerkait = document.getElementById('proyekTerkaitLaporan')?.value || null;
@@ -1355,10 +1409,10 @@ async function simpanLaporan() {
   const bodyLaporan = {
     judul, penulis,
     tanggal: dataLamaTanggal,
-    prioritas, status, isi,
+    status, isi,
     file: namaFile !== '-' ? namaFile : dataLamaFile,
     id_proyek: idProyekTerkait
-  };
+};
   
   try {
     let response;
@@ -1399,8 +1453,7 @@ function tutupModalLaporan() {
   document.getElementById('judulLaporan').value = '';
   document.getElementById('penulisLaporan').value = '';
   document.getElementById('isiLaporan').value = '';
-  document.getElementById('prioritasLaporan').value = 'Rendah';
-  document.getElementById('statusLaporan').value = 'pending';
+  document.getElementById('statusLaporan').value = 0;
 
   const fileEl = document.getElementById('fileLaporan');
   if (fileEl) fileEl.value = '';
@@ -1419,13 +1472,8 @@ if (fileLaporanInput) {
 }
 
 
-function filterLaporan(btn, prioritas) {
-    // ubah tombol aktif
-    document.querySelectorAll('.filter-chip').forEach(chip => chip.classList.remove('active'));
-    btn.classList.add('active');
-
-    // simpan prioritas yang sedang aktif, lalu terapkan bareng keyword search
-    prioritasAktifLaporan = prioritas;
+function filterLaporanByProyek(idProyek) {
+    proyekAktifLaporan = idProyek;
     terapkanFilterLaporan();
 }
 
@@ -1664,14 +1712,32 @@ function bukaFormLaporan() {
   modeEditLaporan = null;
   document.getElementById('judulLaporan').value = '';
   document.getElementById('penulisLaporan').value = '';
-  document.getElementById('prioritasLaporan').value = 'Rendah';
-  document.getElementById('statusLaporan').value = 'pending';
+  document.getElementById('statusLaporan').value = 0;   // ganti dari 'pending' ke 0
   document.getElementById('isiLaporan').value = '';
   muatDropdownProyekLaporan();
   document.getElementById('modal-laporan').classList.add('active');
 }
 
 
+
+/* ---------- 4a-3. Muat dropdown proyek untuk FILTER daftar laporan ---------- */
+async function muatDropdownFilterProyekLaporan() {
+  const select = document.getElementById('filterProyekLaporan');
+  if (!select) return;
+  try {
+    const response = await fetch('http://localhost:3000/api/proyek');
+    const data = await response.json();
+    select.innerHTML = '<option value="semua">Semua projek</option>';
+    data.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = p.Nama_proyek;
+      select.appendChild(opt);
+    });
+  } catch (error) {
+    console.error('Gagal memuat daftar proyek untuk filter laporan:', error);
+  }
+}
 
 /* =====================================================================
    4. STATISTIK OTOMATIS (Dashboard <-> Proyek via localStorage)

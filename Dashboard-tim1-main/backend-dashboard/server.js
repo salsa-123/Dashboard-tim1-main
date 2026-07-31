@@ -60,7 +60,8 @@ async function startServer() {
         });
 
         app.post('/api/laporan', async (req, res) => {
-            const { judul, penulis, tanggal, prioritas, status, isi, file, id_proyek } = req.body;
+            const { judul, penulis, tanggal, status, isi, file, id_proyek } = req.body;
+            const prioritas = req.body.prioritas || 'Rendah';
             await db.query('INSERT INTO laporan (judul, penulis, tanggal, prioritas, status, isi, file, id_proyek) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [judul, penulis, tanggal, prioritas, status, isi, file, id_proyek || null]);
             res.json({ message: "Laporan berhasil ditambahkan" });
         });

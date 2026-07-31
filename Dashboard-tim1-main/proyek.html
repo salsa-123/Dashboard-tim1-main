@@ -85,191 +85,44 @@
   <div class="panel">
     
     <div class="proyek-header-container">
-      <h2>Daftar Seluruh Proyek</h2>
-      <div id="info-korelasi" style="font-size: 14px; color: #636e72; margin-bottom: 10px;">
-        <div class="search-container">
-          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#94a3b8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <input type="text" id="searchProyek" placeholder="Cari proyek..." class="search-input">
-        </div>
+      <div class="proyek-header-top">
+        <h2>Daftar Seluruh Proyek</h2>
+        <button class="btn-tambah-proyek">+ Tambah Proyek</button>
       </div>
-      <button class="btn-tambah-proyek">+ Tambah Proyek</button>
+
+      <div class="tugas-toolbar">
+        <div class="tugas-search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="searchProyek" placeholder="Cari nama proyek atau penanggung jawab...">
+        </div>
+        <select id="filterStatusProyek" class="tugas-filter-select">
+          <option value="">Semua Status</option>
+          <option value="selesai">Selesai</option>
+          <option value="proses">Sedang Berjalan</option>
+          <option value="belum">Belum Mulai</option>
+        </select>
+        <select id="filterProyekProyek" class="tugas-filter-select">
+          <option value="">Semua Proyek</option>
+        </select>
+      </div>
     </div>
-
-    <table class="project-table">
-      <thead>
-        <tr>
-          <th>Nama Proyek</th>
-          <th>Status</th>
-          <th>PJ</th>
-          <th>Deadline</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody>
-
-  <tbody>
-
-  <!-- PROYEK 1 -->
-<tr>
-    <td>Dashboard Tim 1</td>
-    <td><span class="badge status-berjalan">Berjalan</span></td>
-    <td>Budi Santoso</td>
-    <td>22 Juli 2026</td>
-    <td>
-        <div class="aksi-buttons">
-            <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
-                data-nama="Dashboard Tim 1" 
-                data-status="Berjalan" 
-                data-pj="Budi Santoso" 
-                data-deadline="22 Juli 2026" 
-                data-logo="emblem/logo1.jpg" 
-                data-tugas="Mengembangkan dashboard utama tim.">view</button>
-
-            <button class="btn-icon btn-edit-row" title="Edit" onclick="editProyek(this)">
-                <i class="fa-solid fa-pen"></i>
-            </button>
-
-            <button class="btn-icon btn-hapus-row" title="Hapus" onclick="hapusProyek(this)">
-                <i class="fa-solid fa-trash"></i>
-            </button>
-        </div>
-    </td>
-</tr>
-
-  <!-- PROYEK 2 -->
-<tr>
-    <td>Redesign Logo Tim</td>
-    <td><span class="badge status-selesai">Selesai</span></td>
-    <td>Citra Dewi</td>
-    <td>20 Juli 2026</td>
-    <td>
-        <div class="aksi-buttons">
-            <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
-                data-nama="Redesign Logo Tim" 
-                data-status="Selesai" 
-                data-pj="Citra Dewi" 
-                data-deadline="20 Juli 2026" 
-                data-logo="emblem/1.jpg" 
-                data-tugas="Membuat ulang identitas visual logo Tim 1.">view</button>
-
-            <button class="btn-icon btn-edit-row" title="Edit" onclick="editProyek(this)">
-                <i class="fa-solid fa-pen"></i>
-            </button>
-
-            <button class="btn-icon btn-hapus-row" title="Hapus" onclick="hapusProyek(this)">
-                <i class="fa-solid fa-trash"></i>
-            </button>
-        </div>
-    </td>
-</tr>
-
-<!-- PROYEK 3 -->
-<tr>
-    <td>Integrasi Database</td>
-    <td><span class="badge status-belum">Belum Mulai</span></td>
-    <td>Andi Wijaya</td>
-    <td>30 Juli 2026</td>
-    <td>
-        <div class="aksi-buttons">
-            <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
-                data-nama="Integrasi Database" 
-                data-status="Belum Mulai" 
-                data-pj="Andi Wijaya" 
-                data-deadline="30 Juli 2026" 
-                data-logo="emblem/2.jpg" 
-                data-tugas="Menghubungkan dashboard dengan database tugas.">view</button>
-
-            <button class="btn-icon btn-edit-row" title="Edit" onclick="editProyek(this)">
-                <i class="fa-solid fa-pen"></i>
-            </button>
-
-            <button class="btn-icon btn-hapus-row" title="Hapus" onclick="hapusProyek(this)">
-                <i class="fa-solid fa-trash"></i>
-            </button>
-        </div>
-    </td>
-</tr>
-
-<!-- PROYEK 4 -->
-<tr>
-    <td>Aplikasi Mobile Tim</td>
-    <td><span class="badge status-berjalan">Berjalan</span></td>
-    <td>Diana Putri</td>
-    <td>28 Juli 2026</td>
-    <td>
-        <div class="aksi-buttons">
-            <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
-                data-nama="Aplikasi Mobile Tim" 
-                data-status="Berjalan" 
-                data-pj="Diana Putri" 
-                data-deadline="28 Juli 2026" 
-                data-logo="emblem/3.jpg" 
-                data-tugas="Membangun aplikasi mobile pendamping dashboard.">view</button>
-
-            <button class="btn-icon btn-edit-row" title="Edit" onclick="editProyek(this)">
-                <i class="fa-solid fa-pen"></i>
-            </button>
-
-            <button class="btn-icon btn-hapus-row" title="Hapus" onclick="hapusProyek(this)">
-                <i class="fa-solid fa-trash"></i>
-            </button>
-        </div>
-    </td>
-</tr>
-
-<!-- PROYEK 5 -->
-<tr>
-    <td>Optimasi Server</td>
-    <td><span class="badge status-berjalan">Berjalan</span></td>
-    <td>Eko Prasetyo</td>
-    <td>5 Agustus 2026</td>
-    <td>
-        <div class="aksi-buttons">
-            <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
-                data-nama="Optimasi Server" 
-                data-status="Berjalan" 
-                data-pj="Eko Prasetyo" 
-                data-deadline="5 Agustus 2026" 
-                data-logo="emblem/4.jpg" 
-                data-tugas="Meningkatkan performa dan kecepatan server backend.">view</button>
-
-            <button class="btn-icon btn-edit-row" title="Edit" onclick="editProyek(this)">
-                <i class="fa-solid fa-pen"></i>
-            </button>
-
-            <button class="btn-icon btn-hapus-row" title="Hapus" onclick="hapusProyek(this)">
-                <i class="fa-solid fa-trash"></i>
-            </button>
-        </div>
-    </td>
-</tr>
-
-<!-- PROYEK 6 -->
-<tr>
-    <td>Dokumentasi Sistem</td>
-    <td><span class="badge status-belum">Belum Mulai</span></td>
-    <td>Fajar Hidayat</td>
-    <td>15 Agustus 2026</td>
-    <td>
-        <div class="aksi-buttons">
-            <button class="btn-view" onclick="tampilkanDetailProyek(this)" 
-                data-nama="Dokumentasi Sistem" 
-                data-status="Belum Mulai" 
-                data-pj="Fajar Hidayat" 
-                data-deadline="15 Agustus 2026" 
-                data-logo="emblem/5.jpg" 
-                data-tugas="Menyusun dokumentasi teknis seluruh modul sistem.">view</button>
-
-            <button class="btn-icon btn-edit-row" title="Edit" onclick="editProyek(this)">
-                <i class="fa-solid fa-pen"></i>
-            </button>
-
-            <button class="btn-icon btn-hapus-row" title="Hapus" onclick="hapusProyek(this)">
-                <i class="fa-solid fa-trash"></i>
-            </button>
-        </div>
+<div class="project-table-wrapper">
+  <table class="project-table">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Nama Proyek</th>
+        <th>Status</th>
+        <th>PJ</th>
+        <th>Deadline</th>
+        <th>Aksi 1</th>
+        <th>Aksi 2</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
     </td>
 </tr>
 
@@ -288,23 +141,11 @@
 
   <!-- KONTEN DUA KOLOM -->
   <div class="main-layout">
-    <!---kiri-->
-    <div class="detail-sidebar">
-
-    <div class="detail-overlay">
-
-       <div class="logo-box">
-            <img id="detail-logo" src="emblem/logo-dashboard.png" alt="Logo">
-        </div>
-
-        <h3 id="detail-nama">Dashboard Tim 1</h3>
-
-        <span class="status berjalan" id="detail-status">
-            Berjalan
-        </span>
-
-    </div>
-
+    <div class="detail-sidebar" id="detail-sidebar">
+  <div class="detail-overlay">
+      <h3 id="detail-nama">Dashboard Tim 1</h3>
+      <span class="status berjalan" id="detail-status">Berjalan</span>
+  </div>
 </div>
     <!-- KARTU KANAN -->
     <main class="detail-content">

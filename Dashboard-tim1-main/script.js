@@ -282,7 +282,57 @@ if (searchInput) {
 }
 
 
+function setupFilterProyek() {
+  const searchInput = document.getElementById('searchProyek');
+  const filterStatus = document.getElementById('filterStatusProyek');
+  const filterProyek = document.getElementById('filterProyekProyek');
 
+  if (!searchInput || !filterStatus || !filterProyek) return;
+
+  function terapkanFilter() {
+    const keyword = searchInput.value.toLowerCase();
+    const statusFilter = filterStatus.value.toLowerCase();
+    const proyekFilter = filterProyek.value.toLowerCase();
+
+    const rows = document.querySelectorAll('.project-table tbody tr');
+
+    rows.forEach(row => {
+      const nama = row.children[0]?.textContent.toLowerCase() || '';
+      const status = row.children[1]?.textContent.toLowerCase() || '';
+      const pj = row.children[2]?.textContent.toLowerCase() || '';
+
+      const cocokKeyword = nama.includes(keyword) || pj.includes(keyword);
+      const cocokStatus = !statusFilter || status.includes(statusFilter);
+      const cocokProyek = !proyekFilter || nama === proyekFilter;
+
+      row.style.display = (cocokKeyword && cocokStatus && cocokProyek) ? '' : 'none';
+    });
+  }
+
+  searchInput.addEventListener('input', terapkanFilter);
+  filterStatus.addEventListener('change', terapkanFilter);
+  filterProyek.addEventListener('change', terapkanFilter);
+}
+
+function isiDropdownProyek() {
+  const filterProyek = document.getElementById('filterProyekProyek');
+  if (!filterProyek) return;
+
+  const rows = document.querySelectorAll('.project-table tbody tr');
+  const namaSet = new Set();
+
+  rows.forEach(row => {
+    const nama = row.children[1]?.textContent.trim();
+    if (nama) namaSet.add(nama);
+  });
+
+  namaSet.forEach(nama => {
+    const opt = document.createElement('option');
+    opt.value = nama.toLowerCase();
+    opt.textContent = nama;
+    filterProyek.appendChild(opt);
+  });
+}
 
 
 // ================= 2. FUNGSI TAMBAH DATA PROYEK =================
@@ -313,34 +363,36 @@ async function loadProyek() {
         const tbody = document.querySelector('tbody');
         if (tbody) {
             tbody.innerHTML = ''; // Kosongkan tabel
-            data.forEach(item => {
-                tbody.innerHTML += `
-                    <tr><td>${item.Nama_proyek}</td>
+            data.forEach((item, index) => {
+                 tbody.innerHTML += `
+                 <tr>
+                   <td>${index + 1}</td>
+                       <td>${item.Nama_proyek}</td>
                         <td><span class="badge ${getBadgeClass(item.Status)}">${item.Status}</span></td>
                         <td>${item.Pj}</td>
                         <td>${formatTanggal(item.Deadline)}</td>
-                        <td>
-                            <div class="aksi-buttons">
-                                <button class="btn-view" onclick="tampilkanDetailProyek(this)"
-                                    data-id="${item.id}"
-                                    data-nama="${item.Nama_proyek}"
-                                    data-status="${item.Status}"
-                                    data-pj="${item.Pj}"
-                                    data-deadline="${formatTanggal(item.Deadline)}"
-                                    data-logo="https://picsum.photos/seed/proyek${item.id}/400/600"
-                                    data-tugas="${item.Deskripsi || ''}">
-                                    View
-                                </button>
-
-                                <button class="btn-icon btn-edit-row" title="Edit" onclick="editProyek(this)">
-                                    <i class="fa-solid fa-pen"></i>
-                                </button>
-
-                                <button class="btn-icon btn-hapus-row" title="Hapus" onclick="hapusProyek(this, ${item.id})">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                       <td>
+                  <button class="btn-view" onclick="tampilkanDetailProyek(this)"
+                    data-id="${item.id}"
+                    data-nama="${item.Nama_proyek}"
+                    data-status="${item.Status}"
+                    data-pj="${item.Pj}"
+                    data-deadline="${formatTanggal(item.Deadline)}"
+                    data-logo="https://picsum.photos/seed/proyek${item.id}/400/600"
+                    data-tugas="${item.Deskripsi || ''}">
+                    View
+                  </button>
+                </td>
+                <td>
+                  <div class="aksi-buttons">
+                    <button class="btn-icon btn-edit-row" title="Edit" onclick="editProyek(this)">
+                      <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button class="btn-icon btn-hapus-row" title="Hapus" onclick="hapusProyek(this)">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
                     </tr>
                 `;
             });
@@ -397,9 +449,11 @@ function setupFormTambahProyek() {
     });
 }
 // Jalankan fungsi saat halaman dimuat
-document.addEventListener("DOMContentLoaded", () => {
-    loadProyek();
-    setupFormTambahProyek();
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadProyek();
+  setupFormTambahProyek();
+  setupFilterProyek();
+  isiDropdownProyek();
 });
 
 
@@ -441,7 +495,8 @@ function isiDetailProyek(data) {
     const tgl = new Date(data.deadline);
     document.getElementById('detail-deadline').textContent = isNaN(tgl) ? (data.deadline || '-') : tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
   }
-  if (document.getElementById('detail-logo')) document.getElementById('detail-logo').src = data.logo || '';
+const sidebarEl = document.getElementById('detail-sidebar');
+if (sidebarEl) sidebarEl.style.backgroundImage = `url(${data.logo})`;
   if (document.getElementById('detail-tugas')) document.getElementById('detail-tugas').textContent = data.tugas || '-';
 muatLaporanTerkaitProyek(data.id);
 muatTugasTerkaitProyek(data.id);

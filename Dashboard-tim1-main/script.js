@@ -181,7 +181,9 @@ async function muatKartuProyekDashboard() {
 
     track.innerHTML = proyekList.map(p => {
       const badgeClass = p.Status === 'Selesai' ? 'badge-done' : (p.Status === 'Berjalan' ? 'badge-progress' : 'badge-pending');
-      const percent = p.Status === 'Selesai' ? 100 : (p.Status === 'Berjalan' ? 50 : 0);
+      const totalTugas = Number(p.total_tugas) || 0;
+      const tugasSelesai = Number(p.tugas_selesai) || 0;
+      const percent = totalTugas > 0 ? Math.round((tugasSelesai / totalTugas) * 100) : 0;
       const bg = `https://picsum.photos/seed/proyek${p.id}/400/600`;
 
       return `
@@ -324,7 +326,9 @@ async function loadProyek() {
                                     data-nama="${item.Nama_proyek}"
                                     data-status="${item.Status}"
                                     data-pj="${item.Pj}"
-                                    data-deadline="${formatTanggal(item.Deadline)}">
+                                    data-deadline="${formatTanggal(item.Deadline)}"
+                                    data-logo="https://picsum.photos/seed/proyek${item.id}/400/600"
+                                    data-tugas="${item.Deskripsi || ''}">
                                     View
                                 </button>
 
@@ -354,12 +358,11 @@ function setupFormTambahProyek() {
     btnSimpan.addEventListener("click", async function(e) {
         e.preventDefault();
 
-        const payload = {
+      const payload = {
             Nama_proyek: document.querySelector("#inputNamaProyek")?.value,
             Pj: document.querySelector("#inputPJProyek")?.value,
             Deadline: document.querySelector("#inputDeadlineProyek")?.value,
-            Status: document.querySelector("#inputStatusProyek")?.value,
-            Deskripsi: document.querySelector("#inputDeskProyek")?.value
+            Status: document.querySelector("#inputStatusProyek")?.value
         };
 
         try {
@@ -659,7 +662,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.getElementById('inputNamaProyek').value = currentProyekData.nama || '';
             document.getElementById('inputPJProyek').value = currentProyekData.pj || '';
-            document.getElementById('inputDeskProyek').value = currentProyekData.tugas || '';
+
 
             document.getElementById('inputDeadlineProyek').value = tanggalIndoKeInputDate(currentProyekData.deadline);
 
@@ -863,6 +866,7 @@ async function muatTugasDariDatabase() {
       const row = document.createElement('tr');
       row.setAttribute('data-status', statusKey);
       row.setAttribute('data-id', tugas.id); // simpan id database di baris ini
+      row.setAttribute('data-id-proyek', tugas.id_proyek || ''); // simpan proyek terkait
     row.innerHTML = `
     <td></td>
     <td>${tugas.nama_tugas}</td>
@@ -881,6 +885,7 @@ async function muatTugasDariDatabase() {
 
     renomorTugas();
     updateStatTugas();
+    terapkanFilterTugas();
   } catch (error) {
     console.error('Gagal ambil data tugas:', error);
     alert('Gagal terhubung ke server. Pastikan backend (node server.js) sedang jalan.');
@@ -925,6 +930,30 @@ async function muatDropdownProyek() {
 }
 
 document.addEventListener('DOMContentLoaded', muatDropdownProyek);
+
+/* ---------- 3h-2. Isi dropdown FILTER Proyek Terkait (kolom tabel tugas) ---------- */
+async function muatFilterProyekTugas() {
+  const filterEl = document.getElementById('filterProyekTugas');
+  if (!filterEl) return;
+  try {
+    const res = await fetch('http://localhost:3000/api/proyek');
+    const proyekList = await res.json();
+
+    filterEl.innerHTML = '<option value="">Semua Proyek</option>';
+
+    proyekList.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = p.Nama_proyek;
+      filterEl.appendChild(opt);
+    });
+  } catch (error) {
+    console.error('Gagal memuat filter proyek:', error);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', muatFilterProyekTugas);
+
 let editingRow = null; // null = mode tambah, berisi <tr> = mode edit
 
 function resetModalTugas() {
@@ -1033,6 +1062,7 @@ if (taskTableBody) {
       inputNamaTugas.value = nama;
 
       inputStatusTugas.value = statusKeyToValue[statusKey] || 'pending';
+      if (inputProyekTugas) inputProyekTugas.value = row.getAttribute('data-id-proyek') || '';
 
       // Konversi "15 Jul 2026" -> format input date (yyyy-mm-dd)
       const parsedDate = new Date(deadlineText);
@@ -1054,22 +1084,26 @@ if (taskTableBody) {
 /* ---------- 3h. Search & filter status tugas ---------- */
 const searchTugas = document.getElementById('searchTugas');
 const filterStatusTugas = document.getElementById('filterStatusTugas');
+const filterProyekTugas = document.getElementById('filterProyekTugas');
 const tugasEmpty = document.getElementById('tugasEmpty');
 
 function terapkanFilterTugas() {
   if (!taskTableBody) return;
   const keyword = searchTugas ? searchTugas.value.toLowerCase() : '';
   const statusFilter = filterStatusTugas ? filterStatusTugas.value : '';
+  const proyekFilter = filterProyekTugas ? filterProyekTugas.value : '';
   const rows = taskTableBody.querySelectorAll('tr');
   let visibleCount = 0;
 
   rows.forEach(row => {
     const teks = row.textContent.toLowerCase();
     const statusRow = row.getAttribute('data-status');
+    const idProyekRow = row.getAttribute('data-id-proyek') || '';
     const cocokKeyword = teks.includes(keyword);
     const cocokStatus = !statusFilter || statusRow === statusFilter;
+    const cocokProyek = !proyekFilter || idProyekRow === proyekFilter;
 
-    if (cocokKeyword && cocokStatus) {
+    if (cocokKeyword && cocokStatus && cocokProyek) {
       row.classList.remove('row-hidden');
       visibleCount++;
     } else {
@@ -1082,6 +1116,7 @@ function terapkanFilterTugas() {
 
 if (searchTugas) searchTugas.addEventListener('keyup', terapkanFilterTugas);
 if (filterStatusTugas) filterStatusTugas.addEventListener('change', terapkanFilterTugas);
+if (filterProyekTugas) filterProyekTugas.addEventListener('change', terapkanFilterTugas);
 
 /* ---------- 3i. Sorting kolom tabel tugas (klik header) ---------- */
 document.querySelectorAll('#tabelTugas .th-sort').forEach(th => {
@@ -1700,9 +1735,10 @@ function editProyek(btn) {
   }
 
   modalTitle.textContent = "Edit Proyek";
-  document.getElementById("inputNamaProyek").value = viewBtn.dataset.nama || "";
-  document.getElementById("inputPJProyek").value = viewBtn.dataset.pj || "";
-  document.getElementById("inputDeskProyek").value = viewBtn.dataset.tugas || "";
+ 
+ document.getElementById("inputNamaProyek").value = viewBtn.dataset.nama || "";
+
+ document.getElementById("inputPJProyek").value = viewBtn.dataset.pj || "";
   document.getElementById("inputDeadlineProyek").value = tanggalIndoKeInputDate(viewBtn.dataset.deadline);
   document.getElementById("inputStatusProyek").value = viewBtn.dataset.status || "Belum Mulai";
 

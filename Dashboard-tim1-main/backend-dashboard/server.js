@@ -113,20 +113,27 @@ async function startServer() {
 
         // ======================= ENDPOINT PROYEK ======================= //
         app.get("/api/proyek", async (req, res) => {
-            try {
-                const [rows] = await db.query("SELECT * FROM proyek ORDER BY id DESC");
-                res.json(rows);
-            } catch (error) {
-                res.status(500).json({ message: "Gagal mengambil data", error: error.message });
-            }
-        });
+    try {
+        const [rows] = await db.query(`
+            SELECT p.*,
+                (SELECT COUNT(*) FROM tugas t WHERE t.id_proyek = p.id) AS total_tugas,
+                (SELECT COUNT(*) FROM tugas t WHERE t.id_proyek = p.id AND t.status = 'Selesai') AS tugas_selesai
+            FROM proyek p
+            ORDER BY p.id DESC
+        `);
+        res.json(rows);
+    } catch (error) {
+        res.status(500).json({ message: "Gagal mengambil data", error: error.message });
+    }
+});
+        
 
         app.post("/api/proyek", async (req, res) => {
             try {
-                const { Nama_proyek, Status, Pj, Deadline, Deskripsi } = req.body;
+                const { Nama_proyek, Status, Pj, Deadline } = req.body;
                 await db.query(
-                    "INSERT INTO proyek (Nama_proyek, Status, Pj, Deadline, Deskripsi) VALUES (?, ?, ?, ?, ?)",
-                    [Nama_proyek, Status, Pj, Deadline, Deskripsi]
+                    "INSERT INTO proyek (Nama_proyek, Status, Pj, Deadline) VALUES (?, ?, ?, ?)",
+                    [Nama_proyek, Status, Pj, Deadline]
                 );
                 res.status(201).json({ message: "Proyek berhasil ditambahkan" });
             } catch (error) {
@@ -163,14 +170,15 @@ async function startServer() {
             } catch (error) {
                 res.status(500).json({ message: "Gagal mengambil laporan proyek", error: error.message });
             }
-            app.get("/api/proyek/:id/tugas", async (req, res) => {
-  try {
-    const [rows] = await db.query("SELECT * FROM tugas WHERE id_proyek = ? ORDER BY deadline ASC", [req.params.id]);
-    res.json(rows);
-  } catch (error) {
-    res.status(500).json({ message: "Gagal mengambil tugas proyek", error: error.message });
-  }
-});
+        });
+
+        app.get("/api/proyek/:id/tugas", async (req, res) => {
+            try {
+                const [rows] = await db.query("SELECT * FROM tugas WHERE id_proyek = ? ORDER BY deadline ASC", [req.params.id]);
+                res.json(rows);
+            } catch (error) {
+                res.status(500).json({ message: "Gagal mengambil tugas proyek", error: error.message });
+            }
         });
 
 

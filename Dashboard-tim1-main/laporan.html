@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
   </head>
   <body>
     <div class="app">
@@ -121,11 +122,10 @@
 
                 </div>
 
-                <div class="filter-row">
-    <button class="filter-chip active" data-prioritas="semua" onclick="filterLaporan(this,'semua')">Semua</button>
-    <button class="filter-chip" data-prioritas="tinggi" onclick="filterLaporan(this,'tinggi')">Tinggi</button>
-    <button class="filter-chip" data-prioritas="sedang" onclick="filterLaporan(this,'sedang')">Sedang</button>
-    <button class="filter-chip" data-prioritas="rendah" onclick="filterLaporan(this,'rendah')">Rendah</button>
+                <div class="project-filter-wrap">
+    <select id="filterProyekLaporan" class="filter-select" onchange="filterLaporanByProyek(this.value)">
+        <option value="semua">Semua projek</option>
+    </select>
 </div>
 
                 <div class="laporan-list">
@@ -271,67 +271,31 @@
 
                     </div>
 
-                    <!-- Informasi -->
+                    <!-- Progres -->
 
-                    <div class="detail-info">
+                    <div class="detail-progress">
 
-                        <div>
+                        <h4>Progres Laporan</h4>
 
-                            <small>Penulis</small>
-
-                            <p>Puja Shinta</p>
-
+                        <div class="progress-stats">
+                            <div class="stat-box">
+                                <small>Progres saat ini</small>
+                                <p id="progres-current">-</p>
+                            </div>
+                            <div class="stat-box">
+                                <small>Rata-rata</small>
+                                <p id="progres-avg">-</p>
+                            </div>
+                            <div class="stat-box">
+                                <small>Laporan selesai</small>
+                                <p id="progres-selesai">-</p>
+                            </div>
                         </div>
 
-                        <div>
-
-                            <small>Tanggal</small>
-
-                            <p>16 Juli 2026</p>
-
+                        <div class="progress-chart-wrap">
+                            <canvas id="progresChart"></canvas>
                         </div>
 
-                        <div>
-
-                            <small>Prioritas</small>
-
-                            <p>Tinggi</p>
-
-                        </div>
-<div>
-        <small>Proyek Terkait</small>
-        <p id="detail-proyek-terkait">-</p>
-    </div>
-    
-                    </div>
-
-                    <!-- Isi -->
-
-                    <div class="detail-content">
-
-                        <h4>Ringkasan</h4>
-
-                        <p>
-
-                            Dashboard proyek berhasil diperbarui dengan
-                            tampilan baru yang lebih modern. Sidebar,
-                            halaman tugas, serta halaman pengaturan telah
-                            selesai dikembangkan. Selanjutnya akan dilakukan
-                            pengembangan halaman laporan dan integrasi data.
-
-                        </p>
-
-                    </div>
-
-                    <!-- Lampiran -->
-
-                    <div class="detail-file">
-
-                        <i class="fa-solid fa-paperclip"></i>
-
-                        dashboard-ui.pdf
-
-                
                     </div>
 
                 </div>
@@ -364,6 +328,11 @@
                 <input type="text" id="penulisLaporan" placeholder="Nama lengkap kamu" class="modal-input">
             </div>
 
+            <div class="form-group">
+                <label for="tanggalLaporan">Tanggal</label>
+                <input type="date" id="tanggalLaporan" class="modal-input">
+            </div>
+
 <div class="form-group">
     <label for="proyekTerkaitLaporan">Proyek Terkait</label>
     <select id="proyekTerkaitLaporan" class="modal-input">
@@ -371,40 +340,33 @@
     </select>
 </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="prioritasLaporan">Prioritas</label>
-                    <select id="prioritasLaporan" class="modal-input">
-                        <option value="Rendah">Rendah</option>
-                        <option value="Sedang">Sedang</option>
-                        <option value="Tinggi">Tinggi</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="statusLaporan">Status</label>
-                    <select id="statusLaporan" class="modal-input">
-                        <option value="pending">Belum Mulai</option>
-                        <option value="review">Sedang Review</option>
-                        <option value="selesai">Selesai</option>
-                    </select>
-                </div>
-            </div>
-
             <div class="form-group">
-                <label for="isiLaporan">Isi Laporan</label>
-                <textarea id="isiLaporan" placeholder="Tulis ringkasan atau detail laporan di sini..." class="modal-textarea"></textarea>
-            </div>
+    <label for="statusLaporan">Progres (%)</label>
+    <input
+        type="number"
+        id="statusLaporan"
+        class="modal-input"
+        min="0"
+        max="100"
+        step="5"
+        placeholder="Contoh: 60"
+        value="0"
+    >
+</div>
 
-            <div class="form-group">
-                <label>Lampiran</label>
-                <label for="fileLaporan" class="file-upload-box">
-                    <i class="fa-solid fa-paperclip"></i>
-                    <span id="fileLaporanNama">Klik untuk lampirkan file</span>
-                </label>
-                <input type="file" id="fileLaporan" style="display:none;">
-            </div>
-        </div>
+<div class="form-group">
+    <label for="isiLaporan">Isi Laporan</label>
+    <textarea id="isiLaporan" placeholder="Tulis ringkasan atau detail laporan di sini..." class="modal-textarea"></textarea>
+</div>
+
+<div class="form-group">
+    <label>Lampiran</label>
+    <label for="fileLaporan" class="file-upload-box">
+        <i class="fa-solid fa-paperclip"></i>
+        <span id="fileLaporanNama">Klik untuk lampirkan file</span>
+    </label>
+    <input type="file" id="fileLaporan" style="display:none;">
+</div>
 
         <!-- FOOTER (tetap, tidak scroll) -->
         <div class="modal-footer">

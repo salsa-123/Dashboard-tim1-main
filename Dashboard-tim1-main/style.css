@@ -2849,8 +2849,8 @@ body, button, input, select {
   align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
   border-bottom: 1px solid #edf2f7;
 }
 
@@ -3136,6 +3136,75 @@ body, button, input, select {
     background: #eef1ff;
     color: #4548d6;
     border-color: #d6d9ff;
+}
+
+
+
+.detail-progress {
+  margin-top: 0;
+  padding: 25px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+}
+
+.detail-progress h4 { margin: 0 0 18px; font-size: 20px; color: #111827; }
+
+.progress-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.stat-box {
+  padding: 14px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+}
+
+.stat-box small {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.stat-box p { margin: 0; font-size: 20px; font-weight: 700; color: #4f46e5; }
+
+.progress-chart-wrap {
+  position: relative;
+  width: 100%;
+  height: 240px;
+}
+
+
+/* ===== DROPDOWN PILIH PROJEK (pengganti filter prioritas) ===== */
+.project-filter-wrap {
+    margin-bottom: 20px;
+}
+
+.filter-select {
+    width: 100%;
+    height: 48px;
+    padding: 0 40px 0 18px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #1f2937;
+    outline: none;
+    background: #fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M0 0l6 8 6-8z' fill='%236b7280'/></svg>") no-repeat right 16px center;
+    border: 1px solid #dbe3ef;
+    border-radius: 14px;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.filter-select:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, .10);
 }
 
 

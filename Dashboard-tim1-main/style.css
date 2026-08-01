@@ -3252,8 +3252,8 @@ body, button, input, select {
 
 #page-pengaturan .container {
   width: 100%;
-  max-width: 1200px;   /* diperlebar dari 900px, sesuaikan angka ini kalau masih kurang/lebih */
- margin: 0 auto 40px auto;
+  max-width: 700px;
+  margin: 0 auto 40px auto;
 }
 
 #page-pengaturan h1,
@@ -3308,15 +3308,7 @@ body, button, input, select {
   box-shadow: 0 3px 8px rgba(0,0,0,0.15); /* baris baru */
 }
 
-/* Warna & ikon berbeda tiap section, sesuai urutan h3 di HTML */
-#page-pengaturan h3:nth-of-type(1)::before { content: "\f007"; background: linear-gradient(135deg, #4f46e5, #818cf8); }
-#page-pengaturan h3:nth-of-type(2)::before { content: "\f3ed"; background: linear-gradient(135deg, #f97316, #fb923c); }
-#page-pengaturan h3:nth-of-type(3)::before { content: "\f53f"; background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
-#page-pengaturan h3:nth-of-type(4)::before { content: "\f0f3"; background: linear-gradient(135deg, #f59e0b, #fbbf24); }
-#page-pengaturan h3:nth-of-type(5)::before { content: "\f0c0"; background: linear-gradient(135deg, #3b82f6, #60a5fa); }
-#page-pengaturan h3:nth-of-type(6)::before { content: "\f1c0"; background: linear-gradient(135deg, #14b8a6, #2dd4bf); }
-#page-pengaturan h3:nth-of-type(7)::before { content: "\f1e6"; background: linear-gradient(135deg, #ec4899, #f472b6); }
-#page-pengaturan h3:nth-of-type(8)::before { content: "\f013"; background: linear-gradient(135deg, #64748b, #94a3b8); }
+
 
 /* Format Baris Pengaturan (.setting-row) */
 #page-pengaturan .setting-row {
@@ -3567,6 +3559,84 @@ body, button, input, select {
   .settings-layout { flex-direction: column; }
   .settings-tabs { flex-direction: row; overflow-x: auto; width: 100%; }
 }
+
+
+/* =====================================================================
+   TAMBAH PENGGUNA
+   ===================================================================== */
+/* ===== Tambah Pengguna ===== */
+.tp-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 24px 0 14px 0;
+  padding-bottom: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--pg-text);
+  border-bottom: 1px solid var(--pg-border);
+}
+
+.tp-form { max-width: 600px; }
+
+.table-pengguna {
+  width: 100%;
+  border-collapse: collapse;
+  max-width: 700px;
+  table-layout: fixed;   /* baris baru: paksa lebar kolom tetap, tidak ikut isi teks */
+}
+
+.table-pengguna th {
+  text-align: left;
+  padding: 10px;
+  font-size: 12px;
+  color: var(--pg-label);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--pg-border);
+}
+
+/* baris baru: atur proporsi lebar tiap kolom */
+.table-pengguna th:nth-child(1),
+.table-pengguna td:nth-child(1) { width: 30%; }   /* Nama */
+
+.table-pengguna th:nth-child(2),
+.table-pengguna td:nth-child(2) { width: 35%; }   /* Email */
+
+.table-pengguna th:nth-child(3),
+.table-pengguna td:nth-child(3) { width: 20%; }   /* Role */
+
+.table-pengguna th:nth-child(4),
+.table-pengguna td:nth-child(4) { width: 15%; text-align: right; }  /* Aksi */
+
+.table-pengguna td {
+  padding: 12px 10px;
+  font-size: 13.5px;
+  color: var(--pg-text);
+  border-bottom: 1px solid var(--pg-border);
+}
+
+.badge-role {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--pg-accent-soft);
+  color: var(--pg-accent);
+}
+
+.btn-hapus-pengguna {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 14px;
+}
+.btn-hapus-pengguna:hover { color: #dc2626; }
+
+
 
 /* =====================================================================
    13. MODAL (GENERIK)

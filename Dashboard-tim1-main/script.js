@@ -360,7 +360,7 @@ async function loadProyek() {
         const response = await fetch("http://localhost:3000/api/proyek");
         const data = await response.json();
         
-        const tbody = document.querySelector('tbody');
+        const tbody = document.querySelector('.project-table tbody');
         if (tbody) {
             tbody.innerHTML = ''; // Kosongkan tabel
             data.forEach((item, index) => {
@@ -1857,3 +1857,40 @@ async function hapusProyek(btn, id) {
 
 window.editProyek = editProyek;
 window.hapusProyek = hapusProyek;
+
+
+
+
+/* =====================================================================
+   TAMBAH PENGGUNA
+   ===================================================================== */
+   function simpanPengguna() {
+  const nama = document.getElementById('inputNamaPengguna').value.trim();
+  const email = document.getElementById('inputEmailPengguna').value.trim();
+  const role = document.getElementById('inputRolePengguna').value;
+
+  if (!nama || !email) {
+    alert('Nama dan email wajib diisi');
+    return;
+  }
+
+  tambahBarisPengguna(nama, email, role);
+  document.getElementById('inputNamaPengguna').value = '';
+  document.getElementById('inputEmailPengguna').value = '';
+}
+
+function tambahBarisPengguna(nama, email, role) {
+  const tbody = document.getElementById('listPengguna');
+  const tr = document.createElement('tr');
+  const roleLabel = role === 'admin' ? 'Admin' : 'Anggota';
+  tr.innerHTML = `
+    <td>${nama}</td>
+    <td>${email}</td>
+    <td><span class="badge-role">${roleLabel}</span></td>
+    <td style="text-align:right;">
+      <button class="btn-hapus-pengguna" onclick="this.closest('tr').remove()">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </td>`;
+  tbody.appendChild(tr);
+}

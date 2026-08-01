@@ -61,10 +61,10 @@
     <span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span> Laporan
   </a>
 
-  <!-- Pengaturan -->
-  <a href="pengaturan.html" class="nav-item" data-page="pengaturan">
-    <span class="nav-icon"><i class="fa-solid fa-gear"></i></span> Pengaturan
-  </a>
+  <!-- Tambah Pengguna -->
+<a href="pengaturan.html" class="nav-item" data-page="pengaturan">
+  <span class="nav-icon"><i class="fa-solid fa-user-plus"></i></span> Tambah Pengguna
+</a>
 </nav>
 </aside>
 <script>
@@ -77,106 +77,47 @@
 <section class="page" id="page-pengaturan">
     <div class="container">
         <div class="card">
-  <h1>Pengaturan Dashboard</h1>
+  <h1>Tambah Pengguna</h1>
 
-  <div class="settings-layout">
-    <nav class="settings-tabs">
-      <button class="settings-tab active" data-tab="akun"><i class="fa-solid fa-user"></i> Akun</button>
-      <button class="settings-tab" data-tab="keamanan"><i class="fa-solid fa-shield-halved"></i> Keamanan</button>
-      <button class="settings-tab" data-tab="tampilan"><i class="fa-solid fa-palette"></i> Tampilan</button>
-      <button class="settings-tab" data-tab="notifikasi"><i class="fa-solid fa-bell"></i> Notifikasi</button>
-      <button class="settings-tab" data-tab="tim"><i class="fa-solid fa-users"></i> Tim & Proyek</button>
-      <button class="settings-tab" data-tab="backup"><i class="fa-solid fa-database"></i> Backup & Data</button>
-      <button class="settings-tab" data-tab="integrasi"><i class="fa-solid fa-plug"></i> Integrasi</button>
-      <button class="settings-tab" data-tab="sistem"><i class="fa-solid fa-info-circle"></i> Versi</button>
-    </nav>
-
-    <div class="settings-panels">
-      <div class="settings-panel active" data-panel="akun">
-        <h3>Akun</h3>
-        <div class="setting-row"><span>Nama Lengkap</span><input type="text" value="Budi Santoso"></div>
-        <div class="setting-row"><span>Email</span><input type="email" value="budi@example.com"></div>
-      </div>
-
-      <div class="settings-panel" data-panel="keamanan">
-        <h3>Keamanan</h3>
-        <div class="setting-row"><span>Autentikasi 2FA</span><select><option>Aktif</option><option>Nonaktif</option></select></div>
-        <div class="setting-row"><span>Password</span><button class="btn btn-secondary" id="btnUbahPassword">Ubah Password</button></div>
-      </div>
-
-      <div class="settings-panel" data-panel="tampilan">
-        <h3>Tampilan</h3>
-        <div class="setting-row">
-          <span>Tema</span>
-          <select id="tema">
-            <option value="light">Light Mode</option>
-            <option value="dark">Dark Mode</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="settings-panel" data-panel="notifikasi">
-        <h3>Notifikasi</h3>
-        <div class="setting-row"><span>Notifikasi Email</span>
-          <select id="notifEmail"><option>Aktif</option><option>Nonaktif</option></select>
-        </div>
-      </div>
-
-      <div class="settings-panel" data-panel="tim">
-        <h3>Tim & Proyek</h3>
-        <div class="setting-row">
-          <span class="label">Peran Akses</span>
-          <select class="input-field"><option>Admin</option><option>Editor</option></select>
-        </div>
-        <div class="setting-row">
-          <span class="label">Proyek Aktif</span>
-          <input type="text" class="input-field" value="Proyek Alpha">
-        </div>
-      </div>
-
-      <div class="settings-panel" data-panel="backup">
-        <h3>Backup & Data</h3>
-        <div class="setting-row"><span>Ekspor Data</span>
-          <button class="btn btn-secondary" id="btnEksporCSV">Unduh CSV</button>
-        </div>
-      </div>
-
-      <div class="settings-panel" data-panel="integrasi">
-        <h3>Integrasi</h3>
-        <div class="setting-row"><span>GitHub/Slack</span>
-          <button class="btn btn-secondary" id="btnHubungkan">Hubungkan</button>
-        </div>
-      </div>
-
-      <div class="settings-panel" data-panel="sistem">
-        <h3>Preferensi Sistem & Tentang</h3>
-        <div class="setting-row"><span>Zona Waktu</span><select><option>WIB</option><option>WITA</option></select></div>
-        <div class="setting-row"><span>Versi Aplikasi</span><span>v1.2.0</span></div>
-      </div>
+  <h3 class="tp-heading"><i class="fa-solid fa-user-plus"></i> Data Pengguna Baru</h3>
+  <div class="tp-form">
+    <div class="setting-row">
+      <span>Nama Lengkap</span>
+      <input type="text" id="inputNamaPengguna" placeholder="Nama lengkap">
+    </div>
+    <div class="setting-row">
+      <span>Email</span>
+      <input type="email" id="inputEmailPengguna" placeholder="nama@example.com">
+    </div>
+    <div class="setting-row">
+      <span>Role</span>
+      <select id="inputRolePengguna">
+        <option value="admin">Admin</option>
+        <option value="anggota">Anggota</option>
+      </select>
     </div>
   </div>
 
-  <div style="margin-top: 30px; text-align: right;">
-    <button class="btn" onclick="simpanSemuaPerubahan()">Simpan Semua Perubahan</button>
+  <div style="margin-top: 20px; text-align: right;">
+    <button class="btn" onclick="simpanPengguna()"><i class="fa-solid fa-plus"></i> Simpan Pengguna</button>
   </div>
+
+  <h3 class="tp-heading" style="margin-top:40px;"><i class="fa-solid fa-users"></i> Pengguna Terdaftar</h3>
+  <table class="table-pengguna">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th style="text-align:right;">Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="listPengguna"></tbody>
+  </table>
 </div>
         </div>
     </div>
 </section>
-        
-  
-<!-- MODAL UBAH PASSWORD -->
-    <div id="modal-password" class="modal-overlay">
-      <div class="modal-box">
-        <h3>Ubah Password</h3>
-        <input type="password" placeholder="Password Lama" style="width:100%; margin-bottom:10px;">
-        <input type="password" placeholder="Password Baru" style="width:100%; margin-bottom:10px;">
-        <div class="modal-actions">
-          <button onclick="tutupModal()" class="btn-secondary">Batal</button>
-          <button onclick="simpanPasswordBaru()" class="btn-primary">Simpan</button>
-        </div>
-      </div>
-    </div>
 
     
 

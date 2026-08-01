@@ -388,12 +388,12 @@ async function loadProyek() {
                     <button class="btn-icon btn-edit-row" title="Edit" onclick="editProyek(this)">
                       <i class="fa-solid fa-pen"></i>
                     </button>
-                    <button class="btn-icon btn-hapus-row" title="Hapus" onclick="hapusProyek(this)">
+                    <button class="btn-icon btn-hapus-row" title="Hapus" onclick="hapusProyek(this, ${item.id})">
                       <i class="fa-solid fa-trash"></i>
                     </button>
                   </div>
                 </td>
-                    </tr>
+</tr>
                 `;
             });
         }
@@ -736,93 +736,8 @@ document.addEventListener('DOMContentLoaded', () => {
         editingProyekRow = null;
     });
 
-    // 4. Fungsi Simpan — Tambah baris baru ATAU update baris yang sedang diedit
-    btnSimpan.addEventListener('click', () => {
-        const nama = document.getElementById('inputNamaProyek')?.value || '';
-        const pj = document.getElementById('inputPJProyek')?.value || '';
-        const deskripsi = document.getElementById('inputDeskProyek')?.value || '';
+    
 
-        const deadlineInput = document.getElementById('inputDeadlineProyek')?.value || '';
-        const statusValue = document.getElementById('inputStatusProyek')?.value || 'pending';
-
-        if (nama === "" || deadlineInput === "" || pj === "") {
-            alert("Harap isi Nama Proyek, PJ, dan Deadline!");
-            return;
-        }
-
-        const deadline = formatTanggalKeIndo(deadlineInput); // "2026-07-22" -> "22 Juli 2026"
-
-        let statusBadge = "";
-        let statusText = "";
-        if (statusValue === "pending") {
-            statusBadge = '<span class="badge status-belum">Belum Mulai</span>';
-            statusText = "Belum Mulai";
-        } else if (statusValue === "progress") {
-            statusBadge = '<span class="badge status-berjalan">Berjalan</span>';
-            statusText = "Berjalan";
-        } else {
-            statusBadge = '<span class="badge status-selesai">Selesai</span>';
-            statusText = "Selesai";
-        }
-
-        if (editingProyekRow) {
-            // ===== MODE EDIT: update baris yang sudah ada, TIDAK bikin baris baru =====
-            const cells = editingProyekRow.querySelectorAll('td');
-            cells[0].textContent = nama;
-            cells[1].innerHTML = statusBadge;
-            cells[2].textContent = pj;
-            cells[3].textContent = deadline;
-
-            const viewBtn = editingProyekRow.querySelector('.btn-view');
-            if (viewBtn) {
-                viewBtn.setAttribute('data-nama', nama);
-                viewBtn.setAttribute('data-status', statusText);
-                viewBtn.setAttribute('data-pj', pj);
-                viewBtn.setAttribute('data-deadline', deadline);
-                viewBtn.setAttribute('data-tugas', deskripsi);
-                
-            }
-
-            editingProyekRow = null; // balik ke mode Tambah setelah selesai
-        } else {
-            // ===== MODE TAMBAH: bikin baris baru (sama seperti sebelumnya) =====
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${nama}</td>
-                <td>${statusBadge}</td>
-                <td>${pj}</td> 
-                <td>${deadline}</td>
-                <td>
-                    <button class="btn-view" 
-                        onclick="tampilkanDetailProyek(this)" 
-                        data-nama="${nama}" 
-                        data-status="${statusText}" 
-                        data-pj="${pj}" 
-                        data-deadline="${deadline}" 
-                        data-tugas="${deskripsi}" >
-                        
-                        View
-                    </button>
-                </td>
-            `;
-            tbody.appendChild(row);
-        }
-
-        // Reset inputan form
-        if (document.getElementById('inputNamaProyek')) document.getElementById('inputNamaProyek').value = "";
-        if (document.getElementById('inputPJProyek')) document.getElementById('inputPJProyek').value = "";
-        if (document.getElementById('inputDeskProyek')) document.getElementById('inputDeskProyek').value = "";
-        
-        if (document.getElementById('inputDeadlineProyek')) document.getElementById('inputDeadlineProyek').value = "";
-        
-       
-        modal.style.display = 'none';
-       
-        
-        if (typeof hitungKorelasiProyek === 'function') {
-            hitungKorelasiProyek();
-        }
-    });
 
     // 5. Tutup modal jika klik di area luar (overlay)
     window.addEventListener('click', (event) => {
@@ -1239,6 +1154,15 @@ async function muatLaporanDariDatabase() {
 }
 
 /* ---------- 4b. Render daftar laporan (sidebar list) ---------- */
+// FUNGSI BARU: ubah angka persen jadi kategori warna (pending/review/selesai)
+// DIUBAH: batas oranye disamakan dengan badge status (di atas 0%, bukan 34%)
+function getKategoriWarnaStatus(persen) {
+  const nilai = Number(persen) || 0;
+  if (nilai >= 100) return 'selesai';   // hijau
+  if (nilai > 0) return 'review';       // oranye — disamakan dengan badge "Sedang Berjalan"
+  return 'pending';                     // merah, hanya kalau persis 0%
+}
+
 function renderLaporanList() {
   const container = document.querySelector('.laporan-list');
   if (!container) return;
@@ -1251,7 +1175,7 @@ function renderLaporanList() {
     item.dataset.prioritas = (data.prioritas || '').toLowerCase().trim();
 
     item.innerHTML = `
-      <div class="laporan-icon ${data.status}">
+      <div class="laporan-icon ${getKategoriWarnaStatus(data.status)}">
         <i class="fa-solid fa-file"></i>
       </div>
       <div class="laporan-info">
@@ -1381,12 +1305,17 @@ function cariLaporan() {
 }
 
 /* ---------- 4a-2. Muat dropdown proyek untuk form laporan ---------- */
+let daftarProyekUntukLaporan = []; // BARU: cache data proyek (buat hitung progres otomatis)
+
 async function muatDropdownProyekLaporan(selectedId = '') {
   const select = document.getElementById('proyekTerkaitLaporan');
   if (!select) return;
   try {
     const response = await fetch('http://localhost:3000/api/proyek');
     const data = await response.json();
+
+    daftarProyekUntukLaporan = data; // BARU: simpan buat dipakai hitung progres
+
     select.innerHTML = '<option value="">-- Tidak terkait proyek --</option>';
     data.forEach(p => {
       const opt = document.createElement('option');
@@ -1395,8 +1324,32 @@ async function muatDropdownProyekLaporan(selectedId = '') {
       if (String(p.id) === String(selectedId)) opt.selected = true;
       select.appendChild(opt);
     });
+
+    terapkanProgresOtomatis(selectedId); // BARU: sinkronkan field progres
   } catch (error) {
     console.error('Gagal memuat daftar proyek untuk dropdown laporan:', error);
+  }
+}
+
+// FUNGSI BARU: hitung & kunci field progres berdasarkan proyek terpilih
+function terapkanProgresOtomatis(idProyek) {
+  const statusInput = document.getElementById('statusLaporan');
+  if (!statusInput) return;
+
+  if (!idProyek) {
+    // tidak ada proyek terkait -> balik jadi input manual
+    statusInput.disabled = false;
+    return;
+  }
+
+  const proyek = daftarProyekUntukLaporan.find(p => String(p.id) === String(idProyek));
+  if (proyek) {
+    const total = Number(proyek.total_tugas) || 0;
+    const selesai = Number(proyek.tugas_selesai) || 0;
+    const persen = total > 0 ? Math.round((selesai / total) * 100) : 0;
+
+    statusInput.value = persen;
+    statusInput.disabled = true; // kunci, tidak bisa diketik manual
   }
 }
 
@@ -1526,6 +1479,13 @@ if (fileLaporanInput) {
   });
 }
 
+// BARU: kalau user ganti pilihan proyek di dropdown, progres otomatis update
+const proyekTerkaitLaporanEl = document.getElementById('proyekTerkaitLaporan');
+if (proyekTerkaitLaporanEl) {
+  proyekTerkaitLaporanEl.addEventListener('change', function () {
+    terapkanProgresOtomatis(this.value);
+  });
+}
 
 function filterLaporanByProyek(idProyek) {
     proyekAktifLaporan = idProyek;
@@ -1740,7 +1700,7 @@ function renderLaporanList() {
     if (index === 0) item.classList.add('active');
 
     item.innerHTML = `
-            <div class="laporan-icon ${data.status}">
+            <div class="laporan-icon ${getKategoriWarnaStatus(data.status)}">
                 <i class="fa-solid fa-file"></i>
             </div>
             <div class="laporan-info">
@@ -1767,7 +1727,8 @@ function bukaFormLaporan() {
   modeEditLaporan = null;
   document.getElementById('judulLaporan').value = '';
   document.getElementById('penulisLaporan').value = '';
-  document.getElementById('statusLaporan').value = 0;   // ganti dari 'pending' ke 0
+  document.getElementById('statusLaporan').value = 0;
+  document.getElementById('statusLaporan').disabled = false; // BARU: reset kunci
   document.getElementById('isiLaporan').value = '';
   muatDropdownProyekLaporan();
   document.getElementById('modal-laporan').classList.add('active');
@@ -1876,7 +1837,8 @@ async function hapusProyek(btn, id) {
   const viewBtn = row ? row.querySelector(".btn-view") : null;
   const nama = viewBtn ? viewBtn.dataset.nama : "proyek ini";
 
-  if (confirm(`Yakin ingin menghapus proyek "${nama}"?`)) {
+  // DIUBAH: pesan konfirmasi sekarang menyebutkan laporan ikut terhapus
+  if (confirm(`Yakin ingin menghapus proyek "${nama}"? Semua laporan yang terkait dengan proyek ini juga akan ikut terhapus.`)) {
     try {
       const response = await fetch(`http://localhost:3000/api/proyek/${id}`, {
         method: "DELETE"

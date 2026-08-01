@@ -156,13 +156,23 @@ async function startServer() {
         });
 
         app.delete("/api/proyek/:id", async (req, res) => {
-            try {
-                await db.query("DELETE FROM proyek WHERE id = ?", [req.params.id]);
-                res.json({ message: "Proyek berhasil dihapus" });
-            } catch (error) {
-                res.status(500).json({ message: "Gagal menghapus proyek", error: error.message });
-            }
-        });
+    try {
+        const idProyek = req.params.id;
+
+        // 1. Hapus dulu semua laporan yang terkait proyek ini
+        await db.query("DELETE FROM laporan WHERE id_proyek = ?", [idProyek]);
+
+        // 2. Hapus juga semua tugas yang terkait proyek ini
+        await db.query("DELETE FROM tugas WHERE id_proyek = ?", [idProyek]);
+
+        // 3. Baru hapus proyeknya
+        await db.query("DELETE FROM proyek WHERE id = ?", [idProyek]);
+
+        res.json({ message: "Proyek, laporan, dan tugas terkait berhasil dihapus" });
+    } catch (error) {
+        res.status(500).json({ message: "Gagal menghapus proyek", error: error.message });
+    }
+});
 
         app.get("/api/proyek/:id/laporan", async (req, res) => {
             try {
